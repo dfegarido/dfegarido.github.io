@@ -120,6 +120,9 @@ main{min-width:0;padding:22px clamp(16px,3vw,36px) 48px}
 .tabs .new{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--st);margin-left:6px;vertical-align:middle}
 .over .sky canvas{width:min(100%,calc((100vh - 360px) * 128 / 124))}
 /* levelling */
+.speed{display:flex;gap:6px;flex-wrap:wrap}
+.speed button{font:11px/1 var(--label);color:var(--dim);background:#0f2238;border:2px solid var(--line);border-radius:8px;padding:0 12px;min-height:40px;cursor:pointer}
+.speed button[aria-pressed=true]{color:var(--night);background:var(--hue);border-color:var(--hue)}
 .lvl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
 .sky{background:#050b16;border:2px solid var(--edge);border-radius:12px;overflow:hidden}
 .sky canvas{display:block;width:min(100%,calc((100vh - 330px) * 128 / 124));min-width:220px;margin:0 auto;aspect-ratio:128/124;image-rendering:pixelated;image-rendering:crisp-edges}
