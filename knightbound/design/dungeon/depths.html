@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Four depths, twenty bosses · Knightbound Dungeon</title>
+<meta name="description" content="The Dungeon map screen for Knightbound: a path of levels, a level sheet, and the locked state.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Karla:wght@400;600;700&family=Silkscreen&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#0c1526; --navy:#16304e; --navy2:#1c3a5e; --edge:#08172a; --hi:#2c527c;
+  --parch:#f3ead6; --dim:#a3b3c9; --dim2:#7489a6; --brass:#e8b04a;
+  --torch:#ff8a36; --ember:#c2461a; --ready:#46c850; --risky:#f0b830; --strong:#e8503a;
+  --display:"Jersey 10",system-ui,sans-serif; --body:"Karla",system-ui,sans-serif; --label:"Silkscreen",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{background:var(--night)}
+body{margin:0;background:radial-gradient(120% 60% at 50% -10%,#2a1a3a 0%,transparent 60%),var(--night);
+  color:var(--parch);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+.px{image-rendering:pixelated;image-rendering:crisp-edges}
+:focus-visible{outline:3px solid var(--brass);outline-offset:3px}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;letter-spacing:.01em}
+.eyebrow{font:12px/1 var(--label);letter-spacing:.06em;color:var(--torch);margin:0 0 10px}
+.wrap{max-width:1120px;margin:0 auto;padding:48px 20px 64px;display:grid;grid-template-columns:400px 1fr;gap:48px;align-items:start}
+header.top h1{font-size:clamp(56px,9vw,96px);line-height:.85}
+.lede{color:var(--dim);max-width:58ch}
+@media (max-width:900px){.wrap{grid-template-columns:1fr} .phone{margin:0 auto}}
+
+/* ---------- the phone ---------- */
+.phone{width:100%;max-width:400px;border:10px solid #050a12;border-radius:40px;background:#050a12;
+  box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 2px #1d2a40}
+@media (min-width:901px){.phone{position:sticky;top:24px}}  /* pinned beside the notes, never over them */
+.screen{position:relative;height:760px;border-radius:30px;overflow:hidden;
+  background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAArElEQVR42u1WQQqAMAzLG8SjCF5FfIH//5YyQcGxrbUzzEMP3cU2pF1Nhr4b9paBcKzzZo7a+pPANC7JCAm5b1dc9ZrcFG6SwBuwUgMa3AcBSxcaAiXcewesXdReIbQjzIHVXqFIQAKrvUI01wH2fy7Vg73lcX2cC/aWS0IF9pZLEwR7y0UCmg6YQgUJjC1U8PeA27Hb8S/s2Dq+L4TK3wNux27H7e1YAmML1QH7+Kie0oMJIAAAAABJRU5ErkJggg==) 0 0/96px 96px;image-rendering:pixelated}
+.screen::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(130% 70% at 50% 100%,transparent 30%,rgba(5,4,10,.7) 100%)}
+.bar{position:absolute;inset:0 0 auto;z-index:5;display:flex;align-items:center;gap:10px;padding:16px 14px 12px;
+  background:linear-gradient(#0b0a14 70%,transparent)}
+.bar h2{font-size:38px;line-height:1;flex:1}
+.bar .deep{font:11px/1.2 var(--label);color:var(--dim)}
+.bar .souls{display:flex;align-items:center;gap:6px;font:14px/1 var(--label);background:#16304e;
+  border:3px solid var(--edge);border-radius:8px;padding:6px 8px}
+.bar .souls img{width:18px;height:18px}
+.close{width:44px;height:44px;border-radius:10px;border:3px solid var(--edge);background:#2a2a35;color:var(--parch);
+  font:22px/1 var(--display);cursor:pointer}
+
+/* the map: a scrolling path, level 1 at the bottom */
+.map{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;z-index:1}
+.map::-webkit-scrollbar{display:none}
+.track{position:relative;width:100%}
+.track svg{position:absolute;inset:0;width:100%;height:100%;shape-rendering:crispEdges}
+.node{position:absolute;width:76px;height:76px;transform:translate(-50%,-50%);border:0;padding:0;background:none;cursor:pointer}
+.node .disc{position:absolute;inset:6px;border-radius:14px;background:#211e2c;border:4px solid #3e3a50;
+  box-shadow:inset 0 4px 0 #3e3a50, 0 4px 0 #050409;display:grid;place-items:center}
+.node img.boss{width:44px;height:44px}
+.node .num{position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);font:12px/1 var(--label);
+  background:#0b0a14;border:2px solid #3e3a50;border-radius:6px;padding:3px 6px;color:var(--dim);white-space:nowrap}
+.node.cleared .disc{border-color:var(--brass);box-shadow:inset 0 4px 0 #6b4a18,0 4px 0 #050409}
+.node.cleared .num{color:var(--brass);border-color:#6b4a18}
+.node .tick{position:absolute;right:0;top:0;width:24px;height:24px;border-radius:7px;background:var(--brass);
+  border:3px solid #0b0a14;display:grid;place-items:center;font:14px/1 var(--display);color:#0b0a14}
+.node.next .disc{border-color:var(--torch);animation:flame 1.4s ease-in-out infinite}
+.node.next .num{color:#0b0a14;background:var(--torch);border-color:var(--torch)}
+@keyframes flame{0%,100%{box-shadow:inset 0 4px 0 #8a2a08,0 0 18px 4px rgba(255,138,54,.55)}
+  50%{box-shadow:inset 0 4px 0 #8a2a08,0 0 30px 10px rgba(255,138,54,.8)}}
+.node.locked .disc{background:#14121c;border-color:#2e2a3c;box-shadow:inset 0 4px 0 #1a1824,0 4px 0 #050409}
+.node.locked img.boss{filter:brightness(.25) saturate(0);opacity:.7}
+.node.locked .lock{position:absolute;width:24px;height:24px;right:4px;top:4px}
+.node[aria-pressed="true"] .disc{outline:3px solid var(--parch);outline-offset:3px}
+.torch{position:absolute;width:24px;height:54px;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAASCAYAAAA6yNxSAAAAoUlEQVR42mNgoDOIEuP4T54kEfKEgAiPzP9DblL/QTRpkkTIE+NIih3wv8uMIkcSdAA+C2DyIB9SXR7ZcmwKCMmT4gCQGRiehEn+f7QAjNEVUFsew5GwuAErwOILWsuDFXTP3gLHUZkdGAbQUh6sACRo5ZIGx+gG0FIeocjK6r+evDbORERLebCCrigXvAbQUn7UAaMOGPhcAFOEr7qlhTwASmfkUyIsPLoAAAAASUVORK5CYII=) 0 0/96px 54px;
+  animation:burn .5s steps(4) infinite;z-index:0}
+@keyframes burn{to{background-position:-96px 0}}
+.band{position:absolute;left:0;right:0;z-index:0}
+.band .banner{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);white-space:nowrap;
+  font:11px/1 var(--label);letter-spacing:.08em;padding:6px 10px;border-radius:6px;background:#0b0a14;border:2px solid}
+.node.keeper{width:96px;height:96px}
+.node.keeper img.boss{width:60px;height:60px}
+.node.keeper .disc{border-width:5px}
+.node .crown{position:absolute;left:50%;top:-6px;transform:translateX(-50%);font:10px/1 var(--label);
+  background:#6a44a0;color:#fff;border:2px solid #0b0a14;border-radius:5px;padding:2px 5px;white-space:nowrap}
+.types{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.type{font:10px/1 var(--label);padding:4px 6px;border-radius:5px;color:#0b0a14;background:var(--c)}
+
+/* the level sheet */
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:6;background:#16304e;border-top:4px solid var(--edge);
+  border-radius:18px 18px 0 0;box-shadow:inset 0 4px 0 var(--hi),0 -12px 30px rgba(0,0,0,.5);padding:16px 16px 18px;
+  transform:translateY(0);transition:transform .25s ease}
+.sheet.hidden{transform:translateY(105%)}
+.sheet .head{display:flex;gap:12px;align-items:center}
+.sheet .bossbox{width:64px;height:64px;flex:none;background:#0b0a14;border:3px solid var(--edge);border-radius:12px;display:grid;place-items:center}
+.sheet .bossbox img{width:48px;height:48px}
+.sheet h3{font-size:32px;line-height:.9}
+.sheet .sub{font:11px/1.4 var(--label);color:var(--dim)}
+.verdict{display:inline-block;font:11px/1 var(--label);padding:5px 8px;border-radius:6px;color:#0b0a14;margin-top:6px}
+.verdict.ready{background:var(--ready)} .verdict.risky{background:var(--risky)} .verdict.strong{background:var(--strong);color:#fff}
+.rows{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:10px 0}
+.rows div{background:#0f2238;border:2px solid #1d3556;border-radius:8px;padding:6px 8px;min-width:0}
+.rows dt{font:9px/1 var(--label);color:var(--dim2);margin-bottom:5px}
+.rows dd{margin:0;font-weight:700;font-size:13px;line-height:1.2;display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.rows dd img{width:20px;height:20px}
+.rows .wide{grid-column:1/-1}
+.enter{width:100%;min-height:56px;border-radius:12px;border:3px solid #5a2408;background:#ee7a16;color:#fff;
+  box-shadow:inset 0 4px 0 #ffb060,0 4px 0 #3a1404;font:28px/1 var(--display);cursor:pointer}
+.enter[disabled]{background:#2a2a35;border-color:#14121c;box-shadow:inset 0 4px 0 #3e3a50;color:var(--dim2);cursor:not-allowed}
+
+/* locked: the whole screen before stage 100 */
+.gate{position:absolute;inset:0;z-index:8;display:grid;place-items:center;background:rgba(8,6,14,.82);backdrop-filter:blur(3px)}
+.gate.hidden{display:none}
+.gate .card{width:82%;background:#16304e;border:4px solid var(--edge);border-radius:16px;box-shadow:inset 0 4px 0 var(--hi);padding:20px;text-align:center}
+.gate img{width:48px;height:48px}
+.gate h3{font-size:34px;margin:6px 0}
+.meter{height:16px;border:3px solid var(--edge);border-radius:6px;background:#2a2a35;margin:12px 0 6px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--torch)}
+
+/* ---------- notes ---------- */
+.notes section{margin-top:30px}
+.notes h2{font-size:40px;line-height:.9;margin-bottom:8px}
+.notes p, .notes li{color:var(--dim)}
+.notes b{color:var(--parch)}
+.switch{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.switch button{min-height:44px;border-radius:10px;border:3px solid #24406a;background:#0f2238;color:var(--parch);
+  font:12px/1 var(--label);padding:0 14px;cursor:pointer}
+.switch button[aria-pressed="true"]{border-color:var(--torch);background:#2a1a10}
+.depthcard{background:#16304e;border:3px solid var(--edge);border-top:6px solid var(--t);border-radius:12px;padding:14px;margin-top:14px}
+.depthcard h3{font-size:30px;line-height:1;color:color-mix(in srgb,var(--t) 60%,var(--parch))}
+.depthcard .levels{font:11px/1 var(--label);color:var(--dim2)}
+.depthcard p{margin:4px 0 10px;font-size:14px}
+.mons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.mons figure,.bosses figure{margin:0;background:#0f2238;border:2px solid #1d3556;border-radius:8px;padding:8px 4px;text-align:center;min-width:0}
+.mons img{width:48px;height:48px}
+.bosses{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:8px}
+.bosses img{width:64px;height:64px}
+.bosses figure.keeper{border-color:#6a44a0}
+figcaption{font:10px/1.3 var(--label);color:var(--dim);margin-top:4px;overflow-wrap:anywhere}
+figcaption em{display:block;font-style:normal;color:var(--dim2)}
+.bosses .types{justify-content:center}
+.demos{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px;margin-top:12px}
+.demo{background:#16304e;border:3px solid var(--edge);border-radius:12px;overflow:hidden}
+.stage{aspect-ratio:112/80;background-repeat:no-repeat;background-size:calc(100% * var(--n)) 100%;
+  animation:play calc(var(--n) * 70ms) steps(var(--n)) infinite;border-bottom:3px solid var(--edge)}
+@keyframes play{to{background-position-x:calc(100% * var(--n) / (var(--n) - 1))}}
+.demo div.cap{padding:10px 12px}
+.demo b{font:26px/1 var(--display);font-weight:400;display:block;margin-bottom:4px}
+.demo span{font-size:14px;color:var(--dim)}
+@media (prefers-reduced-motion:reduce){.stage{animation:none;background-position-x:calc(100% * 13 / (var(--n) - 1))}}
+.typelist{list-style:none;padding:0;display:grid;gap:6px}
+.typelist li{display:flex;gap:10px;align-items:baseline}
+.typelist .type{flex:none;min-width:84px;text-align:center}
+@media (max-width:560px){.bosses{grid-template-columns:repeat(3,minmax(0,1fr))} .mons{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.legend{list-style:none;padding:0;display:grid;gap:8px}
+.legend li{display:flex;gap:10px;align-items:center}
+.legend i{width:22px;height:22px;border-radius:6px;border:3px solid;flex:none}
+@media (prefers-reduced-motion:reduce){.node.next .disc,.torch{animation:none} .sheet{transition:none}}
+
+.kb-bar{position:sticky;top:0;z-index:50;height:58px;display:flex;align-items:center;gap:18px;padding:0 18px;
+  background:rgba(8,16,30,.94);backdrop-filter:blur(6px);border-bottom:2px solid #07111f;font-family:"Karla",system-ui,sans-serif}
+.kb-brand{font:28px/1 "Jersey 10",system-ui,sans-serif;text-decoration:none;color:#f3ead6;white-space:nowrap}
+.kb-brand span{color:#e8b04a}
+.kb-sections{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.kb-sections a,.kb-tabs a{font:11px/1 "Silkscreen",ui-monospace,monospace;text-decoration:none;color:#a3b3c9;padding:0 12px;
+  border-radius:8px;white-space:nowrap;min-height:40px;display:flex;align-items:center}
+.kb-sections a:hover,.kb-tabs a:hover{color:#f3ead6;background:#13263f}
+.kb-sections a[aria-current]{color:#0b1322;background:#e8b04a}
+.kb-tabs{position:sticky;top:58px;z-index:49;display:flex;gap:4px;padding:6px 14px;overflow-x:auto;scrollbar-width:none;
+  background:rgba(11,19,34,.94);backdrop-filter:blur(6px);border-bottom:2px solid #22406a}
+.kb-tabs a[aria-current]{color:#f3ead6;box-shadow:inset 0 -3px 0 var(--kb-hue)}
+.kb-pager{display:flex;justify-content:space-between;gap:10px;max-width:1120px;margin:0 auto;padding:8px 20px 48px}
+.kb-pager a{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:#f3ead6;background:#13263f;
+  border:2px solid #22406a;border-radius:10px;padding:10px 14px;min-width:min(46%,260px)}
+.kb-pager a:hover{border-color:var(--kb-hue)}
+.kb-pager small{font:10px/1 "Silkscreen",ui-monospace,monospace;color:#7489a6}
+.kb-pager b{font:28px/.9 "Jersey 10",system-ui,sans-serif;font-weight:400}
+.kb-pager .kb-next{margin-left:auto;text-align:right}
+.kb-skip{position:absolute;left:-999px;top:8px;background:#e8b04a;color:#0b1322;padding:8px 12px;border-radius:6px;z-index:60}
+.kb-skip:focus{left:8px}
+.kb-bar :focus-visible,.kb-tabs :focus-visible,.kb-pager :focus-visible{outline:3px solid #e8b04a;outline-offset:2px}
+main.kb-solo{display:block!important;max-width:900px!important}
+main.kb-solo .notes{max-width:none}
+.phone{top:128px!important}
+@media (max-width:560px){.kb-bar{gap:8px;padding:0 10px}.kb-brand{font-size:24px}.kb-brand span{display:none}
+  .kb-sections a{padding:0 8px}.kb-pager a{min-width:0;flex:1}}
+</style></head><body><a class="kb-skip" href="#kb-main">Skip to content</a><header class="kb-bar"><a class="kb-brand" href="../index.html">Knightbound <span>Ledger</span></a><nav class="kb-sections" aria-label="Sections"><a href="../skills/index.html">Spellbook</a><a href="../armory/index.html">Armory</a><a href="../dungeon/index.html" aria-current=page>Dungeon</a></nav></header><nav class="kb-tabs" aria-label="Dungeon pages" style="--kb-hue:#9a7ae0"><a href="index.html">The map</a><a href="levels.html">Levels</a><a href="combat.html">Combat</a><a href="bosses.html">Bosses</a><a href="types.html">Boss types</a><a href="depths.html" aria-current=page>Depths</a></nav><main class="wrap kb-solo" id="kb-main"><div class="notes"><section>
+      <p class="eyebrow">Who lives down there</p>
+      <h2>Four depths, twenty bosses</h2>
+      <p>Each depth has its own four monsters (the waves are made of them) and five bosses, one per level. Nothing
+      repeats across depths, and nothing from the meadow comes down here.</p>
+      <article class="depthcard" style="--t:#8a8aa0"><h3>Depth 1 · Catacombs</h3><div class="levels">Dungeon 1–5 · counts as stage 100–140</div><p>Bone and dust under the old city.</p><div class="mons"><figure><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAd0lEQVR42mNgoBWICvL4j4xJ0izCI/P/24dHKBgkRrZmog3Bp5koQ2AGyIhogDFMEzIfpwHItmMzAFmeKEPwsckOg2tntpEekDA+UZqRDQFpQMazJjSQZgBMAwyDUiPRBiC7AtkgkpMzyACSbUb3BtkGwAwhpBkAVwMSuZKjT4oAAAAASUVORK5CYII=" alt=""><figcaption>Skeleton<em>plain melee</em></figcaption></figure><figure><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAa0lEQVR42mNgGJRAy0rlPwiL8Mj8h7FBmCjNIE0bTkwAY2Q2jE+UZhCNrpkoQ9A1YjMEpwG4bCTaFYQM+H8ngDQDkDVQxQUwXDUrivxwwKsZZgBIES7slWVF2ACQIuTUh54aiUpM+PDgy3gAhlEUnP+YZxAAAAAASUVORK5CYII=" alt=""><figcaption>Zombie<em>tough, slow</em></figcaption></figure><figure><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAlUlEQVR42mNgGHAgL2zwnyIxW+Wg/yI8MnBJEDvLtoooMZBeBpAEzBCQiYQMQFYDdwEIIxsEYsM0wPjociA+2ABkBTAMEpuVtQIFo6uDuYQB2TkwSXTNMAxTA6JRDEB2HkgCpuG/mw0KjWwzSuDD/ApTgM8FME3IgcyAHNowjKwROUCJTmAgxSAA0gwCJGnG5iKG4QsAjgfbE4DOCPYAAAAASUVORK5CYII=" alt=""><figcaption>Crypt Bat<em>flies, quick</em></figcaption></figure><figure><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAcElEQVR42mNgoBWIyur6j4xJ0ijCI/MfHYDECBqETSM2g2hjADGa8RqCboCMiAZWNlEGgDTgMuDaoy/4DQApgCnCxp615gxxBuDCtDcApACE8bExDEAOQJAtxLCxGoLsRGxs5EDFmZhgktjYyGJUAwB6W8Ydl2UzzwAAAABJRU5ErkJggg==" alt=""><figcaption>Ghost<em>dodgy</em></figcaption></figure></div><div class="bosses"><figure class=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA/0lEQVR42mNgGErAyiXtPwiTpElJRec/NoyuToRH5v/xy4//d8/e8h/EJspgkMJZCzZgxSA5ZItgFkRldhC2AJ/B2CwiyQJSDEe2hCgLyDEchNNyaghbQInhMAyKYKpagGw4TSxAtwivBTBLQAptHHxIxkRH8rcPj+BYRkQDjJHFcImTbAHMEBAmRpxsCyo+/P9PSPzamW3kBREsA6EHEbo4NguybeWJs4QQBhm+o0Tr//8PXSj43UYr4n2Cy2CYy0GGgSxBxwTLJGSDkPGsCQ1gjFzQoQcRUUU2SBGygTAcFeSBYQBJxTVK7oYaiI6xWUAwJ+OyBBvGp5ZhFJACAH6MGbqhVlcpAAAAAElFTkSuQmCC" alt=""><figcaption>Lv1 · Bone Warden</figcaption><div class="types"><span class="type" style="--c:#9aa0b0">Armored</span></div></figure><figure class=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA4klEQVR42mNgGPYg21b+PzlyRAERHpn//z90/QfRMANhhqLLEQ20VBT+wzCyITA2Oh9EI+sh6OJZPTUoGNlQEP1uoxUKG109Th8hG/7/xgYIhhpOEEPV47UEZgHccKgFIFcSwjD1HzZ0EG8BSPGBigiMIEDHIHXo6vFaANMEcw0xGGQwTH1eUhhx8UAqBhmM13BkS8ixCKaPqMxFri/ItuC/mw1WA9HFB68PiI1kosslUi0hyXBSLSA6eZJjCdmG47PkgZcV+UGDL+OBi2goQBajWtWJbgHV62aaW4AcXKToAQClicaH4VjrVAAAAABJRU5ErkJggg==" alt=""><figcaption>Lv2 · Rat King</figcaption><div class="types"><span class="type" style="--c:#f0b830">Fast</span><span class="type" style="--c:#a888d8">Summoner</span></div></figure><figure class=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA1klEQVR42u2VwQ3CMAxFOwDHHjsAMzECEzBDR2AGRuHMAEzAofcgV/roE74TKwEhJCxZatKf/xpbcofhHz8Tu/2cON9qPm6mlIftfcy8C8JlKJkzJFw6E1+uyyMR07hd01tDfzydy7cCwISWUQD0uHUT4HBL7robYPvcj3wdAuTmDKgFn3H7EAHktVcA9xYKoBptqcrTDACEzQFQ2iYAIDXzLkA0vwNQ5pgtEUOle4IwgAedZc1Y6V5uAQAf4Hc4lBt4OgkoTUL+ytI4YJ3sQ+TnE9Xh+Q5y7HzkRQ4ndAAAAABJRU5ErkJggg==" alt=""><figcaption>Lv3 · Banshee</figcaption><div class="types"><span class="type" style="--c:#68a6d6">Dodgy</span><span class="type" style="--c:#9ad4f6">Freezing</span></div></figure><figure class=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA60lEQVR42mNgoABYuaT9x4YZKAUgQ0R4ZP4fv/z4//99rzFokBzZhiMbHJXZgYK7Z28B0xRbAHMlCOvJa8PZIAuoaniUlRXcApg8WQZzcQj9RzYcxkc2nCJXu9mkYMU0NZwqliBbICOiAcZUswCb4VS1BGYBuuEgjB50VLHgv9s+OE0TC5Bdj2yBlooDZfGAzXCYBRQZjuwLZIORDafY9SADQLkW2RJkw0FyEiJqpFsCMxykGYRBBmHDMHmSLUG3gBCGlU00MZwkX1BiOFGWUGoB3qCihutx+gIkgC+1kIpxWgLDMK+Sy0c2HAA688LnFWwozwAAAABJRU5ErkJggg==" alt=""><figcaption>Lv4 · Grave Reaper</figcaption><div class="types"><span class="type" style="--c:#ff5ad0">Flurry</span><span class="type" style="--c:#68a6d6">Dodgy</span></div></figure><figure class="keeper"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAy0lEQVR42mNgGAwg21b+PzFiZAERHpn//z90/QfRIENBGFmMahag43cbrSi3AGY4yDBsmCq+ABkAwlkuC/7bKCXAMUyc4iCSEzAAG7Si4wYcgywDiYHkKHY9ssHolsAsosiCbx8e4cVDwwIZEQ0whhmKzKeaBRUf/qNYAOOTbQEsaRIKIliSpYkF185s+w9LxmQZDstU2AwGYfSMR7YFhDBJviDVcJJ9Qa4FRPuCphZQEjxEBROlFuD1BUgCpogSjNcXsEqEUkzXFgkA5DUxp4a6RNsAAAAASUVORK5CYII=" alt=""><figcaption>Lv5 · The Lich</figcaption><div class="types"><span class="type" style="--c:#9ad4f6">Freezing</span><span class="type" style="--c:#a888d8">Summoner</span><span class="type" style="--c:#9aa0b0">Armored</span></div></figure></div></article><article class="depthcard" style="--t:#7a4ac0"><h3>Depth 2 · Fungal Caverns</h3><div class="levels">Dungeon 6–10 · counts as stage 150–190</div><p>Wet stone, glowing caps, things that crawl.</p><div class="mons"><figure><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAYklEQVR42mNgGAXUBzJRWv/xYbyaRXhk/p/4vwEvBqkhWzNOQ0jRDMJZ17JQDSHFAJBmogxAFwPxYZpJdgGyRpIMgClE16w/yxN7QGKzCV0jVs3IhuCyEaYRp2ZsBqFjbGoBTulORDNTkqwAAAAASUVORK5CYII=" alt=""><figcaption>Slime<em>spongy</em></figcaption></figure><figure><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAbElEQVR42mNgGLRAS8ThPzJGlruz5f9/DA0wQZBiER6Z/xcmfEDBIDF0gzAANo3YDCJbM15D6G4ASkCSohmrK3AZABNHl5/ldQDTG8S6AqtmYg0AacZpACFDCGpGNgTZIGSNBDVjM4hkjaQCAABgcNIJJYgFAAAAAElFTkSuQmCC" alt=""><figcaption>Spore Puff<em>poisons</em></figcaption></figure><figure><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAd0lEQVR42mNgGLmAz8rqP9maRXhk/stnZf0H0STbCsJEGwDTANPU9eAGCsZqAC4NBA3AZQsu/P9OAMIAUjTCsNWCBRADcGkGKQDRIJchi8ECD6ftIEUw74AwjI0shjVeQQpgzoIphsmhi+E0AFkTNjUEU9eA5AkAAnnmtlvCw90AAAAASUVORK5CYII=" alt=""><figcaption>Cave Crawler<em>charges</em></figcaption></figure><figure><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAbUlEQVR42mNgGHSAz8rqPz6MV6MIj8z/rgc38GKQGgyDiNGIzSDqGECOZhC2WrCAfENQNCN7AxnvWNIDx1VpCf/R5fFGJUjBixs7MAwgOi3ADLhT8R9sAIgmywCKXUCRATCNMEySAdhihWaZDwAkGTXK+EqjaQAAAABJRU5ErkJggg==" alt=""><figcaption>Myconid<em>tough</em></figcaption></figure></div><div class="bosses"><figure class=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA2ElEQVR42mNgGAVDBmTbyv/HxqYKEOGR+f//Q9d/EI3Mpqrh2DBFlshEaf0HYZgF7zZaYWCQHEwdya4+8X8DSZho35BjONGWUGI4CGddy8JtCaWGwyzAaQkuC2RENMCYGHGcFuBzPbEWwAzHagkhC7DJI4ujG06SBbDci0scm+EkWUBMpKJj/VmepMUDzLXomGjDifUFLhcjG07Q9SAFhAzCZzhGrsbmclIsgRmMbDiKJbhSCCkGw4IFZ9mEbCBMEDky0Q1DNhSGcZmDEg+4CipcqQifWhgfAOoLjxsHDtpJAAAAAElFTkSuQmCC" alt=""><figcaption>Lv6 · Ooze Mother</figcaption><div class="types"><span class="type" style="--c:#a888d8">Summoner</span></div></figure><figure class=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAmklEQVR42mNgGDbgzpb//7GJa4k4/MeHybIMplmER+b/hQkf8GKQGnTLcDkWDIgxFJ9leF1NieHoPqKaq4nyDU0toIXhKJaMWoALz/I6QLt4QDEcOSVhwzuW9ODEVWkJ/3HpI6o8Ail8cWMHQQvILgDpasGdiv8ohoP4+CzAW+ANiA+wRf7QigOaWQAzCBemyAJ8GRBvhqInAABeS5No1AfgyQAAAABJRU5ErkJggg==" alt=""><figcaption>Lv7 · Spore Lord</figcaption><div class="types"><span class="type" style="--c:#86d668">Venomous</span></div></figure><figure class=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA5ElEQVR42rWUwQ3CMAxFMwDixBGJPSLODNNRmKJTMAVnxBExASeuQR/xK8uKk1Q2lqwmbfK+9ZM6pZWxzblErKnGbrMvh2kqeHrWdAUsgAtuQWAHEvM8z8s4eUKKnB/3b4ZULwUI1hlSvQV3i4zAXSJaoJyO5nxYQN6S0eqHBdZCmbiuXQELjs1/gRNMy8IrJxwQ5Pv1LLfrZZljjGwKSLiumAfNBKz2zhSoVS4rljCCNKwpogXoM31FSpGWC+aH2kHKDSEtoGZLWPOSttAat0iv9Yb2d8v7EIFw7zVc/jAh3v/iA08OWtYh61ksAAAAAElFTkSuQmCC" alt=""><figcaption>Lv8 · Centipede Tyrant</figcaption><div class="types"><span class="type" style="--c:#f0b830">Fast</span></div></figure><figure class=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA40lEQVR42mNgGAWDEmhZifxHxpSqQwEiPDL/d1woQMEgMXLV4dT0/9sGMMammVh1OC2AaULWDJKDBQUhdURbAOL/f5AGFquaZYIRJNjUEWUBWDNQA7Lh2CzApo6gBcgGwQz2ylLAMBibOljwEXQ9TAM+l4PwrJYwMEZXj9US9GQH04zLcGxqcFqALU0TYwF6kOH0BTYLSMHohlPVAmyG47UAxKYEw1Idznig1AKshhMTTLiCAhmDDMdpAXJGw4ZxpXlkg/EaTsgSbBYgG0yU4ciW4LII3VCYwUQbjs0iQnhAq18A2CX8U2zaejcAAAAASUVORK5CYII=" alt=""><figcaption>Lv9 · Rot Toad</figcaption><div class="types"><span class="type" style="--c:#b5875b">Heavy</span><span class="type" style="--c:#86d668">Venomous</span></div></figure><figure class="keeper"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABBElEQVR42u1UwQ3CMAzsADx5VoI3774q+PLoBIgV2KAjdAQm4MtGTIDYwMiVXF0vTlJV+UEky05i38WOk6r6mXE77cSzi4ztphb5DKIa7aLg72c7arSLkqj012EUm68G4jUDZvF8o8S6caibUdAJCeR8nGn265pLEO8SmJMHznPzU3DDCAhwgzPJlQjBMX4i4ZPbJtoeuIEiOJZoIomdXgXB0DYgW+OMXQILROETx/Y4ftYsnFKq7nLv5dW1yftALNVBiTh9JnjsD1ECLnVwB7mLXUKQvORca2p5PALspIAAnzgupvrfA/fek/vQlvxB3FkcF33NuV/UA47FrfplWar/KDG+3d011JkeGasAAAAASUVORK5CYII=" alt=""><figcaption>Lv10 · The Spider Queen</figcaption><div class="types"><span class="type" style="--c:#86d668">Venomous</span><span class="type" style="--c:#68a6d6">Dodgy</span><span class="type" style="--c:#a888d8">Summoner</span></div></figure></div></article><article class="depthcard" style="--t:#e05a14"><h3>Depth 3 · Molten Forge</h3><div class="levels">Dungeon 11–15 · counts as stage 200–240</div><p>The old smithies, still burning.</p><div class="mons"><figure><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAjElEQVR42mNgQAJRQR7/GQgAnGpEeGT+Xzuz7T+IxqWZoBqQBD5XgOTwWYBiQ5SABAomxoUoBvyfVYWCiTYAXSM2g7D7D+pMYgwAqcWweYWCFkHNMAxSi+ISmAEohtwJQNUI5T/wsoIHKsn+x2o7LkNAbGRMMBAJuQLkdBDGawAuQ4jWjGwINswwKAEAUxQow65lZrYAAAAASUVORK5CYII=" alt=""><figcaption>Imp<em>hits hard</em></figcaption></figure><figure><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAApElEQVR42mNgGLRAio/vPzImSbMIj8z/KhsNFAwSI1szSYYgG/D/TgCcjtKSIWwASMH/Bw3//88yQLEZpPlBlAhYDqchcM0wDDQEFHggGoyRxLEagmEAEIMNQDOUfANgLsFmAEjASkYEtwFImkFhARLHagi6K1DCAKoZpg6rF8CuQNKAbABIM17bQZphpoMwTDFMI7IcTC2GIdi8hM3JRCdrYgAAYp0UK9OkLZQAAAAASUVORK5CYII=" alt=""><figcaption>Fire Beetle<em>armored</em></figcaption></figure><figure><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAbklEQVR42mNgGAVYgRQf339smCiNIjwy/6tsNLBikBxOg/BpxGYQSZr/zzLAbwiyAdgUYxPHaQBM8f87AahiQD6yIXgNwOcSog3Ah6O0ZIhzATJG1oxhALGuwKkZ2RB0g2CaYBpxasZmEDrGphYA8iz3vamil5QAAAAASUVORK5CYII=" alt=""><figcaption>Magma Blob<em>burns</em></figcaption></figure><figure><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAfklEQVR42mNgGBKgS4vjP8mKYbQIj8z//7MM/oNoghqRFcNoogwAK3rQAFaIbECVjQYYP4gSIc4AkEJkjegYpyEwG0EG4NJMlCEgjEvj/zsBcAOk+PjAGMMAQrYTdA2phhBtQJSWDPHhgc0QkAFWMiJgGoRBgGC0EsKDJ6MBALPI2K9vpz0oAAAAAElFTkSuQmCC" alt=""><figcaption>Cinder Hound<em>charges</em></figcaption></figure></div><div class="bosses"><figure class=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAjUlEQVR42mNgGAUjDyip6PynBOM1XIRH5v+sBRsowiAzCFqQllNDNiZoAUiRjYMPWRgURERZAPIFuRbgDSZ0H4D4IPz/TgAYw/joYiT7AN0CQphsC2gWB9g0/3/QgIKpGsnohuOyhORIJscCsoJoYCyYZUDDSMZi+ODMyTTJBzCF5GK8FsAsoQTTvYYEACShbGLlhBFIAAAAAElFTkSuQmCC" alt=""><figcaption>Lv11 · Forge Golem</figcaption><div class="types"><span class="type" style="--c:#9aa0b0">Armored</span><span class="type" style="--c:#b5875b">Heavy</span></div></figure><figure class=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAr0lEQVR42mNgGDGgS4vjP80MF+GR+f9/lsF/EE0VC0GakQ1AtgAkjs1C0lz7oAGngeg02RY8iBLBazC6I8iyAE7PqkLB6GpI8g3MleiG4sIgS2C+JcGCKpIwTQ0n2hKyDL8TAMFIlkQJSIAxVV1PlI+obQGGJbSwAIRx5GIkReh8EvADLyvy4wKkGaSWECYrRYEMB+EVClo45YhKtjAM04SsmSyXE2MZWSXoKBhQAABBjJzI/um6ogAAAABJRU5ErkJggg==" alt=""><figcaption>Lv12 · Salamander</figcaption><div class="types"><span class="type" style="--c:#ff8a36">Burning</span><span class="type" style="--c:#f0b830">Fast</span></div></figure><figure class=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABGklEQVR42mNgIANI8Sn9Z6AVEOGR+W+iYPcfRGOTt3JJ+49MU81wkIEg8e7ZW8D08cuPcToCp+ERDhn/QcGDrhHZYJgczBKSDAe5HoZBYuiuxqaPLMNhGN3VIKAnr/0fhMl2OTpGNhzE7opy+R9lZUU4/IkxHN0SmAUgH2C1ABSBsEgk1nBkS/BaAJYsWEA5xmcBPldvODEBBYN8ik0d3iCCeRMZoxuMjtHV47UAm4XEWICeioiygBjD0S2hyIL/PRo4+TDD/i+wodwHXllWtPEBDFfNikKxBMQnywJcloAM17JSAdPIhhNtASgciYlokOFkWYArb2AzGFu9QLIFuDIhLjWgECDLAmIdQbYPiLUAVBfQzALkoITxAVETRTG3UBxxAAAAAElFTkSuQmCC" alt=""><figcaption>Lv13 · Cinder Witch</figcaption><div class="types"><span class="type" style="--c:#ff5ad0">Flurry</span><span class="type" style="--c:#ff8a36">Burning</span></div></figure><figure class=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAyklEQVR42mNgGKogKsjjP3YOFYAIj8z/a2e2/QfRqBwqGf7tw6P/syY0IMykliVYDUeWwGWJlpLIf2wYm+EgM7BaAJKAYRBfSUUHjEHsWS1hWDFMHbLhWC3AcMGCDSTjtJwa3IYj+wKkAKTYxsGHZIzXApglMIwrWPAFFwwTTAmkGo5sCVFJje4W/HezwWoguvjg9QExOC/KZJBYQI4lJBlOqgUgw0m2AJsluPhkGY6es8GGopc/SLmXKpUIugXUqqCwllNUN3xQAwAIoVWl4qeX7QAAAABJRU5ErkJggg==" alt=""><figcaption>Lv14 · Iron Minotaur</figcaption><div class="types"><span class="type" style="--c:#b5875b">Heavy</span><span class="type" style="--c:#e8503a">Enrage</span></div></figure><figure class="keeper"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA8klEQVR42uWUMQ6DMAxFc4AKdWCoKoaOFUdAnKBTZ47CUTp17KE69CauTPsly7KDA3RqpC8gIe85JCKlbztWFaVftXrX0NA2xNe1LLfQLSRZBneO/XmxBPO7pvYFDEfkS8P+QFbCcGsVkHDoNprBOOYUCzywDoPDglI4wqcntHf4JCUSfvd16coFEQk2NyTQG8oC7IkFBpyfWTArsU7MBH9ePxFw2Qf4IoFejaxaw7MCuvfZMw9JDr5qBToW/HFqtxFY8JBgTuKBw3AI5ES0SWzcAx4WaAl+aF6K4VoSEWg4n8iwRFapg/Fw1Z7Zqz79RXsD7xSiowWU2lUAAAAASUVORK5CYII=" alt=""><figcaption>Lv15 · The Infernal</figcaption><div class="types"><span class="type" style="--c:#ff8a36">Burning</span><span class="type" style="--c:#e8503a">Enrage</span><span class="type" style="--c:#9aa0b0">Armored</span></div></figure></div></article><article class="depthcard" style="--t:#5a8ac0"><h3>Depth 4 · Frozen Abyss</h3><div class="levels">Dungeon 16–20 · counts as stage 250–290</div><p>Below the fire, the cold that never ends.</p><div class="mons"><figure><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAeElEQVR42mNgoBXQ8qr6j4yJ0gBji/DI/H/34z8KBonh1AzTAKKxaUY2BKtr8GnCZRBWQ0gxCMMQijTDDFhw4QNcUcUHVE0gPkgehHEGKMwVMIXoOKrrAHGxMXgMAGkg2QB0xURrRjcEphjGJ9oAmCZ8hpIFcGkGAL4rhwPDVrY1AAAAAElFTkSuQmCC" alt=""><figcaption>Ice Wraith<em>chills</em></figcaption></figure><figure><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAbklEQVR42mNgGN5ASyvrP9maRXhk/t948P8/iKbIgK4FP8gzBGaAV9QJ0gwA+RuEyTIA3dnIBsAMJsnZ6GyC4YGsCUSDAEgTCBDlHXQDYLbC+LQ1ANmfIIxsALI4znAACcJsA2FcbIKuIAYj6wEAZU70FtEHJAoAAAAASUVORK5CYII=" alt=""><figcaption>Crystal Shard<em>armored</em></figcaption></figure><figure><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAdUlEQVR42mNgoBUQ4JD4j4xJ0ijCI/O/ymMDCgaJETQIm0ZsBhFtAAwQZQAuzUQbgmwAHMyqQmAkQ0g2ACRHkQEPvKxIMwBfGHipFBAfkOiYoGYtEQesiQikEYRhiYygAbBUh64RJk+UAdjYtDUAZgg+NjbNAOnWQCwk8ugNAAAAAElFTkSuQmCC" alt=""><figcaption>Void Eye<em>dodgy, flies</em></figcaption></figure><figure><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAj0lEQVR42mNgGL5Ay6vqPzImSbMIj8z/dz/+o2CQGEHbiDUART1IIqrrABjDFMEMqPjwH04jy6GoRxaACaLbvuDCBzCGqQXZjtMAEEbWBMMgMZhGFBfAGDCD0G1HxyBDkNUzoJuIzQvIAYnuYrgX0AMQWzigByRKGCBHE8wm5MBDl0fRgyuRoGtElxsceQYAuxlCs3AU7D0AAAAASUVORK5CYII=" alt=""><figcaption>Frost Spider<em>charges</em></figcaption></figure></div><div class="bosses"><figure class=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA8klEQVR42mNgwAO0vKr+gzCxfJKACI/M/3c//oMxiE2IT7TBSio6/0EYZsCCCx/gBiHzkWmQWpg+gq6etWAD2Tgtpwa/b2AWgBSSg20cfAhbAFNILiYYH8iRhw+Dwh4ZR3UdoMxwdIDNAoKWIFtAKhg8FmBL9xUfMIMEJg4zmCQLiMHoBoMwqNig2AKQIdgMJ8oCQpbgMphow2EWYAtXbBjZcKItwGUJLleTbDg8uX77TXQSBaklyQKYJTDN+PCVF19IN5xuFhAynCILiLGEcsNhRQbUMBgfxEbmkx9ESBU8jA9zNbI8A7kAXTPMYFzy2AAAZG7XbTMKCFgAAAAASUVORK5CYII=" alt=""><figcaption>Lv16 · Frost Giant</figcaption><div class="types"><span class="type" style="--c:#9ad4f6">Freezing</span><span class="type" style="--c:#b5875b">Heavy</span></div></figure><figure class=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA2klEQVR42rVV2w2DMAxkgH72sxMwQkdghI7QUZiCcTpCPxmjf6mMZOl0wuDYJpJFkMjd+cFlGAJrHN9Ngvcl6357tO/atuB9KcG8/BrvyzJB5RzpTI7A0yRH4LpSJB712JNLSiTg6/TM9cIiUeUSKRI5KGDT67M9ERi/cf+xHDj/+t5tA2ezrgSShZvAOyVYczfBmWoL3EXQq1wJsMEhAlXH0W0PeMijjElCWVgHrF65Go1lwLm3gEV5yNz2srGAQ8a2VwIGLbVlbToTlDgm3r0KysaWIlGgKOgfHNz8EMRZxmEAAAAASUVORK5CYII=" alt=""><figcaption>Lv17 · Crystal Serpent</figcaption><div class="types"><span class="type" style="--c:#68a6d6">Dodgy</span><span class="type" style="--c:#f0b830">Fast</span></div></figure><figure class=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAtUlEQVR42u2VvQ2AIBBGGcDS0skcgQmYwSkcxREsjbW1obTTXEFyEO74OxMLL/kKArwHgYBSf0mU1uaORQTad8NNFfRVyTgoJ3sNni1pgSclEnBWkhKcl58iAQcPwbkiT0IJUnDIvFoZgbHxtpiAWv1rAgePCbb9aBNgeJaAksBkfFNgDB4H/eO0pOHcLgDiwGFicFLASShBCGbhtU9GEbxEgsFFcCxxCWEY6tL0u1Fn8In//AGT5Ysgp6i6hAAAAABJRU5ErkJggg==" alt=""><figcaption>Lv18 · Yeti</figcaption><div class="types"><span class="type" style="--c:#e8503a">Enrage</span></div></figure><figure class=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA9UlEQVR42uWUsQ3CQAxFU1JQUKSgSEmBGIGKEmUa6oySKRiJTYIc6UvG8bedKB2WLJ3Ovv/iO8dNo+x0OE/izQZrj900PN+zy7qcAChze9aFsARvP8sT6y8vDkCCeCZuQThHrwgJt/axStxWEz6U9+XMGIQ2i3fnmXmA8kMvbBx+PagETgFMvGuvs2cQNMvuADRK2KoZQHKjCtxuqgJwWNaf/u5WkI6KyiN74iFgjzYNxRmg+qOFY0JPzsqA84QhTsc9xoTMoSrEiuvzLkAH2bjWouKo2p5PAdjTAnptRTcDIoE/AiCIO7b78LXxBcQL2kddG/8CfEfFNd7epH0AAAAASUVORK5CYII=" alt=""><figcaption>Lv19 · The Watcher</figcaption><div class="types"><span class="type" style="--c:#68a6d6">Dodgy</span><span class="type" style="--c:#a888d8">Summoner</span></div></figure><figure class="keeper"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA0UlEQVR42mNgAAIRHpn/185s+w+iGSgEOM2ihiV4zYBJkmsJSM+3D4/+z5rQgFs/TBGplhBlOLovkC0R4JD4jw2jO4qgBegaYJZUeWzAikk2HN0XuAxGxyDDibYAZgmxhiP7hqQUQTMLyDGcJEuwWXCn4j8YExIj2wKq+OB/hc1/SizwUilAsaDiw///FPkCZCAuw6kaTFoiDqRbQKolZJXAdLMAROPDJFkAS0nIFsAALja28MebgkgJJrIiF5slyBaBDIUZTI06HMMiqhs86AEAZKlau11rWREAAAAASUVORK5CYII=" alt=""><figcaption>Lv20 · The Abyss Dragon</figcaption><div class="types"><span class="type" style="--c:#ff8a36">Burning</span><span class="type" style="--c:#9ad4f6">Freezing</span><span class="type" style="--c:#e8503a">Enrage</span></div></figure></div></article>
+      <p style="margin-top:14px"><b>Past level 20</b> the twenty return <b>Ascended</b>: the same bosses in a darker
+      palette, one more type each, and double the stats, so the map keeps going without new art every level.</p>
+    </section></div></main><nav class="kb-pager" aria-label="Pages" style="--kb-hue:#9a7ae0"><a class="kb-prev" href="types.html"><small>Previous</small><b>Boss types</b></a></nav></body></html>

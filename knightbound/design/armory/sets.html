@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The ten sets · Knightbound Armory</title>
+<meta name="description" content="Ten beast item sets for Knightbound: pieces, set bonuses, rarity, and a try-on.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Karla:wght@400;600;700&family=Silkscreen&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#0c1526; --navy:#16304e; --navy2:#1c3a5e; --edge:#08172a; --hi:#2c527c;
+  --parch:#f3ead6; --dim:#a3b3c9; --dim2:#7489a6; --brass:#e8b04a;
+  --display:"Jersey 10",system-ui,sans-serif; --body:"Karla",system-ui,sans-serif; --label:"Silkscreen",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{background:var(--night)}
+body{margin:0;background:
+  radial-gradient(120% 60% at 50% -10%,#1d3a64 0%,transparent 60%),var(--night);
+  color:var(--parch);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+.px{image-rendering:pixelated;image-rendering:crisp-edges}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+a{color:var(--brass)}
+:focus-visible{outline:3px solid var(--brass);outline-offset:3px}
+.eyebrow{font:12px/1 var(--label);letter-spacing:.06em;color:var(--brass);margin:0 0 10px}
+h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:.01em;margin:0}
+h1{font-size:clamp(64px,11vw,120px);line-height:.82}
+h2{font-size:clamp(40px,6vw,56px);line-height:.9;margin-bottom:8px}
+h3{font-size:40px;line-height:.9}
+p{margin:0}
+.lede{color:var(--dim);max-width:62ch}
+
+/* ---------- try-on (the signature) ---------- */
+.hero{padding:56px 0 40px}
+.hero .intro{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;margin-bottom:28px}
+.hero .intro .lede{max-width:48ch}
+.armory{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:20px;
+  background:var(--navy);border:3px solid var(--edge);border-radius:14px;
+  box-shadow:inset 0 3px 0 var(--hi);padding:18px}
+.pedestal{position:relative;border-radius:10px;overflow:hidden;
+  background:
+    radial-gradient(60% 45% at 50% 62%,color-mix(in srgb,var(--glow,#2c527c) 55%,transparent) 0%,transparent 70%),
+    linear-gradient(#0f2440,#0a1a30);
+  min-height:420px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;transition:background .4s}
+.pedestal::after{content:"";position:absolute;left:14%;right:14%;bottom:54px;height:16px;border-radius:50%;
+  background:#050c18;opacity:.55}
+.doll{position:relative;width:336px;height:308px;margin-bottom:40px;z-index:1}
+.doll img{position:absolute;inset:0;width:100%;height:100%}
+.plinth{position:absolute;left:0;right:0;bottom:0;height:56px;background:
+  repeating-linear-gradient(90deg,#1b2f4c 0 24px,#172a45 24px 48px);border-top:3px solid var(--hi)}
+.meter{position:relative;z-index:2;width:100%;padding:14px 16px 16px;background:rgba(8,23,42,.86);border-top:3px solid var(--edge)}
+.meter .set{font:34px/1 var(--display)}
+.pips{display:flex;gap:6px;margin:8px 0}
+.pips i{width:28px;height:10px;border-radius:2px;background:#0f2238;border:2px solid #2a4568}
+.pips i.on{background:var(--glow);border-color:color-mix(in srgb,var(--glow) 70%,#fff)}
+.meter .what{color:var(--dim);font-size:14px;min-height:44px}
+.meter .what b{color:var(--parch)}
+.pickers{display:grid;gap:12px;align-content:start}
+.picker{margin:0;padding:12px;border:3px solid var(--edge);border-radius:10px;background:var(--navy2)}
+.picker legend{float:left;width:100%;display:flex;justify-content:space-between;gap:10px;margin-bottom:8px;padding:0}
+.picker legend span{font:13px/1 var(--label);color:var(--dim)}
+.picker output{font-weight:700;font-size:14px}
+.opts{clear:both;display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+.opt{aspect-ratio:1;min-width:0;min-height:44px;border-radius:8px;border:3px solid #24406a;background:#0f2238;
+  padding:5px;cursor:pointer;display:grid;place-items:center;transition:transform .12s,border-color .12s}
+.opt img{width:100%;height:100%;object-fit:contain}
+.opt:hover{transform:translateY(-2px)}
+.opt[aria-pressed="true"]{border-color:var(--hue);background:color-mix(in srgb,var(--hue) 22%,#0f2238);
+  box-shadow:0 0 0 2px #0c1526,0 0 14px color-mix(in srgb,var(--hue) 60%,transparent)}
+.quick{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.chip{font:12px/1 var(--label);color:var(--parch);background:#0f2238;border:2px solid #2a4568;border-radius:999px;
+  padding:9px 12px;cursor:pointer;min-height:36px}
+.chip:hover{border-color:var(--brass)}
+
+.styles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.style{min-height:48px;border-radius:8px;border:3px solid #24406a;background:#0f2238;color:var(--parch);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px}
+.style b{font:22px/1 var(--display);font-weight:400}
+.style span{font:10px/1 var(--label);color:var(--dim2)}
+.style[aria-pressed="true"]{border-color:var(--brass);background:#2a2415}
+.style[aria-pressed="true"] span{color:var(--brass)}
+.wall{display:grid;gap:6px}
+.wall-row{display:grid;grid-template-columns:140px repeat(3,1fr);gap:6px;align-items:stretch}
+.wall-row > span{background:var(--navy);border:3px solid var(--edge);border-radius:10px;display:grid;place-items:center;padding:8px}
+.wall-row img{width:128px;height:128px}
+.wall-head > span{background:none;border:0;font:28px/1 var(--display);padding:0 0 4px}
+.wall-head em{display:block;font:10px/1.4 var(--label);font-style:normal;color:var(--dim2)}
+.wn{font:32px/1 var(--display);color:color-mix(in srgb,var(--hue) 55%,var(--parch));justify-items:start!important;
+  border-left:6px solid var(--hue)!important}
+@media (max-width:640px){
+  .wall-row{grid-template-columns:72px repeat(3,1fr)}
+  .wall-row img{width:64px;height:64px}
+  .wn{font-size:22px}
+  .wall-head > span{font-size:20px}
+}
+
+/* ---------- sections ---------- */
+section{padding:64px 0 8px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:24px}
+.sec-head .lede{max-width:52ch}
+
+/* banners */
+.banners{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.banner{background:var(--navy);border:3px solid var(--edge);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.pennant{position:relative;height:210px;display:flex;align-items:flex-end;justify-content:center;
+  background:
+    radial-gradient(70% 55% at 50% 75%,color-mix(in srgb,var(--hue) 45%,transparent),transparent 70%),
+    linear-gradient(color-mix(in srgb,var(--hue) 24%,#0a1a30),#0a1a30);
+  clip-path:polygon(0 0,100% 0,100% 88%,50% 100%,0 88%);padding-bottom:18px}
+.pennant::before{content:"";position:absolute;inset:0 0 auto;height:6px;background:var(--hue)}
+.band{position:absolute;top:16px;left:14px;font:11px/1 var(--label);color:var(--parch);
+  background:rgba(8,23,42,.7);border:2px solid color-mix(in srgb,var(--hue) 60%,#08172a);padding:6px 8px;border-radius:6px}
+.stack{position:relative;width:192px;height:176px}
+.stack img{position:absolute;inset:0;width:100%;height:100%}
+.banner .body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px;flex:1}
+.banner h3{color:color-mix(in srgb,var(--hue) 55%,var(--parch))}
+.line{color:var(--dim);font-size:14px;margin-top:-4px}
+.pieces{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+.pieces li{display:flex;align-items:center;gap:10px;background:#0f2238;border-radius:8px;padding:5px 8px 5px 5px;min-width:0}
+.pieces img{width:34px;height:34px;flex:none;background:#0a1a30;border-radius:6px;padding:3px;
+  border:2px solid color-mix(in srgb,var(--hue) 45%,#1c3a5e)}
+.pieces span{font-size:14px;line-height:1.2;font-weight:600;min-width:0;display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex:1}
+.pieces em{order:2;font:10px/1.3 var(--label);font-style:normal;color:var(--dim2)}
+.tiers{margin:0;display:grid;gap:4px;font-size:13px}
+.tiers div{display:grid;grid-template-columns:74px 1fr;gap:8px}
+.tiers dt{font:11px/1.9 var(--label);color:var(--dim2)}
+.tiers dd{margin:0;color:var(--dim)}
+.tiers .full dd{color:var(--parch)}
+.tiers b{color:color-mix(in srgb,var(--hue) 60%,var(--parch))}
+.try{margin-top:auto;min-height:44px;border-radius:8px;border:3px solid color-mix(in srgb,var(--hue) 70%,#08172a);
+  background:color-mix(in srgb,var(--hue) 20%,#0f2238);color:var(--parch);font:700 14px var(--body);cursor:pointer}
+.try:hover{background:color-mix(in srgb,var(--hue) 34%,#0f2238)}
+
+/* rules */
+.rules{display:grid;grid-template-columns:1.1fr 1fr;gap:18px}
+.panel{background:var(--navy);border:3px solid var(--edge);border-radius:12px;padding:18px 18px 20px}
+.panel h3{font-size:32px;margin-bottom:6px}
+.panel p{color:var(--dim);font-size:15px}
+.ladder{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.ladder li{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:12px;background:#0f2238;
+  border-radius:8px;padding:8px 12px;border-left:4px solid var(--gem)}
+.ladder img{width:28px;height:28px}
+.rn{font-weight:700;color:var(--gem)}
+.rs{display:block;grid-column:2;font:11px/1.2 var(--label);color:var(--dim2);margin-top:-6px}
+.ro{grid-row:1/3;grid-column:3;font-size:13px;color:var(--dim);text-align:right}
+.split{display:flex;gap:14px;margin-top:14px}
+.split div{flex:1;background:#0f2238;border-radius:8px;padding:12px}
+.examples{display:grid;gap:10px;margin-top:14px}
+.ex{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:center;background:#0f2238;border-radius:8px;padding:8px 12px 8px 8px}
+.ex b{display:block;font:12px/1.3 var(--label);color:var(--parch);margin-bottom:2px}
+.ex span{font-size:14px;color:var(--dim)}
+.mini{position:relative;width:96px;height:88px;background:#0a1a30;border-radius:6px}
+.mini img{position:absolute;inset:0;width:100%;height:100%}
+.split b{display:block;font:12px/1.2 var(--label);color:var(--brass);margin-bottom:4px}
+.split span{font-size:14px;color:var(--dim)}
+
+/* template */
+.template{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:3px dashed #2c527c;border-radius:12px;overflow:hidden}
+.template div{padding:14px 16px;border-right:1px solid #1f3a60;border-bottom:1px solid #1f3a60}
+.template b{display:block;font:12px/1.3 var(--label);color:var(--brass);margin-bottom:4px}
+.template span{font-size:14px;color:var(--dim)}
+
+.questions{counter-reset:q;list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.questions li{background:var(--navy);border:3px solid var(--edge);border-radius:10px;padding:14px 16px}
+.questions b{color:var(--parch)}
+.questions span{color:var(--dim)}
+footer{padding:48px 0 64px;color:var(--dim2);font-size:13px}
+code{font:13px ui-monospace,Menlo,monospace;color:var(--dim)}
+
+@media (max-width:860px){
+  .armory{grid-template-columns:1fr}
+  .rules{grid-template-columns:1fr}
+  .template{grid-template-columns:1fr 1fr}
+  .hero .intro{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .wrap{padding:0 16px}
+  .opts{grid-template-columns:repeat(5,1fr)}
+  .doll{width:240px;height:220px}
+  .pedestal{min-height:340px}
+  .template{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.kb-bar{position:sticky;top:0;z-index:50;height:58px;display:flex;align-items:center;gap:18px;padding:0 18px;
+  background:rgba(8,16,30,.94);backdrop-filter:blur(6px);border-bottom:2px solid #07111f;font-family:"Karla",system-ui,sans-serif}
+.kb-brand{font:28px/1 "Jersey 10",system-ui,sans-serif;text-decoration:none;color:#f3ead6;white-space:nowrap}
+.kb-brand span{color:#e8b04a}
+.kb-sections{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.kb-sections a,.kb-tabs a{font:11px/1 "Silkscreen",ui-monospace,monospace;text-decoration:none;color:#a3b3c9;padding:0 12px;
+  border-radius:8px;white-space:nowrap;min-height:40px;display:flex;align-items:center}
+.kb-sections a:hover,.kb-tabs a:hover{color:#f3ead6;background:#13263f}
+.kb-sections a[aria-current]{color:#0b1322;background:#e8b04a}
+.kb-tabs{position:sticky;top:58px;z-index:49;display:flex;gap:4px;padding:6px 14px;overflow-x:auto;scrollbar-width:none;
+  background:rgba(11,19,34,.94);backdrop-filter:blur(6px);border-bottom:2px solid #22406a}
+.kb-tabs a[aria-current]{color:#f3ead6;box-shadow:inset 0 -3px 0 var(--kb-hue)}
+.kb-pager{display:flex;justify-content:space-between;gap:10px;max-width:1120px;margin:0 auto;padding:8px 20px 48px}
+.kb-pager a{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:#f3ead6;background:#13263f;
+  border:2px solid #22406a;border-radius:10px;padding:10px 14px;min-width:min(46%,260px)}
+.kb-pager a:hover{border-color:var(--kb-hue)}
+.kb-pager small{font:10px/1 "Silkscreen",ui-monospace,monospace;color:#7489a6}
+.kb-pager b{font:28px/.9 "Jersey 10",system-ui,sans-serif;font-weight:400}
+.kb-pager .kb-next{margin-left:auto;text-align:right}
+.kb-skip{position:absolute;left:-999px;top:8px;background:#e8b04a;color:#0b1322;padding:8px 12px;border-radius:6px;z-index:60}
+.kb-skip:focus{left:8px}
+.kb-bar :focus-visible,.kb-tabs :focus-visible,.kb-pager :focus-visible{outline:3px solid #e8b04a;outline-offset:2px}
+main.kb-solo{display:block!important;max-width:900px!important}
+main.kb-solo .notes{max-width:none}
+.phone{top:128px!important}
+@media (max-width:560px){.kb-bar{gap:8px;padding:0 10px}.kb-brand{font-size:24px}.kb-brand span{display:none}
+  .kb-sections a{padding:0 8px}.kb-pager a{min-width:0;flex:1}}
+</style></head><body><a class="kb-skip" href="#kb-main">Skip to content</a><header class="kb-bar"><a class="kb-brand" href="../index.html">Knightbound <span>Ledger</span></a><nav class="kb-sections" aria-label="Sections"><a href="../skills/index.html">Spellbook</a><a href="../armory/index.html" aria-current=page>Armory</a><a href="../dungeon/index.html">Dungeon</a></nav></header><nav class="kb-tabs" aria-label="Armory pages" style="--kb-hue:#e8b04a"><a href="index.html">Dress the knight</a><a href="sets.html" aria-current=page>Sets</a><a href="helms.html">Helms</a><a href="rules.html">Set & rarity</a><a href="next.html">Adding a set</a><a href="questions.html">Questions</a></nav><main class="wrap" id="kb-main"><section aria-labelledby="sets">
+  <div class="sec-head">
+    <div><p class="eyebrow">In drop order</p><h2 id="sets">The ten sets</h2></div>
+    <p class="lede">Sets arrive as you push: each one starts dropping at its stage and keeps dropping after.
+    The beast sits on the helm, so you can tell what someone wears before you see the colour.</p>
+  </div>
+  <div class="banners">
+<article class="banner" style="--hue:#8a92a3">
+  <header class="pennant">
+    <span class="band">Stage 1+</span>
+    <div class="stack" role="img" aria-label="Knight in the full Wolf set"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAcklEQVR42u3RoQ2AMBBG4Q6ARDIHhgW6Aig8ijWQCBboEkyAAs82R05AgISimpx4X/Kbp66pcwAAAAAAAAAAAACA1LrGy31/3ZQ8K2Sbp8e0fXWTD1jW/dowBqnbXmLd3AP0uHN6ZFl5iXWTv/BerKd0ABHWeEdBkefbAAAAAElFTkSuQmCC" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAi0lEQVR42u3VsQ1AQBiGYQMolRIDSAxwExhBrGABMygVFrCEUqWiV1vACCcnue7uopJfvE/yVdf8b3VRBAAAAAAAAAAA8FBTl9q1TxyexKk+j8U58yY2JHS4K4SAtwO2abjX9aPMABsxt5Ve1t070QE2wne4nfiAWinviiyXH2CODE10gI0Ija/+Ly4AJf1uo7tuMAAAAABJRU5ErkJggg==" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAsUlEQVR42u2WwQmDQBBFLcBjjgHvKSGQBjyljIBXixALSB2bm2XkaAk5BTuY8EVBEjyFGD68B4Psnt7fmWXNMgAAAAAAAAAAcKE8X8JWfpfvQ+hLgH/I3/tHtNfkG0DylgGWp28bYJa3D8D8E+CLAHqF6cDWVKci3gNoz+fXYWg/6nk7enRCkpLt6kNEn8bS6WttM0pjFyZ51ZAaz4dM4pbyy1Gymf21y2wbYA5hK/8rXjW2v08coQHQAAAAAElFTkSuQmCC" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAA5ElEQVR42u2XvQ3CMBSEMwAlJXPQsAAjkI4V6BgBUVJkARZISUlFBX3GYAPDWTrJkWzkFCjvSfdJp0Sv+i6O89M0QgghhBBCCCEcst5sw5S5KZaLVThfrgHHmrkK/KPA4zmMZDlr9wc/BVJZzl63zk8ByqYr4m4FIJ3Kc2a2RHq1cczFbAHK14Ql8F4w8W6YIp8L94rbArOXKBUIQ59N7nYytwIl+Zgv7/4UpcHsm7qmQJRNzlnAxBOptgCkKX4/7mw9TvmxxkCU8hRnzMn/KuFGvlQCgTTi4luIJUrR/6oQQrjgA9KWQV9NS5UKAAAAAElFTkSuQmCC" alt=""></div>
+  </header>
+  <div class="body">
+    <h3>Wolf</h3>
+    <p class="line">Hunts in packs and never tires.</p>
+    <ul class="pieces"><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAArElEQVR42mNgoBcws/b4T4o4QSDCI/O/a9Li/yCaGPGBNfTYmRsoBsDEIhMKKTMU2QCY2Nkd0ygzFGYAssup4lKQQcgGwsRIMhjZVSAaGybJUJiBxGCYwaB0izPtkmIgNgwLe6oaitVgUr2OLSjIdinIABAGAZhhIIA14ogxFGYgDMPSLM6UgM9QdMOQ0yzBpAUrMAhhog0k1mCSDcRnMMwwsvM+zGBcmGGgAAClYzSDsUNvLAAAAABJRU5ErkJggg==" alt=""><span><em>Helm</em>Wolfhead Hood</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAXUlEQVR42mNgGNogO8rjPzaMV4MIj8z/94+OYcUgOQwD8GnAZgDtNZ7dMQ2MuyYtRtUI0wzCx87cwImxaoRpxqUBhnFqjLKywon15LVxawRJ4sNYNSL7FRemKHUBABhF/BoWSSOHAAAAAElFTkSuQmCC" alt=""><span><em>Armor</em>Pelt Mantle</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAATUlEQVR42mNgGAXkgewoj//ImJA4HIjwyPw/u2MaCgaJ4RLH0HzszA047pq0+H9kQuF/fOIomkESMAxSYGbt8R+fOIbt6Bif+CggAwAAuVt4R3kjGA0AAAAASUVORK5CYII=" alt=""><span><em>Boots</em>Pawstep Boots</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAiUlEQVR42mNgGBHAKyDjP9UNFeGR+Q8CIHrwGwwy7MKNF/+7pm2gvsEgQ6lqMLJrqW4wzFCaGTz4w5cuBoNy3eB3cbat/H90g0FilGfhD10Y+N1GK8pcDtIMMmRHiRYGpjhIQAaA8I7WrP9dUS7/YXzqRR7Q0CgrK+qnClj40sRgiiMNX1gToxYAZL217HUs6NMAAAAASUVORK5CYII=" alt=""><span><em>Sword</em>Fang Blade</span></li></ul>
+    <dl class="tiers">
+      <div><dt>2 pieces</dt><dd>×1.08 speed</dd></div>
+      <div><dt>3 pieces</dt><dd>×1.16 speed</dd></div>
+      <div class="full"><dt>4 pieces</dt><dd>×1.25 speed + <b>Howl</b>: Cyclone recharges 20% faster.</dd></div>
+    </dl>
+    <a class="try" href="index.html?wear=wolf" style="display:grid;place-items:center;text-decoration:none">Try on the Wolf set</a>
+  </div>
+</article>
+<article class="banner" style="--hue:#96b458">
+  <header class="pennant">
+    <span class="band">Stage 1+</span>
+    <div class="stack" role="img" aria-label="Knight in the full Stag set"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAcElEQVR42u3RsQmAMBBG4QxgKVbaWIgDWGQAC3ECIZ1L6CRO4n4nVygqGKvAFe+Dv3nVhTgHAAAAAAAAAAAAAEht9I3c99dNybNS1rl/TNtXN/mAbZ+uhaUTP9QS6+YeoMed0yOrtpBYN/kL78V6Sge7rV/jmSgyRQAAAABJRU5ErkJggg==" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAfUlEQVR42u3VsQmAMBSE4QxgKVaKnQiClYVkBCcIOohO4iQO4GaRZxULY5uH/wdHijR3BNEYAAAAAAAAAAAAKFK1hQ8zjc19qiifZ6XfD/eIDJBT7tSVDwcs65DuCCl2bk7vgK8XkPIqBszWvqavu/QHSMlYVHzIsfCT+YsL6UKF5VAKAvIAAAAASUVORK5CYII=" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAuUlEQVR42mNgGAWjYBSMglEwCkbBKBgFo2AUjIJRMApGwSgYBYMdaFjI/AfhIel4ER6Z/49+HABjEHvIemDWibSh6wG/AhMwHvXAqAdGPTDqgVEPEA28LNT+4/IATG5Qh/qzS8vADkb3ALLcqAfo4QlseEjkBZAjt83I+V+R5PL//40NYAxK+yD+kMnMIIfCHA/CHzZ0DL2iFORgkMOHpONhHni30QqMh6wH/n/oGroegHliyDqeVgAAOkPElISp7WkAAAAASUVORK5CYII=" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAABB0lEQVR42u2YsQ3CMBBFMwAlooKGAjEARQagQEyAREdNT0ZgAsQE1CkQNTNQMQE1GxhdpEPHESeB6lv6T/qK7bj433eyomQZIYQQQgghhPzJMp8EP/drsMb7vWF43E7VU9Z0rmuwQcTc5bj9MG/faQjZ49/DnHwsgA0IVwXfInUnrHuKzfyrxeBCtLUQnHlrUivgq2ArA2k+1uuj6SD49oE3fziv3lWQsc7lCR1AzbcJtv+7mBetdzO8G6ireQ0AFeLXAHCtFAsQ7mVU8BVoMv8s95WSCiB77DjJAPbkr8UK7ybS20UkRn3LqODMN4VIxnwshEhMi/LFGP9byH6V1ol/CwghJAleoIcewvzYQbkAAAAASUVORK5CYII=" alt=""></div>
+  </header>
+  <div class="body">
+    <h3>Stag</h3>
+    <p class="line">Crowned by the forest it walks through.</p>
+    <ul class="pieces"><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAYAAADgKtSgAAAAyklEQVR42mNgGGjgZaH2H52PLkaWoSI8Mv+fXVoGpkFiMD5MjCxLQBq3zchBMRhZDmYBSA26PFEuxmU4suUkuR7d29hcBlNTkeSCEWwkWUAoWEgyGNkAmMvRXY/sI5INxhW2shpi/9GDhCKDp22JgLsexIbxQTTZhsMMJoTJCm9iDAbh6HIT0lIKsQbDDCfaAlINJyl4SA0Smrgc2WCqGo5usIWHEuWGoxsKM5how2EWYDOIYoOJtYBsg/FZADOUIoPRS0dseEArdgAMku1NiX3f8AAAAABJRU5ErkJggg==" alt=""><span><em>Helm</em>Antlered Hood</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAATElEQVR42mNgGPxAVkPsPzL2slAD01gVi/DI/J+2JQIFgzSAaJAcQcXIGqLLTVA1UVUDSDFWDVFWVjixnrw2pgaQID6M1eP4MFnxBAC9OoNW0wT1qwAAAABJRU5ErkJggg==" alt=""><span><em>Armor</em>Barkweave Vest</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAATElEQVR42mNgGAXkAS8Ltf/ImJA4HIjwyPyvSHJBwSAxXOIYmqdtiYDj6HKT/xYeSv/xiaNoBknAMEiBrIbYf3ziGLajY3zio4AMAAAJfF/jD3H2PAAAAABJRU5ErkJggg==" alt=""><span><em>Boots</em>Mossroot Boots</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAh0lEQVR42mNgGNZAw0LmPwhT1VARHpn/j34cAGMQm+oGzzqRRn2D/QpMwHjU4FGDaWSwl4Xaf1wGw+TIcuWzS8vABqEbjCw3eAxGNhwbpiisQZq3zcj5X5HkgoEpjkSY13e0Zv3vinKBBwXVkhvI0CgrK+qn4/8fusCYJga/20hlFyOHNTFqAaw+uqjcG12SAAAAAElFTkSuQmCC" alt=""><span><em>Sword</em>Tinebranch</span></li></ul>
+    <dl class="tiers">
+      <div><dt>2 pieces</dt><dd>×1.08 max HP</dd></div>
+      <div><dt>3 pieces</dt><dd>×1.16 max HP</dd></div>
+      <div class="full"><dt>4 pieces</dt><dd>×1.25 max HP + <b>Regrowth</b>: Regen is doubled while walking.</dd></div>
+    </dl>
+    <a class="try" href="index.html?wear=stag" style="display:grid;place-items:center;text-decoration:none">Try on the Stag set</a>
+  </div>
+</article>
+<article class="banner" style="--hue:#b5875b">
+  <header class="pennant">
+    <span class="band">Stage 8+</span>
+    <div class="stack" role="img" aria-label="Knight in the full Bear set"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAb0lEQVR42u3RoQ2AMBBG4Q5AUAgEwWMRiGomAMk0VWzREXDMd+QEBEgoqsmJ9yW/eeqaOgcAAAAAAAAAAAAAyM37Ue7766ZURSMxbo9p++omH7Cvy7UwDzL1raS6uQfocef0yK4uJdVN/sJ7qZ7TAXYwZoniJI22AAAAAElFTkSuQmCC" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAgElEQVR42u3VMQ5AQBBGYQcQlUIhUYtEqdhraISLaFVOpHezlSlWIWuiM+J9yR+FZl4UkgQAAAAAAAAAAOChush8bJ84PE9Lv61TdPLObIh2eCyEgLcClr6zGRAi9nk4jxXXp+kA7UvI4WHmA0bnbtdWjf0AOVKb6YAQoY1f/V8ce3LMOzAgE/wAAAAASUVORK5CYII=" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAApklEQVR42u2VsQ2DMBBFGSBlykjpGcFSenZJQ5EhENMQiSIjMEKmsCjTHTkLSwGUkuKj96Rf2NV/9lkuCgAAAAAAAAAAADgwIVS2jkz58+liMX4W6fvBfF9GwAvXdbOIlMB6fGTKZwHZ00cAAQTEBbyoje0m8Rk0JNIv/C37epRm7y7lfrumtdYtzOU9Yyf2BrKEF5cs/ztKMrP/7zHLCmQJ2fJ7MQGH7tRtxv8o+wAAAABJRU5ErkJggg==" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAwElEQVR42u2XMQrCQBBFcwCxSmEh9rYpPIg2gn3OEOys9Dhp7D2Gx/AGK19YGMNu0G4G3oMPyZDiv81mIU0DAAAAAAAAALBdLZNNiKJ51i7W6X49fUUzd+WnRXUvkRACpZKl9P05hoCKXg67ooTm7rdQrbxbiV+3kBVwJfGvgLuPuSaQnmM17t/AXPnXePsklICesdchBezKP4ajv5Mony6Kik63TI678nMSYcrXJBSVVvbdxnd5K1ELPxcAACF4A8QJybFT4SirAAAAAElFTkSuQmCC" alt=""></div>
+  </header>
+  <div class="body">
+    <h3>Bear</h3>
+    <p class="line">Slow to anger, hard to fell.</p>
+    <ul class="pieces"><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAhklEQVR42mNgGLJAU4LvPzImSQNMTIRH5v/W9mgUDBLDaQi6BhAfZCBJBmFTjA2npVWRZhBIQ2OwGVbDQOJEew2XIQQNI9ZryAZhNYxUg3AGOikGwVxDkYuQDSHbIHRDgozkSDMI3QCYIVgNghmGTRNJhhBrGFGG4DMMZgDRhiAbhgtjUw8Ao+2X/0Clu9YAAAAASUVORK5CYII=" alt=""><span><em>Helm</em>Bearskull Cap</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAVklEQVR42mNgGNpAU4LvPzaMV4MIj8z/re3RWDFIDsMAfBqwGUA/jY3BZqgaYZqRDQABdBqrRnw2gzTAME6NUVZWOLGevDZujSBJfBirRmS/4sIUpS4AP77K53SHZUQAAAAASUVORK5CYII=" alt=""><span><em>Armor</em>Grizzly Hide</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAATElEQVR42mNgGAXkASsrl//ImJA4HIjwyPyfN28dCgaJ4RLH0Ly1PRqOG4PN/gcZyf3HJ46iGSQBwyAFmhJ8//GJY9iOjvGJjwIyAAC9q2aJOLa+bQAAAABJRU5ErkJggg==" alt=""><span><em>Boots</em>Clawpad Boots</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAfElEQVR42mNgoCewsvL4j47JMkiER+b/u3c/UPCWLSf+g8TJMgykuaCgAwWTbRi6F8kyCGYYVVw1atgAGwbS9P9DFwZ+t9GKdAPBqR+ocUeJFgYm23UgvKM1639XlMt/GJ/sjA7SDDIoysqKMoPQw45qhpEV8PjCjq4FKQC90ssKk/QZ8AAAAABJRU5ErkJggg==" alt=""><span><em>Sword</em>Maul Cleaver</span></li></ul>
+    <dl class="tiers">
+      <div><dt>2 pieces</dt><dd>×1.08 max HP</dd></div>
+      <div><dt>3 pieces</dt><dd>×1.16 max HP</dd></div>
+      <div class="full"><dt>4 pieces</dt><dd>×1.25 max HP + <b>Hibernate</b>: Tidal Wave heals 20% more.</dd></div>
+    </dl>
+    <a class="try" href="index.html?wear=bear" style="display:grid;place-items:center;text-decoration:none">Try on the Bear set</a>
+  </div>
+</article>
+<article class="banner" style="--hue:#37984a">
+  <header class="pennant">
+    <span class="band">Stage 12+</span>
+    <div class="stack" role="img" aria-label="Knight in the full Viper set"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAa0lEQVR42u3RsQ3CMBAFUA+AlIYyBTuARJvaQ1AjsQczZCyqjJEVLnLjguKokFy8J/3Cv7rzlQIAAAAAAAAAP0zXS7zq1NPeWT+U82mO9/aM/bP0zI9bZP1wC9zX2tOGbD+d9UNe4TtZ/08H8IVRQTsY7NAAAAAASUVORK5CYII=" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAdElEQVR42u3VsQmAMBSE4Qwg2FgK2gs2FkJGcAJxAkdwAmdwHKdwncjr46tz+H9wVZo7QkgIAAAAAAAAAAAAEFJPfcpFonxTtel89mzsTLa8Zb6WckdYsftYdQd4N2DFZQZsMX5m7IbyB1hJLxIP2QufzF+8zBiNai0Esk8AAAAASUVORK5CYII=" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAqklEQVR42u2UuwnDQBAFVYBDharBDgWOFLsCl6AaFDgUwhU4dOAC5GbMleBIKHS2YhdOqAGDHszA4y58c58tCgAAAAAAAAAA2DtlczSPZvlDZcm+Ed/LCsiWv6VXPB9ZgVN3DYFYkdiBhJxA/geyp7+9gfjQ3ABjlDGqKdF/2jVSEl7W0hipHxez31NHYFveM4+D5iTy4pLls8D0PkdkBWy+6wpkCdny/2IBmy+jbQ/tb4wAAAAASUVORK5CYII=" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAA9UlEQVR42u2XsQnCQBSGM4BoYyUpsoOC4AiZwMpSHCETiCNYOkJGcApJ6QhWYnfyn7xwOXJGtPA9+D/4yRFSfH/uCC9ZRgghhBBCCCGEkJ+ZzAsXxpT4dJS7/WXXCe6ZFI9LlOOZjylxxD1O/tqsSh8VO/KJuGR5fElLTMhDGgF4Xq6m3ny8Ayblw934e4lvC6j5nA4VcE2djPodeCd/qw8+KgrIeR4scO+u7RW4bts3j/W5WusqkG8W7RrxotGRkaiQD0uIfF+JPnkZOdTMQFICRwdyYQkE0gieUScflxDJVFSP0jKcpcTV/wfERVRNnIQQWzwBER1fZl9yHl4AAAAASUVORK5CYII=" alt=""></div>
+  </header>
+  <div class="body">
+    <h3>Viper</h3>
+    <p class="line">Strikes first, from the long grass.</p>
+    <ul class="pieces"><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAAsklEQVR42mNgGGjAb6zwHxlTbJgIj8z/tmsZKBgkRjXD0A324pMCY4oNA+H/PxaA6RtWXmCM0+XEGAbD5jMgBsEw2QaCDAJhEACph9EUuxDdpVQzENnVWA0m11C8SYtcr1PVpcgG4jUUpoBUA2XiTMg3FN0wmIFEGQpShM0AkgxENhhmICGDYQbCsjPePA8zGORdkAZchhFtILrBMI24MMnFHqyAwGUYWeUouuEESyJ6AAAmsCmDSXgMIwAAAABJRU5ErkJggg==" alt=""><span><em>Helm</em>Cobra Cowl</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAQ0lEQVR42mNgGPyA31jhPzaMVbEIj8z/tmsZWDFIjmjFIGw+wwtVE9U0gBTi1BBlZYUT68lrY2oACeLDWD2OD5MVTwAQ1orbRVp74AAAAABJRU5ErkJggg==" alt=""><span><em>Armor</em>Scaleskin Coat</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAARUlEQVR42mNgGAUDAPiNFf5ne/HDMYiPTxwORHhk/rddy/j/7oIDHMvEmfzHJ46i2XyGFxyDFIBswCeOYTs6xic+CsgAANVHUUGbu0zMAAAAAElFTkSuQmCC" alt=""><span><em>Boots</em>Coilstep Boots</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAgElEQVR42mNgGLZAxEHvPwhT11Aemf83/r8AYxCb6gZT3dC6G0vAwUB1g/WrIsAGg+khaTjVDIaFM9Vdi+xicEQOahePJjeshrddy4BjqoY1zND/PxZQx2CQITtas/53RbmADaSqa0GGRllZUT98/3/oAmOaGPxuoxVtsjQphgIAUfSXBF1d5eMAAAAASUVORK5CYII=" alt=""><span><em>Sword</em>Venom Kris</span></li></ul>
+    <dl class="tiers">
+      <div><dt>2 pieces</dt><dd>×1.08 crit</dd></div>
+      <div><dt>3 pieces</dt><dd>×1.16 crit</dd></div>
+      <div class="full"><dt>4 pieces</dt><dd>×1.25 crit + <b>Venom</b>: Crits hit ×6 instead of ×5.</dd></div>
+    </dl>
+    <a class="try" href="index.html?wear=viper" style="display:grid;place-items:center;text-decoration:none">Try on the Viper set</a>
+  </div>
+</article>
+<article class="banner" style="--hue:#7a6ec8">
+  <header class="pennant">
+    <span class="band">Stage 18+</span>
+    <div class="stack" role="img" aria-label="Knight in the full Raven set"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAbUlEQVR42u3RsQmAMBBG4QwgqaxEEFI6gQRcxSqdbWZxFrc7uUJRwVgFrngf/M2rLsQ5AAAAAAAAAAAAAEBt6zzIfX/dlLbpZc/jY9q+uskHpLRdi3GRECYpdXMP0OPO6ZHed1LqJn/hvVKv6QAlaV6BPgMDlwAAAABJRU5ErkJggg==" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAc0lEQVR42u3VsQmAQAyF4RtArrISwQEEB8gkYmF1QziJ87jZSQq7u9QJ/h+86poXwpGUAAAAAAAAAAAAEEjOU20lRPlxmGspdzP6Fra8+yG02HPtZnmR0/cWehvQ4l/cD3CIdLMtq/8BtKSVEB/ZCkfmL14QPoDqld10kAAAAABJRU5ErkJggg==" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAo0lEQVR42u2TMQqDQBBFPUCwChbBytrCIkXIUSysrD2HeIAcQ0yTOsfIKYI3GJmBbWwkRYoP78GH2a3+G3azDAAAAAAAAADgiKKozSNZ/nwq7T1bxGdZgaF96Qpcmy6CAAIIIIAAAggg8AN5frG9gN/JbL7vHxGf92cpCfsskaq6aT0jL5vKe9Zl1PsHXtiLS5ZPAt/nPSIrYOukK5AkZMv/iw0jMaZ1cRKFsQAAAABJRU5ErkJggg==" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAA3klEQVR42u2WwQnCQBBFU4Dk5EkEIVXIgn148pSbDaQEK7CO2IFlWIXYwcpfGFmGXWNOmcH/4GMCHv6bGcSmIYQQQgghhJB/pG03EXFZfr3axr6/puDZ5cRFwoVAaeLutqALYxsuJOR0dGEpbfqUaoX15PVmzEmURPJ3HbPbmCruQuJXgRBOtiTmlBcBUxJzBcydUk0gPsZqzG/gW/nXeElxJYDv5M8uBfLJ34dj+jwfdp8sLiG/LgiK6pNBnrdQzeIbKUnoyORLMXNOuQSC0kjX7f38vTY9ZUIIIVO8AQJW/M4O+GbkAAAAAElFTkSuQmCC" alt=""></div>
+  </header>
+  <div class="body">
+    <h3>Raven</h3>
+    <p class="line">Sees every opening before you do.</p>
+    <ul class="pieces"><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAqklEQVR42mNgGAXUAHx8Uv9BmCaGi/DI/E9JmQbGIDZNXAyzhCoWYHMx1X2BbiDIN1SxBBY06AbCDKUoqHAZiO5ydJ+RbAk2i5D56Jhs3xAymCqWEGuBlVUcaZaQYjjMApIsIdUCkoOK1OChmQ+QDae6BeiGKylZUMcCdINhhsMsyLaVh2OClmAzDB2/22iFExP0ESFLkF2ODRMdXLgMJinciSk6yHYlLQEAA9TDfpQEW3QAAAAASUVORK5CYII=" alt=""><span><em>Helm</em>Beaked Helm</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAARUlEQVR42mNgGPyAj0/qPzaMVbEIj8z/lJRpWDFIjmjFWDUR0mBlFUecBpBCGMbQEGVlhRPryWtjagAJ4sNYPY4PkxVPALB4flv8ZII3AAAAAElFTkSuQmCC" alt=""><span><em>Armor</em>Featherweave</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAATElEQVR42mNgGAXkgWxb+f/ImJA4HIjwyPzfUaKFgkFiuMQxNKekTINjK6u4/0pKFv/xiaNoBknAMEgBH5/Uf3ziGLajY3zio4AMAADfAl6BBHUZsAAAAABJRU5ErkJggg==" alt=""><span><em>Boots</em>Nightstep Boots</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAeElEQVR42mNgGHFATEznPwjTxHARHpn/B9b9B2MQm2YW5EVto50FJgZxYDxqwagFoxaMWoAF8PFJ/Ue3ACRGNZenpEwDYxAbnU91S0DYyooGwQQycEdr1v+uKBfaRTLI8CgrK9pZ8P9DFxjT1IJ3G2nkA5glpBgOAFIomnN4DM1mAAAAAElFTkSuQmCC" alt=""><span><em>Sword</em>Shadowquill</span></li></ul>
+    <dl class="tiers">
+      <div><dt>2 pieces</dt><dd>×1.08 crit</dd></div>
+      <div><dt>3 pieces</dt><dd>×1.16 crit</dd></div>
+      <div class="full"><dt>4 pieces</dt><dd>×1.25 crit + <b>Omen</b>: The first hit on each monster never misses and hits double.</dd></div>
+    </dl>
+    <a class="try" href="index.html?wear=raven" style="display:grid;place-items:center;text-decoration:none">Try on the Raven set</a>
+  </div>
+</article>
+<article class="banner" style="--hue:#1b8698">
+  <header class="pennant">
+    <span class="band">Stage 25+</span>
+    <div class="stack" role="img" aria-label="Knight in the full Kraken set"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAcElEQVR42u3RoQ2AMBBG4UoECQgcHQCJ7gwIFJoBOgczMBSadY6cgAAJRTU58b7kN09dU+cAAAAAAAAAAAAAALmFupf7/ropTekl+vExbV/d5AOmbb/WLqtUwyypbu4Betw5PbLogqS6yV94L9VzOgCzc2BhZxR87QAAAABJRU5ErkJggg==" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAgklEQVR42u3VsQmAMBSE4ZQWlnYKtoLgABlExEnEAZzBOZzAAaydwS2UJwiCSeoX/D84UtjcEYLGAAAAAAAAAAAAICJJZU9XoiifpcXZbrsz8i3K8se43Gc+zXpHSLF16D6l31E9wHcDMkSKP1E/oLfWm6as9Q+QkqFE8ZBD4SfzFxdmGJL3CDuArQAAAABJRU5ErkJggg==" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAr0lEQVR42u2WwQnCQBREU4B4ylHI3RICacBS4tWjBYRgMfFmKR63AkkHX2YxEI1eBMGB92BgN6d5u38hRQEAAAAAAAAAAP/Out6FYlm+XG0iReRobScyCbQpPYlYCVTHU47WVuXfCVi+AQQQQAABBL5i31TxKqBvNicfY7/I7Vx73IRKquzlsI24Djk6fe1tRinfwqO8Mg6d57+QiluWn4+Szex/esy2ApOEbflfcQdECL46QWORvwAAAABJRU5ErkJggg==" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAA/ElEQVR42u2YMQrCQBREU1oIWtiZA1ha5wwWVmLpATyAiLV4BM9gFTyBB7AWj2CZG6xMYGCJWU26/2UeDGzAYt5m0b9mmRBCCCGEEEKIP6EYzwPisvxkmIfX/loHa9cSLgVYfpsv/QpcioOf8oNZERiWd7P7KLm6P5IxLfGrvGmJruWR6fFsS6JPeQqYkugrYO4opQTCs0zG/Bv4Vr4qT3VcCeAz8dqMAMeELgLxzt92a1sCGJX57YKgaPPIMKbKc0zgsNaUMFueAnF5PCOxBILSyGixsfcD1nZRoUhbzI3I2HmXcz6PD3fW3W2LArGEy5uW22tiLKE/jcQnbwabFFTj+/oOAAAAAElFTkSuQmCC" alt=""></div>
+  </header>
+  <div class="body">
+    <h3>Kraken</h3>
+    <p class="line">Drags the deep up with every swing.</p>
+    <ul class="pieces"><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAwElEQVR42mNgGAVYgJWAwX8QpqklIjwy/19UbQJjEJsultHUIpglOTIBtLdolVUN9S3h0LD6D8MwS6juG5BhYWeu4cRUsYyQJVSxjFhLQFi6bQZ5lpFiCcwisiwj1SKyg5DUYKO5j5AtoZlF6Jbw+ySQZhGseCHWApglZFsEqgKwGUo1S2DFC6zQpLolMIuQLQHxQRiXBWRZgq9Cg1mIDZNd9IN8QtN6BhZsMJfSrPaEWYRsGU1rTppXz8iWUcssAEVa7hukBLHcAAAAAElFTkSuQmCC" alt=""><span><em>Helm</em>Tidecrest Helm</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAUElEQVR42mNgGPyAQ8PqPzaMVbEIj8z/sDPXsGKQHFGKX1RtAtPSbTNQNSFrgClCxng1IGsEKYRhDA1RVlY4sZ68NqYGkCA+jNXj+DBZ8QQAi76QaCMw+s0AAAAASUVORK5CYII=" alt=""><span><em>Armor</em>Suckerplate</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAATElEQVR42mNgGAXkASsBg//ImJA4HIjwyPzPkQlAwSAxXOIYmsPOXINj6bYZ//l9Ev7jE0fRDJKAYZACDg2r//jEMWxHx/jERwEZAABNlWBhdz0ptwAAAABJRU5ErkJggg==" alt=""><span><em>Boots</em>Tidewalkers</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAhElEQVR42mNgGNaAz8rrPwhT1VARHpn/D/7/B2MQm2oWwAzOevAAxQKqGCxf0wPGIDZVDMVmMFXDeNTgUYPpYHC2rfx/dINBYhS79P+HLgz8bqMVZS4HaQYZsqNECwNTHCSwsmFHa9b/rigX6pcVIEOjrKyonypg4UsTgymONHxhTYxaADwqtNcLgyAlAAAAAElFTkSuQmCC" alt=""><span><em>Sword</em>Hookblade</span></li></ul>
+    <dl class="tiers">
+      <div><dt>2 pieces</dt><dd>×1.08 damage</dd></div>
+      <div><dt>3 pieces</dt><dd>×1.16 damage</dd></div>
+      <div class="full"><dt>4 pieces</dt><dd>×1.25 damage + <b>Undertow</b>: Thunderclap stuns 1 s longer.</dd></div>
+    </dl>
+    <a class="try" href="index.html?wear=kraken" style="display:grid;place-items:center;text-decoration:none">Try on the Kraken set</a>
+  </div>
+</article>
+<article class="banner" style="--hue:#68a6d6">
+  <header class="pennant">
+    <span class="band">Stage 32+</span>
+    <div class="stack" role="img" aria-label="Knight in the full Frost set"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAb0lEQVR42u3RsQmDQBiGYQewtApOYOEgmcARMopkECdwBkeQzOASf7giEgTPSrjieeBr3uo/rqoAAAAAAAAAuNt7/sT/rnpRmrqNo9TOepEPWLbY95rW6Icxcr24B6TjfktHPrpn5HqRv3Bcrt/pCwF8iZ/QDTyLAAAAAElFTkSuQmCC" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAmUlEQVR42mNgGAWjYBSMglEwCkbBKBgFo2AUjIJRMApGwSgYBaNgFIyCUTAKRgE9QdeWG/+HrONFeGT+gwCIHnKhDgv5IecJkEPf/fgPxiA2sgektLzgeMh44tgr7HjQxwjIgbgcD8IZy64NXk+AHHagImLoegBfDIAcDsOD3gNRVlY4sZ689uD3AMiR+PCQyMj48Gg7ZaQAAJg10qU44OMtAAAAAElFTkSuQmCC" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAqklEQVR42u3XsQmDUBSFYQdIaekkjpQRnCA4QqZQsMgEzmCdIpUEq5DuynnEIOmDHvk/uKBW5777HmqWAQAAAAAAYO/K8zVUluHzUxELXds20I/GDVS3h2d4GthTA/ZnwHYKh2nA+j3ABLZSd0P8TkDP7L6B1p5vk0kopML291fE0KTS6uveZiulKXzCq6bm4ncOFFjBLcN/t1JbpvL9H5hq3waWJmzD/8sMg+jNCxwySv0AAAAASUVORK5CYII=" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAA0ElEQVR42u2XsQ3CMBREMwAlJTMwT0ZgBEaIGIQ6BQNQZQSUmpICUSE6ozP6yDL5oFTcl+5JJ//yXmw5SdMIIYQQQgghhBD/Y3cYU9jSy8UqXR8pYQ0jU5b25jACYDjfPwSwE7S74QnUM+VuWHkUxWrzcJmeKY8TSqHkr4Quj2z2Jy6JOeVNgEpirgDdUfIEMmP/SjXT78C77ERufZcTSiC/A4o5pED55I/blu8mstsFQdH6yFjoyn+TCFPek0BQGlm3Hf8XqUl40W+eEEKE4An9+FQ73F4nfwAAAABJRU5ErkJggg==" alt=""></div>
+  </header>
+  <div class="body">
+    <h3>Frost</h3>
+    <p class="line">Cold enough to slow a heartbeat.</p>
+    <ul class="pieces"><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAnUlEQVR42mNgGBaga8uN/1QzRIRH5v+7H///g2iyDUc2BBebbANB4NijbxgGglxKtGtxGYjOJsq1MMNAGkE0jH3sFXY2Ud4HKQJpIoSpahgIZyy7ht9QUgyDGYjXUFINJOh1XAaCYxeNDXIZCFDFhTCvUsXL6IbpRXSQZyC6QTDD8BoIMxSbZrIMI9ZQkgzDZyjMIJINQzYUF8alBwCwQ01y+brtbAAAAABJRU5ErkJggg==" alt=""><span><em>Helm</em>Icespire Crown</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAYUlEQVR42mNgGDSga8uN/yRrEuGR+Q8CIJpoW2A2Ea0ZpODdj/9gDGIja5TS8oJjgpqPvcKOcboAJIFLEwhnLLuGXTPVNYI0wDBOjVFWVjixnrw2bo0gSXwYbwDhwxQlSQCT29AWie4Y0QAAAABJRU5ErkJggg==" alt=""><span><em>Armor</em>Rimeguard</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAASUlEQVR42mNgGAXkga4tN/4jY0LicCDCI/MfHYDEcIljaD726j8cZyy79l8vouM/PnEUzSAJGAYpkNLy+o9PHMN2dIxPfBSQAQBzuImfjjEJ3QAAAABJRU5ErkJggg==" alt=""><span><em>Boots</em>Snowtread Boots</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAgElEQVR42mNgGNbAKmvWfxCmqqEiPDL/YQDEprrBx97QwOCqHc+oa+jQNphmYUx1V9PcYJqk46Hj4q4tN/6juxgkRrUyAhm8+0Ghy0GaQYYce/QNA1McJCADQHhHa9b/riiX/zA+1SIPZGiUlRUNis0PXWBME4PfbbSiTUFErKEAjV3GMYXiF6AAAAAASUVORK5CYII=" alt=""><span><em>Sword</em>Icicle Edge</span></li></ul>
+    <dl class="tiers">
+      <div><dt>2 pieces</dt><dd>×1.08 speed</dd></div>
+      <div><dt>3 pieces</dt><dd>×1.16 speed</dd></div>
+      <div class="full"><dt>4 pieces</dt><dd>×1.25 speed + <b>Chill</b>: Monsters attack 15% slower.</dd></div>
+    </dl>
+    <a class="try" href="index.html?wear=frost" style="display:grid;place-items:center;text-decoration:none">Try on the Frost set</a>
+  </div>
+</article>
+<article class="banner" style="--hue:#e6b63a">
+  <header class="pennant">
+    <span class="band">Stage 40+</span>
+    <div class="stack" role="img" aria-label="Knight in the full Lion set"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAcUlEQVR42u3RsQmAQBBE0QsNjMRIxDrESgwMrcCKjK4ES7EEYztYWURR4c7oYIP/YJKJZlnnAAAAAAAAAAAAAACp9VUmz/z1ppR5LevYvKJdqDd5gOzznW3pxE/n2FBv7gAdd0VHDm0hsd7kF76J9SkdTc5vN8nl23YAAAAASUVORK5CYII=" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAg0lEQVR42u3VsQmAMBSEYQewEkvRAQRryQhOIGLpEI4jDmHtFI5g7QaRh9olqV/w/+CKYHNHCCYJAAAAAAAAAAAAIjK2mXUlivJ5Wlh7Lc7It7jKr92T93xuRu8IKbbPvbP8MZX6B/huQMpL8S/qBwzGeNNUtf4BUjKUKB5yKPxk/uIGsjSgOVz/7dAAAAAASUVORK5CYII=" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAArElEQVR42u2XMQrCQBREcwBLqyDYW3iAgBfIVWwsPITsATxH0nkEj5DS0kpSWghf5pM0WgsOvAcDm1Tz9iewW1UAAAAAAAAAAPDv7Ns6FMvyy8Uq4nXPaG0r8LwdfAWu520GAQQQQAABBLzOQLt1fAronc8RYixfefSNxyRUUmUvx03E0GW0+3q2+ZRyClN5ZexOfv+BCqu4ZflZYGjajO99oBRfgVnCtvyveAPmwrpiHg4PeAAAAABJRU5ErkJggg==" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAABEklEQVR42u2XvQ3CMBCFU1JQISqEMgdiBCagoGQCKkZgBEpEQZ2KmikQE1BnA8NzOHQy+aXxBd6TnnyB5nu+i+UkCUVRFEVRFEVRFEVR/6fVbOSWk4GTWv9uFhrA8Hg4dS4/uP0TVmqsujYH7+GOCw+NFaB+fdXXdVr8ZzGAwGvg+3lehKiozYQAyHvXVYAmmwjwsfMt4aUT0UOUjU6XAFFDfDs6Zkap9fjcskpH7wCOxtoANfB5tvOOHkC7KYDvmqqjB8A70DWA3vnLdhn3JAq7gEByusAADUdGHB2+qgu4C4UhTMKHIbTDEDCg4dMmtXkXKgtRZpM3UQmhg5SBm4XXXRDQ8LkXX2EhaG/AKepH9QCzJLjFaLs1DgAAAABJRU5ErkJggg==" alt=""></div>
+  </header>
+  <div class="body">
+    <h3>Lion</h3>
+    <p class="line">Rules the field it stands on.</p>
+    <ul class="pieces"><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAA00lEQVR42mNgGCgQYyH0P0KK4z+MjSxOkkEgQ0BYhEfm//8PC/7PABoAY4NoZDZRBoI1LPICGwSiQZrBNJR9LUUOIkesoTADkQ15ts0KYjAONl6DQZJw1yEZSgjjNBTDhUQaCHMxVoOxeZsUQzEMJtfbeIOBUq/jdCkomZBqKLKBOA1FxqQauKxIDnuYEmMoumEwAzEMxeZakCXYDCDaQFyuBeV9sg1ENxgZYzMYZhhBAwkZjA0TXULBDEY2HJthJBmI7FqYZnQ+2aU9umaKDKMGAAB39q+zgjYGnwAAAABJRU5ErkJggg==" alt=""><span><em>Helm</em>Maned Helm</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAVElEQVR42mNgGPwgxkLoPzaMVbEIj8z//x8WYMUgOfyKF3lBMJT/bJsVqiYUDUiKr6XIEaEBqgmkGKQQhjE0RFlZ4cR68tqYGkCC+DBWj+PDZMUTALeLnao2KryHAAAAAElFTkSuQmCC" alt=""><span><em>Armor</em>Pride Aegis</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAATElEQVR42mNgGAXkgQgpjv/ImJA4HIjwyPy/liKHgkFiuMQxNP//sACOn22z+r+sCKIQlziKZpAEDIMUxFgI/ccnjmE7OsYnPgrIAADA6W83YBwi0QAAAABJRU5ErkJggg==" alt=""><span><em>Boots</em>Goldpaw Greaves</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAf0lEQVR42mNgGNYg20vqPwhT1VARHpn///+8AGMQm+oG/3hQQH2DT0zTA+NRg0cNHjUYuYywlf+PbjBIjPKs/KELA7/baEWZy0GaQYbsKNHCwBQHCcgAEN7RmvW/K8rlP4xPtcgDGRplZUWDYrOrC4xpYvANKy/qGowc1sSoBQC6PrEtqbUG4gAAAABJRU5ErkJggg==" alt=""><span><em>Sword</em>Sunfang</span></li></ul>
+    <dl class="tiers">
+      <div><dt>2 pieces</dt><dd>×1.08 damage</dd></div>
+      <div><dt>3 pieces</dt><dd>×1.16 damage</dd></div>
+      <div class="full"><dt>4 pieces</dt><dd>×1.25 damage + <b>Pride</b>: Hits on bosses deal ×1.2 damage.</dd></div>
+    </dl>
+    <a class="try" href="index.html?wear=lion" style="display:grid;place-items:center;text-decoration:none">Try on the Lion set</a>
+  </div>
+</article>
+<article class="banner" style="--hue:#bf3828">
+  <header class="pennant">
+    <span class="band">Stage 50+</span>
+    <div class="stack" role="img" aria-label="Knight in the full Dragon set"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAYklEQVR42u3QsQmAMBQEUAdIaSUWlo7gCE7keoKjOICOEEmhhWDEQkjxHlxz1f1fVQAAAAAAAADwYgh1vCfXF6UObdym8co89HFqupjrizsgjTuTRqZP7+vy2Bd5xJf8ueUATGpT0qxg+SwAAAAASUVORK5CYII=" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAgklEQVR42u3WsQmAMBSE4QyQMqVgGxCsQyYQJxAHESdwHFfQynFcIfJKQVNKHv4fHGnvCIEYAwAAAAAAAAAAvtBHn9SWd7ZKx7okORlRyohg3S1qBpxT95jibyZXXrIFX+4IKbbPg94BuRuQ4moGjDG+pq2b8gdIyVxUPORc+K/8xQVqJpog70SOxwAAAABJRU5ErkJggg==" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAp0lEQVR42u2XsQnDMBREVaZIaVKEzOHCA7jwCBkoBE2RCYJmcOEZVHsCV26V/A+CuEwRwpn34ECoesc1UggAAAAAAAAAALvnejoUi6R8c7yUMj88dtYtEFu9Ai7/Fh/7s0euhMlW+RoK/KtAWRMLsAALsAALfCc/PW/+iPtcwO7kSlhsASn5zXsoJ4+0vGVJd80SJi4pXwvkbvDofmhi1C1QS8jK/4oX0CXdZJOwX1gAAAAASUVORK5CYII=" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAA+ElEQVR42u2YwQnCQBBFU0COOYkHjykhWIFYgRVYQrACsRpJB4oHa/AoFqCevK78wIR14u7Bg8zAf/Bh0ct/u5NEUxSEEEIIIYQQ8gPLeR0Ql+Wrchoet1MfrCnxj1HRIxMLmJXQJaWoiLiRSImkPjc/8zkJ09eDlD3vtyMZdxI5EfMC93aR3H1I4XuzFzTKxQJSWOfQ1LYkUCZVVtJOZqEpq0HAlES8+6mgvI55gXDpkjF3AnqEcuWf3a6P6RMYFX99rv0JXNfDzmN93KzsjZDcXZC+qBoZiany+oedlnBRXovEEghKI3gWuPiXJqfxLXxjQAghLngDQGlXaZS6nFIAAAAASUVORK5CYII=" alt=""></div>
+  </header>
+  <div class="body">
+    <h3>Dragon</h3>
+    <p class="line">The last thing a castle ever sees.</p>
+    <ul class="pieces"><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAYAAADgKtSgAAAAvElEQVR42mNgGAzAy0rjPwhT3WARHpn/7x8dAmMQe3BaAPM+ejAgG06WBegGwAyBWUIVC3BZgkucojDGZwHZ4Q8z6Ni6NgyLqGoBPksoMvxdmQdOV4MsBMmTFbkgjciGwwxDx/stNIi3AKQQl0EwXCal8N+CRwRuONEWILsaFwYZjI6pZjhykJDsckLBgm4wVYMF3WBQHFBsOLqhMINJMhwULNgMoshg9EKM6gajW4LLUIoMRvcFNjwglToAhesgrgNamg4AAAAASUVORK5CYII=" alt=""><span><em>Helm</em>Dragonhorn Helm</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAAUklEQVR42mNgoAR4WWn8J0mDCI/M/2Pr2v6DaPprtOARQcF4Nb0r88CKsboAnwYQ3m+hgamRqppAivFqirKywon15LWxawJJ4MM4AwMfpijJAQAa6JeRMXAuTAAAAABJRU5ErkJggg==" alt=""><span><em>Armor</em>Wyrmscale Plate</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAQklEQVR42mNgGAXDDVjwiPxHx/jEUYAIj8z/d2UecLzfQuN/mZTCf3ziGAaAJGEYpAhk0/tHh3CKYzWEFDwa6VQCADW7U9JPdTLdAAAAAElFTkSuQmCC" alt=""><span><em>Boots</em>Clawed Greaves</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAYAAADgKtSgAAAAhUlEQVR42mNgGCwgSozjPwhT3WARHpn//x8tAGMQmzaGd5lR13CwwUBDD7lJgTFVLQAZBDMYhoee4f+/bRh1+ajLB8LlIEOOrWsDF1jILgeJUdUCEAa5nGoGI1uAjKleKu5ozfrfFeVCG8NBBkdZWdGoPO/qAmOaGX7Dyov6hiNH6qCo0AFrBM729+AvtgAAAABJRU5ErkJggg==" alt=""><span><em>Sword</em>Dragonfang</span></li></ul>
+    <dl class="tiers">
+      <div><dt>2 pieces</dt><dd>×1.08 damage</dd></div>
+      <div><dt>3 pieces</dt><dd>×1.16 damage</dd></div>
+      <div class="full"><dt>4 pieces</dt><dd>×1.25 damage + <b>Dragonfire</b>: Every 8th hit breathes fire for ×3.</dd></div>
+    </dl>
+    <a class="try" href="index.html?wear=dragon" style="display:grid;place-items:center;text-decoration:none">Try on the Dragon set</a>
+  </div>
+</article>
+<article class="banner" style="--hue:#ee6818">
+  <header class="pennant">
+    <span class="band">Stage 60+</span>
+    <div class="stack" role="img" aria-label="Knight in the full Phoenix set"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAdklEQVR42u3SsQmAMBCF4ZQigiAWFg7gKMFJnMERHMQ5nEjc4OQCERESK+WK/4Pj4FUv4ZwDAAAAAAAAAAAAAPxlHhu577fcDF8X0la9qLCPJexUbqp8KLb5a/apk3UoJZebe4CWi6Ml48+ncnMnpKWek8u/dAINMmOv68JFYQAAAABJRU5ErkJggg==" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAgElEQVR42u3VsQmAMBSE4ZQWgiAWFk7iBMEJHMERxBHcxg0yUXCD6MNKTazz8P/gmtjcEYLGAAAAAAAAAAAAQBFbFSEWFeWbsgvB2Wjkm9ryEj+1+Y6QYm4er7L7+h5wnmU94HYDjwFSXM8AKZ+I3/r8B0jJZaiTUfGQv8JP5i8O/CGoQ8E0hgQAAAAASUVORK5CYII=" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAAAuElEQVR42u2VMQrCQBREU1pYprAQ7HOEgL0nEcHWQ0hOs3aWHiOlJwipxO7rLAZEsVQcfQ8GNqlmdv5niwIAAAAAAAAAAL6dphqFZGm+HE8jzm2Wzr4BDgvjAMdlxCn5BuhWkyz7AGpBbdDAJxnm/ydGiB2ggX/bgfV8Fo8N6J/PC9w3T+p2tUcT+eavZvebKqJNWbp9fduMUm7hZl7q09ZvD2RYxi3N34+Szey/WmbbAEMIW/Pv4gKcT80sXcMfsAAAAABJRU5ErkJggg==" alt=""><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAsCAYAAAAjFjtnAAABBUlEQVR42u2YzQnCQBCFcxZP4sGDBViDFYgVWIIliBWIhXiOHaQMqwjpYGWWHdlMdvODh9mB98EjiSJ8b7O7wVQVAAAAAAAAAPzJ/bxxZuW3671z3dPR0eRomyqQkpWfFT+dpHB8beJueEkiiP7ga0sFUsf2fTRQgGQ5LB9STAFajLkFySVIVo5+EQXiUZYy/rvmNJkySkSLc4k8pb3udEv0FivvMDPluYBqCVnAs6CA6lQayHNSkp86G7U7MNgqcwVG5Lv64aM7hcJWyZkq4H8TnasW4BJx5hSIR765Xcp6KpMM7y4UEpVThlOc/FgJM/K5EhSSprwOKzt/bnLBWwIAADDBF+zQoHxJ8eQQAAAAAElFTkSuQmCC" alt=""></div>
+  </header>
+  <div class="body">
+    <h3>Phoenix</h3>
+    <p class="line">Burns out, and rises again.</p>
+    <ul class="pieces"><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAYAAADgKtSgAAAAy0lEQVR42mNgGIygykvoP00MFuGR+f//Q9d/EE11V1LNcGwGoYtRFETohiHzKfYF2AAQgBoCBzA+tQzHRr/baEWh4SCDYBhmMBQTZTgoYnBFDswCkEHoriZoOLLr0BWC5Q54EMSELUCKKFIMBuF3GRK4LUCJOFhKINJgmOE4LUA3HAxIMBxn8GAYDMMkuhqryzGSGwmGIxuMP1igyQ2GSTV4mQYX/khFxsQaCjMYr+HYLMNmEMUGE2sB2QbjswBmKEUG44oPZEz3ShwAeH6BdJoibUIAAAAASUVORK5CYII=" alt=""><span><em>Helm</em>Flamecrest Helm</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAATklEQVR42mNgGPzAg5/jPzaMVbEIj8z//wc8sGKQHNGKQfhdhgSqJriGD12YGoBiRGsAKcStAaQYB3630QpTA0iwyksIJ8bqcXyYrHgCAD14pbSMdZYhAAAAAElFTkSuQmCC" alt=""><span><em>Armor</em>Emberwing Mail</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAUUlEQVR42mNgGAWUgSovof/INCFxMPDg5/gvwiPzHwTA9IcuMI1LHK4RLHjAA47fZUj8X6bB9R+fOIpmkAQMgxTAbMQljuJskAA6xic+CsgAAJOxY6/KYOiZAAAAAElFTkSuQmCC" alt=""><span><em>Boots</em>Ashen Treads</span></li><li><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAj0lEQVR42mNgGNagS4vjPwhT1VARHpn//3/cAGMQm/oGH/CggcEP0v7//7aB+ga/y5AAY5oZDHI1yPWD28Ww8KVpUIyGMfXDONtW/j+6i0FilOe4D10Y+N1GK8pcDnYp0JAdJVoYmOIgARkAwjtas/53Rbn8h/GplipAhkZZWdGgdIOGL00MpjjS8IU1MWoBb23DyfszZEEAAAAASUVORK5CYII=" alt=""><span><em>Sword</em>Sunflare</span></li></ul>
+    <dl class="tiers">
+      <div><dt>2 pieces</dt><dd>×1.08 max HP</dd></div>
+      <div><dt>3 pieces</dt><dd>×1.16 max HP</dd></div>
+      <div class="full"><dt>4 pieces</dt><dd>×1.25 max HP + <b>Rebirth</b>: Once per boss fight, survive a killing blow at 1 HP.</dd></div>
+    </dl>
+    <a class="try" href="index.html?wear=phoenix" style="display:grid;place-items:center;text-decoration:none">Try on the Phoenix set</a>
+  </div>
+</article></div>
+</section></main><nav class="kb-pager" aria-label="Pages" style="--kb-hue:#e8b04a"><a class="kb-prev" href="index.html"><small>Previous</small><b>Dress the knight</b></a><a class="kb-next" href="helms.html"><small>Next</small><b>Three helms per set</b></a></nav></body></html>
