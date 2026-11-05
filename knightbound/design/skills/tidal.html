@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tidal Wave · Knightbound Spellbook</title>
+<meta name="description" content="Tidal Wave: A wave rises behind him, heals him, and sweeps the monster away.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Karla:wght@400;600;700&family=Silkscreen&display=swap" rel="stylesheet">
+<style>
+:root{--night:#0b1322;--panel:#13263f;--panel2:#183152;--edge:#07111f;--line:#22406a;--parch:#f3ead6;
+  --dim:#a3b3c9;--dim2:#7489a6;--brass:#e8b04a;--rail:248px;--top:58px;
+  --display:"Jersey 10",system-ui,sans-serif;--body:"Karla",system-ui,sans-serif;--label:"Silkscreen",ui-monospace,monospace}
+*{box-sizing:border-box}
+html{background:var(--night);scroll-padding-top:calc(var(--top) + 12px)}
+body{margin:0;background:radial-gradient(90% 50% at 70% -10%,#1d3a64 0%,transparent 60%),var(--night);
+  color:var(--parch);font:16px/1.55 var(--body);-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:inherit}
+.px{image-rendering:pixelated;image-rendering:crisp-edges}
+:focus-visible{outline:3px solid var(--brass);outline-offset:2px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:.01em;margin:0}
+.eyebrow{font:11px/1 var(--label);letter-spacing:.06em;color:var(--brass);margin:0 0 8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:-999px;top:8px;background:var(--brass);color:var(--night);padding:8px 12px;border-radius:6px;z-index:9}
+.skip:focus{left:8px}
+
+/* the site bar */
+.top{position:sticky;top:0;z-index:5;height:var(--top);display:flex;align-items:center;gap:18px;padding:0 18px;
+  background:rgba(8,16,30,.92);backdrop-filter:blur(6px);border-bottom:2px solid var(--edge)}
+.brand{font:28px/1 var(--display);text-decoration:none;white-space:nowrap}
+.brand span{color:var(--brass)}
+.sections{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.sections a{font:11px/1 var(--label);text-decoration:none;color:var(--dim);padding:10px 12px;border-radius:8px;white-space:nowrap;min-height:40px;display:flex;align-items:center}
+.sections a:hover{color:var(--parch);background:var(--panel)}
+.sections a[aria-current]{color:var(--night);background:var(--brass)}
+
+/* the spell rail: always in reach */
+.shell{display:grid;grid-template-columns:var(--rail) minmax(0,1fr)}
+.rail{position:sticky;top:var(--top);height:calc(100vh - var(--top));overflow:auto;padding:16px 12px 24px;border-right:2px solid var(--edge);
+  background:linear-gradient(180deg,#0e1c31,#0b1527)}
+.rail h2{font:11px/1 var(--label);color:var(--dim2);letter-spacing:.06em;margin:6px 8px 10px}
+.rail ol{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:4px}
+.rail a{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:10px;padding:7px 8px;border-radius:9px;
+  text-decoration:none;border:2px solid transparent;min-height:48px}
+.rail a:hover{background:var(--panel)}
+.rail a[aria-current]{background:var(--panel2);border-color:var(--hue)}
+.rail img{width:34px;height:34px;background:#0f2238;border-radius:7px;padding:4px;border-bottom:3px solid var(--hue)}
+.rail b{font:24px/.9 var(--display);font-weight:400;display:block}
+.rail small{font:10px/1 var(--label);color:var(--dim2)}
+.rail .dot{width:9px;height:9px;border-radius:50%;background:var(--st)}
+.rail .sys{grid-template-columns:34px 1fr}
+.rail .sys span:first-child{width:34px;height:34px;display:grid;place-items:center;background:#0f2238;border-radius:7px;font:18px/1 var(--display);color:var(--brass)}
+.legend{display:grid;gap:6px;margin:4px 8px 0;font-size:12px;color:var(--dim2)}
+.legend span{display:flex;align-items:center;gap:8px}
+.legend i{width:9px;height:9px;border-radius:50%;background:var(--st)}
+main{min-width:0;padding:22px clamp(16px,3vw,36px) 48px}
+
+/* status colours */
+.st-planned{--st:#7be08a}.st-draft{--st:#e8c830}.st-idea{--st:#5a6f8f}
+.badge{display:inline-flex;align-items:center;gap:6px;font:10px/1 var(--label);color:var(--parch);background:#0f2238;
+  border:2px solid var(--line);padding:5px 7px;border-radius:6px}
+.badge::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--st)}
+
+/* index: the shelf of spells */
+.intro{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px;margin-bottom:16px}
+.intro h1{font-size:clamp(52px,7vw,84px);line-height:.82}
+.intro p{color:var(--dim);max-width:52ch;margin:8px 0 0}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.filters button{font:11px/1 var(--label);color:var(--dim);background:var(--panel);border:2px solid var(--line);
+  border-radius:8px;padding:0 12px;min-height:40px;cursor:pointer}
+.filters button[aria-pressed=true]{color:var(--night);background:var(--brass);border-color:var(--brass)}
+.shelf{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.shelf li[hidden]{display:none}
+.card{display:block;text-decoration:none;background:var(--panel);border:2px solid var(--edge);border-radius:12px;overflow:hidden;
+  transition:transform .18s ease,border-color .18s ease;height:100%}
+.card:hover,.card:focus-visible{transform:translateY(-3px);border-color:var(--hue)}
+.card .stage{aspect-ratio:88/46;border-bottom:3px solid var(--hue);animation-play-state:paused}
+.card:hover .stage,.card:focus-visible .stage{animation-play-state:running}
+.card .meta{padding:10px 12px 12px;display:grid;gap:6px}
+.card h2{font-size:32px;line-height:.85}
+.card .row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.card .small{font:10px/1 var(--label);color:var(--dim2)}
+.el{display:inline-block;font:10px/1 var(--label);color:var(--night);background:var(--hue);padding:5px 6px;border-radius:5px}
+
+/* the animated strip */
+.stage{position:relative;background-repeat:no-repeat;background-size:calc(100% * var(--n)) 100%;
+  animation:play calc(var(--n) * 95ms) steps(var(--n)) infinite;background-color:#0a1830}
+@keyframes play{to{background-position-x:calc(100% * var(--n) / (var(--n) - 1))}}
+
+/* a skill's page */
+.head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.head img{width:56px;height:56px;background:#0f2238;border:3px solid var(--hue);border-radius:10px;padding:6px}
+.head h1{font-size:clamp(48px,6vw,72px);line-height:.8}
+.head .sub{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.was{font:10px/1 var(--label);color:var(--dim2)}
+.pager{margin-left:auto;display:flex;gap:6px}
+.pager a{display:grid;place-items:center;min-width:44px;height:44px;border-radius:10px;background:var(--panel);border:2px solid var(--line);
+  text-decoration:none;font:22px/1 var(--display)}
+.pager a:hover{border-color:var(--hue)}
+.tabs{display:flex;gap:4px;border-bottom:2px solid var(--line);margin-bottom:16px}
+.tabs button{font:12px/1 var(--label);background:none;border:0;color:var(--dim);padding:0 14px;min-height:44px;cursor:pointer;
+  border-bottom:3px solid transparent;margin-bottom:-2px}
+.tabs button[aria-selected=true]{color:var(--parch);border-bottom-color:var(--hue)}
+.panel[hidden]{display:none}
+.over{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px;align-items:start}
+.over .stage{aspect-ratio:88/46;border:2px solid var(--edge);border-radius:12px;box-shadow:inset 0 -4px 0 var(--hue)}
+.line{color:var(--dim);margin:10px 0 0}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0}
+.facts div{background:var(--panel);border:2px solid var(--line);border-radius:9px;padding:9px 11px;min-width:0}
+.facts .wide{grid-column:1/-1}
+.facts dt{font:10px/1 var(--label);color:var(--dim2);margin-bottom:5px}
+.facts dd{margin:0;font-weight:600;line-height:1.35}
+.change{margin:12px 0 0;padding:10px 12px;border-left:4px solid var(--hue);background:#0f2238;border-radius:0 8px 8px 0;font-size:14px}
+
+/* levelling */
+.lvl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+.sky{background:#050b16;border:2px solid var(--edge);border-radius:12px;overflow:hidden}
+.sky canvas{display:block;width:min(100%,calc((100vh - 330px) * 128 / 124));min-width:220px;margin:0 auto;aspect-ratio:128/124;image-rendering:pixelated;image-rendering:crisp-edges}
+.dial{padding:12px 14px 14px;display:grid;gap:8px;background:var(--panel)}
+.now{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.lv{font:46px/.8 var(--display);color:var(--hue)}
+.what{font-weight:700}
+.dial input{width:100%;accent-color:var(--hue);height:28px}
+.steps{display:flex;justify-content:space-between;font:10px/1 var(--label);color:var(--dim2)}
+.tiers{width:100%;border-collapse:separate;border-spacing:0 5px}
+.tiers th,.tiers td{text-align:left;padding:8px 10px;background:var(--panel)}
+.tiers th{border-left:5px solid var(--line);border-radius:8px 0 0 8px;font:22px/1 var(--display);font-weight:400;white-space:nowrap}
+.tiers td:last-child{border-radius:0 8px 8px 0;color:var(--dim);font-size:14px}
+.tiers tr{cursor:pointer}
+.tiers tr.on th{border-left-color:var(--hue);color:var(--hue)}
+.tiers tr.on th,.tiers tr.on td{background:#203f66}
+.tiers i{display:inline-block;vertical-align:middle;margin-right:3px;height:20px;background:linear-gradient(90deg,var(--hue),#fff 45%,#fff 55%,var(--hue))}
+.tiers i.s{width:3px}.tiers i.b{width:9px}
+.draft{font:9px/1 var(--label);font-style:normal;color:var(--night);background:#e8c830;padding:3px 5px;border-radius:4px;margin-left:4px}
+.note{color:var(--dim);font-size:14px;margin:12px 0 0;padding-left:12px;border-left:4px solid var(--hue)}
+.idea{background:var(--panel);border:2px dashed var(--line);border-radius:12px;padding:22px;max-width:640px}
+.idea h3{font-size:36px;margin-bottom:6px}
+.idea p{color:var(--dim);margin:0}
+kbd{font:10px/1 var(--label);background:#0f2238;border:1px solid var(--line);border-radius:4px;padding:3px 5px}
+.hint{color:var(--dim2);font-size:13px;margin-top:18px}
+
+/* systems */
+.barwrap{background:#0a1a30;border:2px solid var(--edge);border-radius:12px;padding:18px;max-width:720px}
+.bar{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(8,minmax(0,64px));gap:8px;justify-content:center}
+.slot{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;padding:3px;background:#24406a}
+.slot.auto::before{content:"";position:absolute;inset:-50%;background:conic-gradient(var(--hue) 0 35%,transparent 35%);animation:ring 1.4s linear infinite}
+@keyframes ring{to{transform:rotate(1turn)}}
+.slot .in{position:relative;display:grid;place-items:center;height:100%;background:#0f2238;border-radius:7px}
+.slot img{width:70%;height:70%}
+.slot i{position:absolute;right:4px;bottom:2px;font:10px/1 var(--label);font-style:normal;color:var(--dim)}
+.slot.locked .in{background:#0b182b}
+.slot small{font:10px/1 var(--label);color:var(--dim2)}
+.sets{width:100%;max-width:720px;border-collapse:separate;border-spacing:0 5px}
+.sets th,.sets td{text-align:left;padding:9px 11px;background:var(--panel)}
+.sets th{border-left:5px solid var(--hue);border-radius:8px 0 0 8px}
+.sets td:last-child{border-radius:0 8px 8px 0;color:var(--dim)}
+.qs{list-style:none;padding:0;margin:0;display:grid;gap:10px;max-width:720px}
+.qs li{background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:4px}
+.qs b{font:26px/1 var(--display);font-weight:400;color:var(--brass)}
+.qs span{color:var(--dim)}
+.lede{color:var(--dim);max-width:62ch;margin:0 0 14px}
+
+@media (max-width:900px){
+  .shell{grid-template-columns:1fr}
+  .rail{position:sticky;top:var(--top);z-index:4;height:auto;padding:8px 10px;border-right:0;border-bottom:2px solid var(--edge);overflow-x:auto}
+  .rail h2,.legend,.rail .grp{display:none}
+  .rail ol{display:flex;gap:6px;margin:0}
+  .rail a{grid-template-columns:30px;padding:5px;min-height:44px}
+  .rail a b,.rail a small,.rail .dot{display:none}
+  .rail img{width:30px;height:30px}
+  .over,.lvl{grid-template-columns:1fr}
+  .brand small{display:none}
+}
+@media (max-width:560px){
+  .top{gap:8px;padding:0 10px}.brand{font-size:24px}.brand span{display:none}.sections a{padding:10px 8px}
+  .head img{width:44px;height:44px}
+  .bar{grid-template-columns:repeat(4,minmax(0,64px))}
+  .facts{grid-template-columns:1fr}
+  .pager{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .stage{animation:none;background-position-x:calc(100% * 4 / (var(--n) - 1))}
+  .slot.auto::before{animation:none}
+  .card{transition:none}
+}
+</style></head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">Knightbound <span>Ledger</span></a>
+  <nav class="sections" aria-label="Sections"><a href="index.html" aria-current="page">Spellbook</a><a href="../armory.html">Armory</a><a href="../dungeon.html">Dungeon</a></nav>
+</header>
+<div class="shell">
+  <nav class="rail" aria-label="Skills">
+    <h2>Skills, by unlock</h2>
+    <ol><li><a href="cyclone.html" style="--hue:#6ac0a0" class="st-draft"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAUklEQVR42mNgQAJ6WVH/sWEGdAASFOGR+Y8LgOTgGvEpxKYRromQDXDFMEDIJpI0HPhwB1MDLk1YnUPIBqwasHkep+n4bCKoAVkTTs/icx66OAAjMwMbdP6NlAAAAABJRU5ErkJggg==" alt=""><span><b>Cyclone</b><small>Wind · Lv3</small></span><i class="dot" title="Draft tiers"></i></a></li><li><a href="blazing.html" style="--hue:#ff8a36" class="st-idea"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAXklEQVR42mNgoAaIEuP4D8JEKRbhkfn/v8vs/yE3qf8gNtGKYRinJmyK8WpC1vD/0QIwBrFBfsHQgG46WAM+p4E4KIqRMEFbUDQA+VgVI9sCUoCsGKcGmCZsmKJUAAA4RpCNpwPEAQAAAABJRU5ErkJggg==" alt=""><span><b>Blazing Blade</b><small>Flame · Lv8</small></span><i class="dot" title="Not planned"></i></a></li><li><a href="stone.html" style="--hue:#a08050" class="st-idea"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAZklEQVR42mNgwAKstCT+gzADIQBSJMIj8//GgRlgDGLj1IisEKQIxoZpxKkYm4YFDQGomkjSgK4Ylwa4JkIaYIqzgowI2wJTTNAPIAWwuMAwHVkTsolYnYItLpAV4lWMrAkZo8sDAKMn4OUJankgAAAAAElFTkSuQmCC" alt=""><span><b>Stone Skin</b><small>Earth · Lv11</small></span><i class="dot" title="Not planned"></i></a></li><li><a href="thunder.html" style="--hue:#e8c830" class="st-planned"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAU0lEQVR42mNgoBbIjhL4T7RiER6Z//8/dP0H0cQpBoIXJwwIa0BXDHIWTqfBFIOcAsYwgM1pMDeDTAZhmCa8zgJJwDDRfiA5hMgLUlJMh2nCJw8AJTFrJsbkEZwAAAAASUVORK5CYII=" alt=""><span><b>Thunderclap</b><small>Lightning · Lv12</small></span><i class="dot" title="Tiers set"></i></a></li><li><a href="tidal.html" style="--hue:#5ab4f0" class="st-idea" aria-current=page><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAATUlEQVR42mNgGNyAzyrrPzaMVbEIj8z/Cx/+Y8UgOaIVY2giRnHUlg9gDNZESANMsXzOCdy2wBThVAwSIIRBoQV3Eq7gRMcothCDQWoBYoLjeGLsuvwAAAAASUVORK5CYII=" alt=""><span><b>Tidal Wave</b><small>Water · Lv15</small></span><i class="dot" title="Not planned"></i></a></li><li><a href="frost.html" style="--hue:#9ad4f6" class="st-idea"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAb0lEQVR42mNgoAToRXT8B2FcfBQgwiPz/9ir/2AMYoMwCMD4eDXBNOBUDLMa2RYQyFh2DSyG4jSY1TAAUwzTgCwOtg1mKkgShmEAZCqyONx5MDfDbIMpQPYPVr8Q7WlkxTCr0YMZpyZkSZxOIQUAALT8xEemhfELAAAAAElFTkSuQmCC" alt=""><span><b>Frost Nova</b><small>Ice · Lv20</small></span><i class="dot" title="Not planned"></i></a></li><li><a href="venom.html" style="--hue:#86d668" class="st-idea"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAUUlEQVR42mNgoAYQcdD7D8LEKeaR+d92LeO//iyP/yA20RrAthDSgGw6DOPUBFP84P8GFIxTE0gQXTEIg51HEw0ghQRDC+YPohQja0LGFKcCAOK6hl9QFiN0AAAAAElFTkSuQmCC" alt=""><span><b>Venom Strike</b><small>Poison · Lv22</small></span><i class="dot" title="Not planned"></i></a></li><li><a href="shadow.html" style="--hue:#9a7ae0" class="st-idea"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAY0lEQVR42mNgQANSAgb/kTEDPiDCI/P/woH/KBgkhlUjNsUwXBV1AqyRaMUgbKWVBdFErGKcGmCK0BXjtQGbYpDH8ToJWSEIw21A9zS6k1A8jB6sRCtG1oTsbryKkTUhY3R5AEy6/2qZbdDEAAAAAElFTkSuQmCC" alt=""><span><b>Shadow Step</b><small>Shadow · Lv28</small></span><i class="dot" title="Not planned"></i></a></li></ol>
+    <ol class="grp"><li><a class="sys" href="systems.html" style="--hue:var(--brass)"><span>⚙</span><span><b>Systems</b><small>Skill bar · sets · decisions</small></span></a></li></ol>
+    <div class="legend"><span class="st-planned"><i></i>Levelling tiers set</span><span class="st-draft"><i></i>Draft tiers</span><span class="st-idea"><i></i>Not planned yet</span></div>
+  </nav>
+  <main id="main">
+<div class="head" style="--hue:#5ab4f0">
+  <img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAATUlEQVR42mNgGNyAzyrrPzaMVbEIj8z/Cx/+Y8UgOaIVY2giRnHUlg9gDNZESANMsXzOCdy2wBThVAwSIIRBoQV3Eq7gRMcothCDQWoBYoLjeGLsuvwAAAAASUVORK5CYII=" alt="">
+  <div><p class="eyebrow">Skill 5 of 8 · unlocks at hero level 15</p><h1>Tidal Wave</h1>
+    <div class="sub"><span class="el" style="--hue:#5ab4f0">Water</span><span class="badge st-idea">Not planned</span><span class="was">was Second Wind</span></div></div>
+  <nav class="pager" aria-label="Other skills"><a class="prev" href="thunder.html" title="Thunderclap ( [ )" aria-label="Previous: Thunderclap">&lt;</a><a class="next" href="frost.html" title="Frost Nova ( ] )" aria-label="Next: Frost Nova">&gt;</a></nav>
+</div>
+<div class="tabs" role="tablist" aria-label="Tidal Wave" style="--hue:#5ab4f0">
+  <button role="tab" aria-selected="true" aria-controls="overview" id="t-overview" data-p="overview">Overview</button>
+  <button role="tab" aria-selected="false" aria-controls="levelling" id="t-levelling" data-p="levelling" tabindex="-1">Levelling to 100</button>
+</div>
+<section class="panel" id="overview" role="tabpanel" aria-labelledby="t-overview" style="--hue:#5ab4f0">
+  <div class="over"><div><div class="stage px" style="--n:12;background-image:url(data:image/png;base64,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)" role="img" aria-label="Tidal Wave: A wave rises behind him, heals him, and sweeps the monster away."></div><p class="line">A wave rises behind him, heals him, and sweeps the monster away.</p></div>
+  <div><dl class="facts">
+    <div><dt>Unlocks</dt><dd>Hero Lv15</dd></div><div><dt>Cooldown</dt><dd>60 s</dd></div>
+    <div class="wide"><dt>Level 1</dt><dd>Heal 40% of max HP, and wash the monster back</dd></div>
+    <div><dt>Per level</dt><dd>+5% heal</dd></div><div><dt>Auto-casts</dt><dd>At 50% HP or less</dd></div>
+    <div class="wide"><dt>Bosses</dt><dd>Heal only: bosses are too heavy to move</dd></div></dl>
+    <p class="change">Same heal, plus one new effect: the wave carries the monster ~16 px back, so it loses a swing walking in.</p></div></div>
+</section>
+<section class="panel" id="levelling" role="tabpanel" aria-labelledby="t-levelling" style="--hue:#5ab4f0" hidden><div class="idea"><p class="eyebrow">Not planned yet</p><h3>Levelling to 100</h3><p>Taller waves, then a double wave. We are planning the skills one at a time; this one comes later.</p></div></section>
+<p class="hint"><kbd>[</kbd> <kbd>]</kbd> previous / next skill · <kbd>←</kbd> <kbd>→</kbd> on the tabs</p></main>
+</div>
+<script>
+(() => {
+  const tabs = [...document.querySelectorAll('.tabs button')];
+  const show = id => { tabs.forEach(t => { const on = t.dataset.p === id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;
+    document.getElementById(t.dataset.p).hidden = !on; }); if (location.hash.slice(1) !== id) history.replaceState(null, '', '#' + id); };
+  tabs.forEach((t, i) => { t.addEventListener('click', () => show(t.dataset.p));
+    t.addEventListener('keydown', e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); e.stopPropagation();
+      const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; n.focus(); show(n.dataset.p); } }); });
+  if (tabs.some(t => t.dataset.p === location.hash.slice(1))) show(location.hash.slice(1));
+  // [ and ] (or the pager) step through the skills, keeping the tab
+  addEventListener('keydown', e => { if (e.target.closest('input,textarea,[role=tab]')) return;
+    const a = document.querySelector(e.key === '[' ? '.pager .prev' : e.key === ']' ? '.pager .next' : null);
+    if (a) location.href = a.getAttribute('href') + location.hash; });
+})();
+</script>
+</body></html>

@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stone Skin · Knightbound Spellbook</title>
+<meta name="description" content="Stone Skin: Rocks rise from the ground and lock round the knight as a shell.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Karla:wght@400;600;700&family=Silkscreen&display=swap" rel="stylesheet">
+<style>
+:root{--night:#0b1322;--panel:#13263f;--panel2:#183152;--edge:#07111f;--line:#22406a;--parch:#f3ead6;
+  --dim:#a3b3c9;--dim2:#7489a6;--brass:#e8b04a;--rail:248px;--top:58px;
+  --display:"Jersey 10",system-ui,sans-serif;--body:"Karla",system-ui,sans-serif;--label:"Silkscreen",ui-monospace,monospace}
+*{box-sizing:border-box}
+html{background:var(--night);scroll-padding-top:calc(var(--top) + 12px)}
+body{margin:0;background:radial-gradient(90% 50% at 70% -10%,#1d3a64 0%,transparent 60%),var(--night);
+  color:var(--parch);font:16px/1.55 var(--body);-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:inherit}
+.px{image-rendering:pixelated;image-rendering:crisp-edges}
+:focus-visible{outline:3px solid var(--brass);outline-offset:2px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:.01em;margin:0}
+.eyebrow{font:11px/1 var(--label);letter-spacing:.06em;color:var(--brass);margin:0 0 8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:-999px;top:8px;background:var(--brass);color:var(--night);padding:8px 12px;border-radius:6px;z-index:9}
+.skip:focus{left:8px}
+
+/* the site bar */
+.top{position:sticky;top:0;z-index:5;height:var(--top);display:flex;align-items:center;gap:18px;padding:0 18px;
+  background:rgba(8,16,30,.92);backdrop-filter:blur(6px);border-bottom:2px solid var(--edge)}
+.brand{font:28px/1 var(--display);text-decoration:none;white-space:nowrap}
+.brand span{color:var(--brass)}
+.sections{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.sections a{font:11px/1 var(--label);text-decoration:none;color:var(--dim);padding:10px 12px;border-radius:8px;white-space:nowrap;min-height:40px;display:flex;align-items:center}
+.sections a:hover{color:var(--parch);background:var(--panel)}
+.sections a[aria-current]{color:var(--night);background:var(--brass)}
+
+/* the spell rail: always in reach */
+.shell{display:grid;grid-template-columns:var(--rail) minmax(0,1fr)}
+.rail{position:sticky;top:var(--top);height:calc(100vh - var(--top));overflow:auto;padding:16px 12px 24px;border-right:2px solid var(--edge);
+  background:linear-gradient(180deg,#0e1c31,#0b1527)}
+.rail h2{font:11px/1 var(--label);color:var(--dim2);letter-spacing:.06em;margin:6px 8px 10px}
+.rail ol{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:4px}
+.rail a{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:10px;padding:7px 8px;border-radius:9px;
+  text-decoration:none;border:2px solid transparent;min-height:48px}
+.rail a:hover{background:var(--panel)}
+.rail a[aria-current]{background:var(--panel2);border-color:var(--hue)}
+.rail img{width:34px;height:34px;background:#0f2238;border-radius:7px;padding:4px;border-bottom:3px solid var(--hue)}
+.rail b{font:24px/.9 var(--display);font-weight:400;display:block}
+.rail small{font:10px/1 var(--label);color:var(--dim2)}
+.rail .dot{width:9px;height:9px;border-radius:50%;background:var(--st)}
+.rail .sys{grid-template-columns:34px 1fr}
+.rail .sys span:first-child{width:34px;height:34px;display:grid;place-items:center;background:#0f2238;border-radius:7px;font:18px/1 var(--display);color:var(--brass)}
+.legend{display:grid;gap:6px;margin:4px 8px 0;font-size:12px;color:var(--dim2)}
+.legend span{display:flex;align-items:center;gap:8px}
+.legend i{width:9px;height:9px;border-radius:50%;background:var(--st)}
+main{min-width:0;padding:22px clamp(16px,3vw,36px) 48px}
+
+/* status colours */
+.st-planned{--st:#7be08a}.st-draft{--st:#e8c830}.st-idea{--st:#5a6f8f}
+.badge{display:inline-flex;align-items:center;gap:6px;font:10px/1 var(--label);color:var(--parch);background:#0f2238;
+  border:2px solid var(--line);padding:5px 7px;border-radius:6px}
+.badge::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--st)}
+
+/* index: the shelf of spells */
+.intro{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px;margin-bottom:16px}
+.intro h1{font-size:clamp(52px,7vw,84px);line-height:.82}
+.intro p{color:var(--dim);max-width:52ch;margin:8px 0 0}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.filters button{font:11px/1 var(--label);color:var(--dim);background:var(--panel);border:2px solid var(--line);
+  border-radius:8px;padding:0 12px;min-height:40px;cursor:pointer}
+.filters button[aria-pressed=true]{color:var(--night);background:var(--brass);border-color:var(--brass)}
+.shelf{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.shelf li[hidden]{display:none}
+.card{display:block;text-decoration:none;background:var(--panel);border:2px solid var(--edge);border-radius:12px;overflow:hidden;
+  transition:transform .18s ease,border-color .18s ease;height:100%}
+.card:hover,.card:focus-visible{transform:translateY(-3px);border-color:var(--hue)}
+.card .stage{aspect-ratio:88/46;border-bottom:3px solid var(--hue);animation-play-state:paused}
+.card:hover .stage,.card:focus-visible .stage{animation-play-state:running}
+.card .meta{padding:10px 12px 12px;display:grid;gap:6px}
+.card h2{font-size:32px;line-height:.85}
+.card .row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.card .small{font:10px/1 var(--label);color:var(--dim2)}
+.el{display:inline-block;font:10px/1 var(--label);color:var(--night);background:var(--hue);padding:5px 6px;border-radius:5px}
+
+/* the animated strip */
+.stage{position:relative;background-repeat:no-repeat;background-size:calc(100% * var(--n)) 100%;
+  animation:play calc(var(--n) * 95ms) steps(var(--n)) infinite;background-color:#0a1830}
+@keyframes play{to{background-position-x:calc(100% * var(--n) / (var(--n) - 1))}}
+
+/* a skill's page */
+.head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.head img{width:56px;height:56px;background:#0f2238;border:3px solid var(--hue);border-radius:10px;padding:6px}
+.head h1{font-size:clamp(48px,6vw,72px);line-height:.8}
+.head .sub{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.was{font:10px/1 var(--label);color:var(--dim2)}
+.pager{margin-left:auto;display:flex;gap:6px}
+.pager a{display:grid;place-items:center;min-width:44px;height:44px;border-radius:10px;background:var(--panel);border:2px solid var(--line);
+  text-decoration:none;font:22px/1 var(--display)}
+.pager a:hover{border-color:var(--hue)}
+.tabs{display:flex;gap:4px;border-bottom:2px solid var(--line);margin-bottom:16px}
+.tabs button{font:12px/1 var(--label);background:none;border:0;color:var(--dim);padding:0 14px;min-height:44px;cursor:pointer;
+  border-bottom:3px solid transparent;margin-bottom:-2px}
+.tabs button[aria-selected=true]{color:var(--parch);border-bottom-color:var(--hue)}
+.panel[hidden]{display:none}
+.over{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px;align-items:start}
+.over .stage{aspect-ratio:88/46;border:2px solid var(--edge);border-radius:12px;box-shadow:inset 0 -4px 0 var(--hue)}
+.line{color:var(--dim);margin:10px 0 0}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0}
+.facts div{background:var(--panel);border:2px solid var(--line);border-radius:9px;padding:9px 11px;min-width:0}
+.facts .wide{grid-column:1/-1}
+.facts dt{font:10px/1 var(--label);color:var(--dim2);margin-bottom:5px}
+.facts dd{margin:0;font-weight:600;line-height:1.35}
+.change{margin:12px 0 0;padding:10px 12px;border-left:4px solid var(--hue);background:#0f2238;border-radius:0 8px 8px 0;font-size:14px}
+
+/* levelling */
+.lvl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+.sky{background:#050b16;border:2px solid var(--edge);border-radius:12px;overflow:hidden}
+.sky canvas{display:block;width:min(100%,calc((100vh - 330px) * 128 / 124));min-width:220px;margin:0 auto;aspect-ratio:128/124;image-rendering:pixelated;image-rendering:crisp-edges}
+.dial{padding:12px 14px 14px;display:grid;gap:8px;background:var(--panel)}
+.now{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.lv{font:46px/.8 var(--display);color:var(--hue)}
+.what{font-weight:700}
+.dial input{width:100%;accent-color:var(--hue);height:28px}
+.steps{display:flex;justify-content:space-between;font:10px/1 var(--label);color:var(--dim2)}
+.tiers{width:100%;border-collapse:separate;border-spacing:0 5px}
+.tiers th,.tiers td{text-align:left;padding:8px 10px;background:var(--panel)}
+.tiers th{border-left:5px solid var(--line);border-radius:8px 0 0 8px;font:22px/1 var(--display);font-weight:400;white-space:nowrap}
+.tiers td:last-child{border-radius:0 8px 8px 0;color:var(--dim);font-size:14px}
+.tiers tr{cursor:pointer}
+.tiers tr.on th{border-left-color:var(--hue);color:var(--hue)}
+.tiers tr.on th,.tiers tr.on td{background:#203f66}
+.tiers i{display:inline-block;vertical-align:middle;margin-right:3px;height:20px;background:linear-gradient(90deg,var(--hue),#fff 45%,#fff 55%,var(--hue))}
+.tiers i.s{width:3px}.tiers i.b{width:9px}
+.draft{font:9px/1 var(--label);font-style:normal;color:var(--night);background:#e8c830;padding:3px 5px;border-radius:4px;margin-left:4px}
+.note{color:var(--dim);font-size:14px;margin:12px 0 0;padding-left:12px;border-left:4px solid var(--hue)}
+.idea{background:var(--panel);border:2px dashed var(--line);border-radius:12px;padding:22px;max-width:640px}
+.idea h3{font-size:36px;margin-bottom:6px}
+.idea p{color:var(--dim);margin:0}
+kbd{font:10px/1 var(--label);background:#0f2238;border:1px solid var(--line);border-radius:4px;padding:3px 5px}
+.hint{color:var(--dim2);font-size:13px;margin-top:18px}
+
+/* systems */
+.barwrap{background:#0a1a30;border:2px solid var(--edge);border-radius:12px;padding:18px;max-width:720px}
+.bar{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(8,minmax(0,64px));gap:8px;justify-content:center}
+.slot{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;padding:3px;background:#24406a}
+.slot.auto::before{content:"";position:absolute;inset:-50%;background:conic-gradient(var(--hue) 0 35%,transparent 35%);animation:ring 1.4s linear infinite}
+@keyframes ring{to{transform:rotate(1turn)}}
+.slot .in{position:relative;display:grid;place-items:center;height:100%;background:#0f2238;border-radius:7px}
+.slot img{width:70%;height:70%}
+.slot i{position:absolute;right:4px;bottom:2px;font:10px/1 var(--label);font-style:normal;color:var(--dim)}
+.slot.locked .in{background:#0b182b}
+.slot small{font:10px/1 var(--label);color:var(--dim2)}
+.sets{width:100%;max-width:720px;border-collapse:separate;border-spacing:0 5px}
+.sets th,.sets td{text-align:left;padding:9px 11px;background:var(--panel)}
+.sets th{border-left:5px solid var(--hue);border-radius:8px 0 0 8px}
+.sets td:last-child{border-radius:0 8px 8px 0;color:var(--dim)}
+.qs{list-style:none;padding:0;margin:0;display:grid;gap:10px;max-width:720px}
+.qs li{background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:4px}
+.qs b{font:26px/1 var(--display);font-weight:400;color:var(--brass)}
+.qs span{color:var(--dim)}
+.lede{color:var(--dim);max-width:62ch;margin:0 0 14px}
+
+@media (max-width:900px){
+  .shell{grid-template-columns:1fr}
+  .rail{position:sticky;top:var(--top);z-index:4;height:auto;padding:8px 10px;border-right:0;border-bottom:2px solid var(--edge);overflow-x:auto}
+  .rail h2,.legend,.rail .grp{display:none}
+  .rail ol{display:flex;gap:6px;margin:0}
+  .rail a{grid-template-columns:30px;padding:5px;min-height:44px}
+  .rail a b,.rail a small,.rail .dot{display:none}
+  .rail img{width:30px;height:30px}
+  .over,.lvl{grid-template-columns:1fr}
+  .brand small{display:none}
+}
+@media (max-width:560px){
+  .top{gap:8px;padding:0 10px}.brand{font-size:24px}.brand span{display:none}.sections a{padding:10px 8px}
+  .head img{width:44px;height:44px}
+  .bar{grid-template-columns:repeat(4,minmax(0,64px))}
+  .facts{grid-template-columns:1fr}
+  .pager{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .stage{animation:none;background-position-x:calc(100% * 4 / (var(--n) - 1))}
+  .slot.auto::before{animation:none}
+  .card{transition:none}
+}
+</style></head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="../index.html">Knightbound <span>Ledger</span></a>
+  <nav class="sections" aria-label="Sections"><a href="index.html" aria-current="page">Spellbook</a><a href="../armory.html">Armory</a><a href="../dungeon.html">Dungeon</a></nav>
+</header>
+<div class="shell">
+  <nav class="rail" aria-label="Skills">
+    <h2>Skills, by unlock</h2>
+    <ol><li><a href="cyclone.html" style="--hue:#6ac0a0" class="st-draft"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAUklEQVR42mNgQAJ6WVH/sWEGdAASFOGR+Y8LgOTgGvEpxKYRromQDXDFMEDIJpI0HPhwB1MDLk1YnUPIBqwasHkep+n4bCKoAVkTTs/icx66OAAjMwMbdP6NlAAAAABJRU5ErkJggg==" alt=""><span><b>Cyclone</b><small>Wind · Lv3</small></span><i class="dot" title="Draft tiers"></i></a></li><li><a href="blazing.html" style="--hue:#ff8a36" class="st-idea"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAXklEQVR42mNgoAaIEuP4D8JEKRbhkfn/v8vs/yE3qf8gNtGKYRinJmyK8WpC1vD/0QIwBrFBfsHQgG46WAM+p4E4KIqRMEFbUDQA+VgVI9sCUoCsGKcGmCZsmKJUAAA4RpCNpwPEAQAAAABJRU5ErkJggg==" alt=""><span><b>Blazing Blade</b><small>Flame · Lv8</small></span><i class="dot" title="Not planned"></i></a></li><li><a href="stone.html" style="--hue:#a08050" class="st-idea" aria-current=page><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAZklEQVR42mNgwAKstCT+gzADIQBSJMIj8//GgRlgDGLj1IisEKQIxoZpxKkYm4YFDQGomkjSgK4Ylwa4JkIaYIqzgowI2wJTTNAPIAWwuMAwHVkTsolYnYItLpAV4lWMrAkZo8sDAKMn4OUJankgAAAAAElFTkSuQmCC" alt=""><span><b>Stone Skin</b><small>Earth · Lv11</small></span><i class="dot" title="Not planned"></i></a></li><li><a href="thunder.html" style="--hue:#e8c830" class="st-planned"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAU0lEQVR42mNgoBbIjhL4T7RiER6Z//8/dP0H0cQpBoIXJwwIa0BXDHIWTqfBFIOcAsYwgM1pMDeDTAZhmCa8zgJJwDDRfiA5hMgLUlJMh2nCJw8AJTFrJsbkEZwAAAAASUVORK5CYII=" alt=""><span><b>Thunderclap</b><small>Lightning · Lv12</small></span><i class="dot" title="Tiers set"></i></a></li><li><a href="tidal.html" style="--hue:#5ab4f0" class="st-idea"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAATUlEQVR42mNgGNyAzyrrPzaMVbEIj8z/Cx/+Y8UgOaIVY2giRnHUlg9gDNZESANMsXzOCdy2wBThVAwSIIRBoQV3Eq7gRMcothCDQWoBYoLjeGLsuvwAAAAASUVORK5CYII=" alt=""><span><b>Tidal Wave</b><small>Water · Lv15</small></span><i class="dot" title="Not planned"></i></a></li><li><a href="frost.html" style="--hue:#9ad4f6" class="st-idea"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAb0lEQVR42mNgoAToRXT8B2FcfBQgwiPz/9ir/2AMYoMwCMD4eDXBNOBUDLMa2RYQyFh2DSyG4jSY1TAAUwzTgCwOtg1mKkgShmEAZCqyONx5MDfDbIMpQPYPVr8Q7WlkxTCr0YMZpyZkSZxOIQUAALT8xEemhfELAAAAAElFTkSuQmCC" alt=""><span><b>Frost Nova</b><small>Ice · Lv20</small></span><i class="dot" title="Not planned"></i></a></li><li><a href="venom.html" style="--hue:#86d668" class="st-idea"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAUUlEQVR42mNgoAYQcdD7D8LEKeaR+d92LeO//iyP/yA20RrAthDSgGw6DOPUBFP84P8GFIxTE0gQXTEIg51HEw0ghQRDC+YPohQja0LGFKcCAOK6hl9QFiN0AAAAAElFTkSuQmCC" alt=""><span><b>Venom Strike</b><small>Poison · Lv22</small></span><i class="dot" title="Not planned"></i></a></li><li><a href="shadow.html" style="--hue:#9a7ae0" class="st-idea"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAY0lEQVR42mNgQANSAgb/kTEDPiDCI/P/woH/KBgkhlUjNsUwXBV1AqyRaMUgbKWVBdFErGKcGmCK0BXjtQGbYpDH8ToJWSEIw21A9zS6k1A8jB6sRCtG1oTsbryKkTUhY3R5AEy6/2qZbdDEAAAAAElFTkSuQmCC" alt=""><span><b>Shadow Step</b><small>Shadow · Lv28</small></span><i class="dot" title="Not planned"></i></a></li></ol>
+    <ol class="grp"><li><a class="sys" href="systems.html" style="--hue:var(--brass)"><span>⚙</span><span><b>Systems</b><small>Skill bar · sets · decisions</small></span></a></li></ol>
+    <div class="legend"><span class="st-planned"><i></i>Levelling tiers set</span><span class="st-draft"><i></i>Draft tiers</span><span class="st-idea"><i></i>Not planned yet</span></div>
+  </nav>
+  <main id="main">
+<div class="head" style="--hue:#a08050">
+  <img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAZklEQVR42mNgwAKstCT+gzADIQBSJMIj8//GgRlgDGLj1IisEKQIxoZpxKkYm4YFDQGomkjSgK4Ylwa4JkIaYIqzgowI2wJTTNAPIAWwuMAwHVkTsolYnYItLpAV4lWMrAkZo8sDAKMn4OUJankgAAAAAElFTkSuQmCC" alt="">
+  <div><p class="eyebrow">Skill 3 of 8 · unlocks at hero level 11</p><h1>Stone Skin</h1>
+    <div class="sub"><span class="el" style="--hue:#a08050">Earth</span><span class="badge st-idea">Not planned</span><span class="was">new</span></div></div>
+  <nav class="pager" aria-label="Other skills"><a class="prev" href="blazing.html" title="Blazing Blade ( [ )" aria-label="Previous: Blazing Blade">&lt;</a><a class="next" href="thunder.html" title="Thunderclap ( ] )" aria-label="Next: Thunderclap">&gt;</a></nav>
+</div>
+<div class="tabs" role="tablist" aria-label="Stone Skin" style="--hue:#a08050">
+  <button role="tab" aria-selected="true" aria-controls="overview" id="t-overview" data-p="overview">Overview</button>
+  <button role="tab" aria-selected="false" aria-controls="levelling" id="t-levelling" data-p="levelling" tabindex="-1">Levelling to 100</button>
+</div>
+<section class="panel" id="overview" role="tabpanel" aria-labelledby="t-overview" style="--hue:#a08050">
+  <div class="over"><div><div class="stage px" style="--n:24;background-image:url(data:image/png;base64,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)" role="img" aria-label="Stone Skin: Rocks rise from the ground and lock round the knight as a shell."></div><p class="line">Rocks rise from the ground and lock round the knight as a shell.</p></div>
+  <div><dl class="facts">
+    <div><dt>Unlocks</dt><dd>Hero Lv11</dd></div><div><dt>Cooldown</dt><dd>40 s</dd></div>
+    <div class="wide"><dt>Level 1</dt><dd>A shield worth 30% of max HP for 10 s</dd></div>
+    <div><dt>Per level</dt><dd>+3% shield</dd></div><div><dt>Auto-casts</dt><dd>In a fight, when no shield is up</dd></div>
+    <div class="wide"><dt>Bosses</dt><dd>Full effect. A crit the shield fully absorbs does not knock him down</dd></div></dl>
+    <p class="change">New. The HP bar grows a grey segment past the red; hits wear it down before any HP, and the shell shatters when it is gone.</p></div></div>
+</section>
+<section class="panel" id="levelling" role="tabpanel" aria-labelledby="t-levelling" style="--hue:#a08050" hidden><div class="idea"><p class="eyebrow">Not planned yet</p><h3>Levelling to 100</h3><p>A thicker shell, then boulders orbiting the knight. We are planning the skills one at a time; this one comes later.</p></div></section>
+<p class="hint"><kbd>[</kbd> <kbd>]</kbd> previous / next skill · <kbd>←</kbd> <kbd>→</kbd> on the tabs</p></main>
+</div>
+<script>
+(() => {
+  const tabs = [...document.querySelectorAll('.tabs button')];
+  const show = id => { tabs.forEach(t => { const on = t.dataset.p === id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;
+    document.getElementById(t.dataset.p).hidden = !on; }); if (location.hash.slice(1) !== id) history.replaceState(null, '', '#' + id); };
+  tabs.forEach((t, i) => { t.addEventListener('click', () => show(t.dataset.p));
+    t.addEventListener('keydown', e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); e.stopPropagation();
+      const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; n.focus(); show(n.dataset.p); } }); });
+  if (tabs.some(t => t.dataset.p === location.hash.slice(1))) show(location.hash.slice(1));
+  // [ and ] (or the pager) step through the skills, keeping the tab
+  addEventListener('keydown', e => { if (e.target.closest('input,textarea,[role=tab]')) return;
+    const a = document.querySelector(e.key === '[' ? '.pager .prev' : e.key === ']' ? '.pager .next' : null);
+    if (a) location.href = a.getAttribute('href') + location.hash; });
+})();
+</script>
+</body></html>
