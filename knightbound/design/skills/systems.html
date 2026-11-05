@@ -109,6 +109,16 @@ main{min-width:0;padding:22px clamp(16px,3vw,36px) 48px}
 .facts dd{margin:0;font-weight:600;line-height:1.35}
 .change{margin:12px 0 0;padding:10px 12px;border-left:4px solid var(--hue);background:#0f2238;border-radius:0 8px 8px 0;font-size:14px}
 
+/* the way into the levelling, from the overview */
+.golevel{margin-top:14px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--hue) 22%,#13263f),#13263f);border:2px solid var(--hue);
+  border-radius:12px;padding:12px 16px;color:var(--parch);cursor:pointer;min-height:56px;font:inherit}
+.golevel:hover{background:color-mix(in srgb,var(--hue) 30%,#13263f)}
+.golevel small{display:block;font:10px/1 var(--label);color:var(--hue);margin-bottom:6px}
+.golevel b{font:28px/.9 var(--display);font-weight:400}
+.golevel i{font:32px/1 var(--display);font-style:normal;color:var(--hue)}
+.tabs .new{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--st);margin-left:6px;vertical-align:middle}
+.over .sky canvas{width:min(100%,calc((100vh - 360px) * 128 / 124))}
 /* levelling */
 .lvl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
 .sky{background:#050b16;border:2px solid var(--edge);border-radius:12px;overflow:hidden}
@@ -216,6 +226,8 @@ wearing all four pieces can cast that element’s skill for free.</p><table clas
     t.addEventListener('keydown', e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); e.stopPropagation();
       const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; n.focus(); show(n.dataset.p); } }); });
   if (tabs.some(t => t.dataset.p === location.hash.slice(1))) show(location.hash.slice(1));
+  document.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => {
+    show(b.dataset.go); document.querySelector(`[data-p="${b.dataset.go}"]`).focus(); scrollTo({ top: 0 }); }));
   // [ and ] (or the pager) step through the skills, keeping the tab
   addEventListener('keydown', e => { if (e.target.closest('input,textarea,[role=tab]')) return;
     const a = document.querySelector(e.key === '[' ? '.pager .prev' : e.key === ']' ? '.pager .next' : null);
