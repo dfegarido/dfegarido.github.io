@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Knightbound Design Notes</title>
+<meta name="description" content="Design notes for Knightbound: skills, gear and the dungeon.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Karla:wght@400;600;700&family=Silkscreen&display=swap" rel="stylesheet">
+<style>
+:root{--night:#0c1526;--navy:#16304e;--edge:#08172a;--parch:#f3ead6;--dim:#a3b3c9;--dim2:#7489a6;--brass:#e8b04a;
+  --display:"Jersey 10",system-ui,sans-serif;--body:"Karla",system-ui,sans-serif;--label:"Silkscreen",ui-monospace,monospace}
+*{box-sizing:border-box}
+html{background:var(--night)}
+body{margin:0;min-height:100vh;background:radial-gradient(120% 60% at 50% -10%,#1d3a64 0%,transparent 60%),var(--night);
+  color:var(--parch);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+.wrap{max-width:880px;margin:0 auto;padding:56px 16px 60px}
+.px{image-rendering:pixelated;image-rendering:crisp-edges}
+.eyebrow{font:12px/1 var(--label);letter-spacing:.06em;color:var(--brass);margin:0 0 10px}
+h1{font:clamp(60px,12vw,112px)/.82 var(--display);font-weight:400;margin:0}
+.lede{color:var(--dim);max-width:56ch}
+nav{display:grid;gap:14px;margin-top:30px}
+.card{display:grid;grid-template-columns:88px 1fr;gap:18px;align-items:center;text-decoration:none;color:inherit;
+  background:var(--navy);border:3px solid var(--edge);border-left:6px solid var(--hue);border-radius:12px;padding:14px 18px;
+  transition:transform .15s,background .15s}
+.card:hover{transform:translateX(4px);background:#1c3a5e}
+.card:focus-visible{outline:3px solid var(--brass);outline-offset:3px}
+.card img{width:88px;height:88px;object-fit:contain;background:#0f2238;border-radius:10px;padding:10px}
+.card b{display:block;font:40px/.9 var(--display);font-weight:400;color:var(--hue)}
+.card em{display:inline-block;font:10px/1 var(--label);font-style:normal;color:var(--night);background:var(--hue);padding:4px 6px;border-radius:4px;margin:6px 0 2px}
+.card small{display:block;color:var(--dim);font-size:15px;margin-top:4px}
+footer{margin-top:36px;color:var(--dim2);font-size:13px}
+footer a{color:var(--dim)}
+@media (max-width:480px){.card{grid-template-columns:64px 1fr;gap:12px}.card img{width:64px;height:64px;padding:6px}.card b{font-size:32px}}
+@media (prefers-reduced-motion:reduce){.card{transition:none}}
+</style></head>
+<body><main class="wrap">
+<p class="eyebrow">Knightbound · design notes</p>
+<h1>The Ledger</h1>
+<p class="lede">Working notes for the game: the skills, the gear, and the dungeon. Drawn for review, so some of it is a plan
+and not in the game yet; each page says which.</p>
+<nav><a class="card" href="skills.html" style="--hue:#e8c830"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAU0lEQVR42mNgoBbIjhL4T7RiER6Z//8/dP0H0cQpBoIXJwwIa0BXDHIWTqfBFIOcAsYwgM1pMDeDTAZhmCa8zgJJwDDRfiA5hMgLUlJMh2nCJw8AJTFrJsbkEZwAAAAASUVORK5CYII=" alt=""><span><b>Spellbook</b><em>New: levelling to 100</em><small>The eight elemental skills, and how Thunderclap grows from level 1 to 100.</small></span></a><a class="card" href="armory.html" style="--hue:#e8b04a"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAArElEQVR42mNgoBcws/b4T4o4QSDCI/O/a9Li/yCaGPGBNfTYmRsoBsDEIhMKKTMU2QCY2Nkd0ygzFGYAssup4lKQQcgGwsRIMhjZVSAaGybJUJiBxGCYwaB0izPtkmIgNgwLe6oaitVgUr2OLSjIdinIABAGAZhhIIA14ogxFGYgDMPSLM6UgM9QdMOQ0yzBpAUrMAhhog0k1mCSDcRnMMwwsvM+zGBcmGGgAAClYzSDsUNvLAAAAABJRU5ErkJggg==" alt=""><span><b>Armory</b><small>Gear sets and rarities: Common to Legendary, the ten beast sets and their looks.</small></span></a><a class="card" href="dungeon.html" style="--hue:#9a7ae0"><img class="px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAy0lEQVR42mNgGAwg21b+PzFiZAERHpn//z90/QfRIENBGFmMahag43cbrSi3AGY4yDBsmCq+ABkAwlkuC/7bKCXAMUyc4iCSEzAAG7Si4wYcgywDiYHkKHY9ssHolsAsosiCbx8e4cVDwwIZEQ0whhmKzKeaBRUf/qNYAOOTbQEsaRIKIliSpYkF185s+w9LxmQZDstU2AwGYfSMR7YFhDBJviDVcJJ9Qa4FRPuCphZQEjxEBROlFuD1BUgCpogSjNcXsEqEUkzXFgkA5DUxp4a6RNsAAAAASUVORK5CYII=" alt=""><span><b>Dungeon</b><small>The Descent: four depths, twenty levels, their bosses and monsters.</small></span></a></nav>
+<footer>Knightbound · <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></footer>
+</main></body></html>
