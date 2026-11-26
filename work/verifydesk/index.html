@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="../../assets/site.css?v=3" />
+<link rel="stylesheet" href="../../assets/site.css?v=6" />
 <link rel="stylesheet" href="../../assets/motion.css?v=16" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="VerifyDesk, an email verifier that abstains instead of guessing | Darwin Fegarido" />
@@ -35,7 +35,7 @@
 
 <header class="mast">
   <div class="wrap">
-    <a class="mark" href="../">Darwin Fegarido<span>Software engineer &middot; CTO</span></a>
+    <a class="mark" href="../../">Darwin Fegarido<span>Software engineer &middot; CTO</span></a>
     <nav class="links" aria-label="Primary">
       <a href="../" aria-current="page">Work</a>
       <a href="../../#how">How I work</a>
@@ -83,10 +83,10 @@
         <li><strong><code>unknown</code> is never cached.</strong> A stale "can't tell" outlives the
             condition that caused it. It is recomputed every time, because the alternative is a
             customer acting on last month's network problem.</li>
-        <li><strong>A per-provider policy gateway.</strong> Microsoft and Yahoo accept every
-            recipient at the edge and then tarpit, so probing them is a waste of an hour. The
-            gateway holds that knowledge per provider instead of scattering timeouts through the
-            engine.</li>
+        <li><strong>A per-provider policy gateway.</strong> Microsoft and Yahoo accept every recipient
+            at the edge and then tarpit, so each is probed once with a bounded timeout and then
+            returns <code>unknown</code>. The gateway holds that policy per provider instead of
+            scattering timeouts through the engine.</li>
         <li><strong>Credits are append-only, and the schema enforces it.</strong> Balance comes from
             a ledger, not an updatable counter, and every query is scoped by organisation, so a job
             id alone never reads another tenant's row.</li>
@@ -98,26 +98,30 @@
         from Leadmailer's own delivery history that had registered an open event, meaning mail
         actually arrived and the mailbox exists, and verified them through the production gateway.
       </p>
-      <table>
-        <thead><tr><th>Bucket</th><th>n</th><th>valid</th><th>invalid</th><th>abstained</th></tr></thead>
+      <div class="scroll-x">
+      <table class="num">
+        <caption>invalid = 0 in every bucket, which is the point of the table below.</caption>
+        <thead><tr><th>Bucket</th><th>n</th><th>valid</th><th>unknown</th><th>abstained</th></tr></thead>
         <tbody>
-          <tr><td data-label="Bucket">Gmail</td><td data-label="n">700</td><td data-label="valid">700</td><td data-label="invalid">0</td><td data-label="abstained">0%</td></tr>
-          <tr><td data-label="Bucket">Corporate / custom</td><td data-label="n">409</td><td data-label="valid">315</td><td data-label="invalid">0</td><td data-label="abstained">23%</td></tr>
-          <tr><td data-label="Bucket">Microsoft</td><td data-label="n">400</td><td data-label="valid">0</td><td data-label="invalid">0</td><td data-label="abstained">100%</td></tr>
-          <tr><td data-label="Bucket">Yahoo</td><td data-label="n">166</td><td data-label="valid">0</td><td data-label="invalid">0</td><td data-label="abstained">100%</td></tr>
-          <tr><td data-label="Bucket"><strong>All</strong></td><td data-label="n"><strong>1,676</strong></td><td data-label="valid">1,015</td><td data-label="invalid"><strong>0</strong></td><td data-label="abstained">34%</td></tr>
+          <tr><td data-label="Bucket">Gmail</td><td data-label="n">700</td><td data-label="valid">700</td><td data-label="unknown">0</td><td data-label="abstained">0%</td></tr>
+          <tr><td data-label="Bucket">Corporate / custom</td><td data-label="n">409</td><td data-label="valid">315</td><td data-label="unknown">94</td><td data-label="abstained">23%</td></tr>
+          <tr><td data-label="Bucket">Microsoft</td><td data-label="n">400</td><td data-label="valid">0</td><td data-label="unknown">400</td><td data-label="abstained">100%</td></tr>
+          <tr><td data-label="Bucket">Yahoo</td><td data-label="n">166</td><td data-label="valid">0</td><td data-label="unknown">166</td><td data-label="abstained">100%</td></tr>
+          <tr><td data-label="Bucket"><strong>All</strong></td><td data-label="n"><strong>1,675</strong></td><td data-label="valid">1,015</td><td data-label="unknown">574</td><td data-label="abstained"><strong>39%</strong></td></tr>
         </tbody>
-      </table>
+      </table></div>
       <p>
-        Zero false negatives in 1,676 known-good addresses; the rule of three puts the upper bound
-        at 0.18% at 95% confidence. Gmail, which carries most of a typical list, resolved 700 out of
-        700. Microsoft and Yahoo abstained on every address, and those are reported free.
+        Zero false negatives in 1,676 known-good addresses; the rule of three puts the upper bound at
+        0.18% at 95% confidence. Gmail resolved 700 of 700. The abstentions are 39% of the sample:
+        34% returned <code>unknown</code> and 5% were <code>catch_all</code>, which is also free. The
+        buckets below account for 1,675 of the 1,676 — one address fell outside every bucket and is
+        counted in the total rather than quietly dropped.
       </p>
       <p>
         The same benchmark states its own limits: it proves the verifier does not throw away good
         addresses, and it does not prove the opposite error, because that needs clean negative
-        labels this dataset does not contain. Latency p50 was 559 ms, p90 21 s, max 77 s, driven by
-        the two providers that tarpit.
+        labels this dataset does not contain. Latency p50 was 559 ms, p90 21 s, max 77 s — the tail
+        is the gateway waiting out its bounded timeout on Microsoft and Yahoo before abstaining.
       </p>
 
       <h2>How it is built</h2>
@@ -130,7 +134,7 @@
           <tr><td data-label="Concern">Tenancy</td><td data-label="Decision">Every query scoped by organisation; invitation-only membership</td><td data-label="Why">One account, one organisation, permanently</td></tr>
           <tr><td data-label="Concern">Export</td><td data-label="Decision"><code>clean.csv</code> with no extra columns</td><td data-label="Why">It imports into an ESP without a mapping step</td></tr>
         </tbody>
-      </table>
+      </table></div>
 
       <h2>Where it actually stands</h2>
       <p>
@@ -156,7 +160,7 @@
 
 <footer class="wrap">
   <div>© <span id="yr">2026</span> Darwin Fegarido · Manila, Philippines</div>
-  <div><a href="https://github.com/dfegarido" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://www.linkedin.com/in/darwinfegarido/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="/knightbound/legal/">Knightbound</a></div>
+  <div><a href="https://github.com/dfegarido" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://www.linkedin.com/in/darwinfegarido/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="/knightbound/legal/">Knightbound (Android app)</a></div>
 </footer>
 <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
 <script src="../../assets/site.js?v=1" defer></script>

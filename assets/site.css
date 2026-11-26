@@ -139,3 +139,52 @@ footer a{color:var(--ink); border-bottom:1px solid var(--rule)}
 
 .mark{min-height:44px; align-items:center}
 header.mast{background:#F6F3EC; box-shadow:0 6px 18px rgba(20,20,15,.055)}
+
+/* ---------- layout corrections (2026-11-26 review) ---------- */
+/* .wrap's shorthand was overriding the block padding on hero and contact */
+.wrap.close{padding:88px 28px}
+@media (max-width:640px){
+  .wrap.hero{padding:52px 20px 40px}
+  .wrap.close{padding:56px 20px}
+}
+/* anchors must clear the sticky header */
+[id]{scroll-margin-top:96px}
+@media (max-width:820px){ [id]{scroll-margin-top:132px} }
+
+/* numeric tables stay tables on a phone — cards destroy a comparison */
+@media (max-width:700px){
+  .prose table.num{display:table; border-collapse:collapse}
+  .prose table.num thead{display:table-header-group}
+  .prose table.num tbody{display:table-row-group}
+  .prose table.num tr{display:table-row; border:0; padding:0; margin:0; background:none}
+  .prose table.num td{display:table-cell; width:auto; padding:9px 10px 9px 0;
+    border-bottom:1px solid var(--rule); font-size:14px; text-align:right}
+  .prose table.num td:first-child{text-align:left}
+  .prose table.num td::before{content:none}
+  .prose table.num th{display:table-cell; text-align:right; padding:0 10px 8px 0; font-size:11px}
+  .prose table.num th:first-child{text-align:left}
+  /* card tables: the first cell becomes the card's title */
+  .prose table:not(.num) td:first-child::before{display:none}
+  .prose table:not(.num) td:first-child{font-family:Fraunces,serif; font-size:1.08rem; padding-bottom:7px}
+}
+/* meta row: two columns instead of a ragged flex wrap */
+@media (max-width:640px){
+  .post .meta-row{display:grid; grid-template-columns:1fr 1fr; gap:14px 18px}
+  .post .meta-row > div:last-child{grid-column:1 / -1}
+  /* work index rows: no 400px vertical stacks */
+  .case dl{grid-template-columns:1fr 1fr}
+  .case dl dt:last-of-type, .case dl dd:last-of-type{}
+}
+@media (max-width:640px){ .mob-hide{display:none} }
+
+/* numeric tables: scroll inside their own box rather than push the page wide */
+@media (max-width:700px){
+  .scroll-x{overflow-x:auto; -webkit-overflow-scrolling:touch}
+  .scroll-x table.num{min-width:300px}
+  .prose table.num caption{text-align:left; font-size:12.5px; color:var(--muted); padding:0 0 8px}
+  .prose table.num td, .prose table.num th{padding-right:6px}
+}
+/* the header must not eat a fifth of a small phone */
+@media (max-width:400px){
+  header.mast .btn-out{display:none}
+}

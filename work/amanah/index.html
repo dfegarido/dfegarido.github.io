@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="../../assets/site.css?v=3" />
+<link rel="stylesheet" href="../../assets/site.css?v=6" />
 <link rel="stylesheet" href="../../assets/motion.css?v=16" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Amanah, a directory that funds the community it serves | Darwin Fegarido" />
@@ -35,7 +35,7 @@
 
 <header class="mast">
   <div class="wrap">
-    <a class="mark" href="../">Darwin Fegarido<span>Software engineer &middot; CTO</span></a>
+    <a class="mark" href="../../">Darwin Fegarido<span>Software engineer &middot; CTO</span></a>
     <nav class="links" aria-label="Primary">
       <a href="../" aria-current="page">Work</a>
       <a href="../../#how">How I work</a>
@@ -53,7 +53,7 @@
     <div class="meta-row">
       <div><b>Client</b>Amanah US, a registered nonprofit</div>
       <div><b>Stack</b>Next.js, PostgreSQL, member and business onboarding</div>
-      <div><b>Live</b>amanahbiz.com, verified 200</div>
+      <div><b>Live</b>amanahbiz.com</div>
     </div>
 
     <div class="prose">
@@ -64,6 +64,16 @@
         connects people to their local masjid. The distinguishing part is the money: thirty percent
         of every subscription is returned to the community, ten percent to the member's masjid and
         twenty percent to scholarships and interest-free loans.
+      </p>
+
+      <h2>The build decision that follows from the money</h2>
+      <p>
+        Because a subscription funds a masjid and a scholarship at the same time, the money is not a
+        single balance. Three flows had to stay separate and auditable: a member subscribing, a
+        business applying for a listing and being certified, and a masjid receiving its share. The
+        platform keeps those as distinct paths — registration for members, a booking flow for
+        businesses, and the split computed from the subscription rather than reconciled by hand at
+        month end.
       </p>
 
       <h2>Why the model matters more than the software</h2>
@@ -108,7 +118,7 @@
 
 <footer class="wrap">
   <div>&copy; <span id="yr">2026</span> Darwin Fegarido &middot; Manila, Philippines</div>
-  <div><a href="https://github.com/dfegarido" target="_blank" rel="noopener noreferrer">GitHub</a> &middot; <a href="https://www.linkedin.com/in/darwinfegarido/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="/knightbound/legal/">Knightbound</a></div>
+  <div><a href="https://github.com/dfegarido" target="_blank" rel="noopener noreferrer">GitHub</a> &middot; <a href="https://www.linkedin.com/in/darwinfegarido/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="/knightbound/legal/">Knightbound (Android app)</a></div>
 </footer>
 <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
 <script src="../../assets/site.js?v=1" defer></script>
