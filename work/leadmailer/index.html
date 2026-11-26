@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Case study: technical ownership of a production sending platform handling about a million leads, five sending providers, and conversion attribution back to the exact send." />
+<title>Leadmailer, a sending platform for roughly a million leads | Darwin Fegarido</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/site.css?v=3" />
+<link rel="stylesheet" href="../../assets/motion.css?v=16" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Leadmailer, a sending platform for roughly a million leads | Darwin Fegarido" />
+<meta property="og:description" content="Case study: technical ownership of a production sending platform handling about a million leads, five sending providers, and conversion attribution back to the exact send." />
+<meta property="og:image" content="https://dfegarido.github.io/assets/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Leadmailer, a sending platform for roughly a million leads | Darwin Fegarido" />
+<meta name="twitter:image" content="https://dfegarido.github.io/assets/og.png" />
+<script>
+/* Motion flag. Set before first paint so nothing flashes; the failsafe
+   reveals everything if site.js never arrives. */
+(function () {
+  var d = document.documentElement;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  d.setAttribute('data-motion', 'on');
+  window.__motionFail = setTimeout(function () { d.removeAttribute('data-motion'); }, 2200);
+})();
+</script>
+</head>
+<body>
+  <a href="#main" class="skip">Skip to content</a>
+
+<header class="mast">
+  <div class="wrap">
+    <a class="mark" href="../">Darwin Fegarido<span>Software engineer &middot; CTO</span></a>
+    <nav class="links" aria-label="Primary">
+      <a href="../" aria-current="page">Work</a>
+      <a href="../../#how">How I work</a>
+      <a href="../../#contact">Contact</a>
+    </nav>
+    <a class="btn-out" href="../../#contact">Start a conversation</a>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <article class="post">
+    <p class="crumb"><a href="../">Work</a> / Leadmailer</p>
+    <h1>A sending platform for roughly a million leads</h1>
+
+    <div class="meta-row">
+      <div><b>Client</b>Performance marketing business, live</div>
+      <div><b>Role</b>CTO, full technical ownership</div>
+      <div><b>Since</b>February 2026</div>
+      <div><b>Stack</b>Next.js 16, PostgreSQL, Node workers, AWS</div>
+    </div>
+
+    <div class="prose">
+      <p>
+        This is the system I would put in front of a client with a deadline and a budget. It is the
+        largest thing I own technically: five sending providers, roughly a million leads, revenue
+        attribution from an affiliate network, and a live migration onto AWS.
+      </p>
+
+      <h2>What it does</h2>
+      <p>
+        Leadmailer takes leads from suppliers, holds them, and sends campaigns and broadcasts to
+        those lists, then tracks opens, clicks and purchases back to the exact send that produced
+        them. Around that core sit the parts that keep a sending operation honest: seed testing for
+        inbox placement, sender domain management and sync, DMARC report ingestion, a compliance
+        worker, and follow-up sends to people who have gone quiet.
+      </p>
+
+      <h2>Three decisions that shaped it</h2>
+      <blockquote>
+        Keep the raw evidence, page by the last row actually seen, and never send a link you cannot
+        attribute.
+      </blockquote>
+      <h3>1. Every posted lead is kept, including the broken ones</h3>
+      <p>
+        Duplicates, unsubscribes and malformed records are stored rather than silently dropped.
+        Those raw posts are the evidence behind supplier reimbursement claims, and a cleaned-up
+        dataset is useless in that argument.
+      </p>
+      <h3>2. Counts are estimates, paging is keyset</h3>
+      <p>
+        At about a million rows and an eight second statement timeout, an exact count on the leads
+        table gets cancelled. The symptom the operators saw was a leads page that looked empty. The
+        fix was three things: counts maintained by database triggers, a deliberately estimated
+        total, and paging that asks for rows after the last one it actually saw instead of using an
+        offset. Those pages now return in roughly 0.3 to 0.5 seconds.
+      </p>
+      <h3>3. One worker per feature, attribution written into every link</h3>
+      <p>
+        Sending, resting, engagement sync, revenue sync, compliance and DMARC ingestion each run as
+        their own worker, so they deploy and restart independently. Every outgoing link carries
+        tracking codes added at send time, which is what makes a conversion in the affiliate
+        network traceable back to a single email.
+      </p>
+
+      <h2>How it is built</h2>
+      <table>
+        <thead><tr><th>Concern</th><th>Decision</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td data-label="Concern">Application</td><td data-label="Decision">Next.js 16, React 19, TypeScript, Tailwind 4, Radix and shadcn, TipTap editor</td><td data-label="Why">One language across UI and API, with a TipTap editor for composing campaigns</td></tr>
+          <tr><td data-label="Concern">Data</td><td data-label="Decision">PostgreSQL, migrated from Supabase to AWS Aurora</td><td data-label="Why">Scale and cost control once the lead table passed a million rows</td></tr>
+          <tr><td data-label="Concern">Workers</td><td data-label="Decision">Node 22 bundles on an EC2 auto scaling group, deployed per feature</td><td data-label="Why">A broken worker restarts alone instead of taking the product down</td></tr>
+          <tr><td data-label="Concern">Sending</td><td data-label="Decision">Resend, SendGrid, Campaigner, Bird, plus direct SMTP</td><td data-label="Why">Each provider is a separate send path in the same campaign flow</td></tr>
+          <tr><td data-label="Concern">Tracking</td><td data-label="Decision">Per-domain tracking hosts with on-demand TLS behind Caddy</td><td data-label="Why">Links match the sending domain, and certificates follow the domains as they are added</td></tr>
+          <tr><td data-label="Concern">Handoff</td><td data-label="Decision">S3 data-hub import and export, plus a site-pages API</td><td data-label="Why">Data and content move between systems without a human exporting files</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Scale, measured</h2>
+      <p>
+        About 1.09 million lead rows, roughly 1.02 million of them production, read from the
+        database row estimate on 26 October 2026. Leads and seeds pages return in about 0.3 to 0.5
+        seconds after the query rework, measured during development the same month.
+      </p>
+      <p>
+        Send volume, revenue and conversion figures exist in the reporting tables and are not
+        reproduced here: they belong to the client and they move weekly. They can be shown on a
+        call.
+      </p>
+
+      <h2>The honest hard part</h2>
+      <p>
+        On 18 November 2026 a worker deploy copied a local settings file, so for about four hours
+        and twenty minutes every worker email carried tracking and unsubscribe links pointing at
+        localhost. Nobody reported it. It was caught because a tracked-opens count stayed at zero,
+        and that is a monitoring gap worth stating rather than hiding.
+      </p>
+      <p>
+        The fix had three parts: the deploy now forces the production URL and refuses to start with
+        a localhost value, and the links in a delivered email are checked after every deploy. Two
+        related facts are recorded in the repository rather than glossed over: that incident, and a
+        gap in the migration history where versions 207 to 219 were applied without being written
+        down.
+      </p>
+
+      <h2>What I would do differently</h2>
+      <p>
+        I would record every migration as it is applied. Versions 207 to 219 exist in the database
+        and not in the history, which means anyone reconstructing this schema later has to diff a
+        live database to trust it. Deploys got a guard after the incident; the migration log should
+        have had one from the first week.
+      </p>
+
+      <h2>What a reviewer can check</h2>
+      <p>
+        149 automated test files, a Playwright suite that exercises the application signed in and
+        signed out, roughly twenty design documents covering sender deliverability, sender
+        management, the lead-feed webhook and worker design, 242 database migrations, and a log of
+        past mistakes. The repository is private and belongs to the client, so review happens with
+        their permission on a call.
+      </p>
+    </div>
+
+    <dl class="facts-aside">
+      <div><dt>Live</dt><dd><a href="https://leadmailer.ai" target="_blank" rel="noopener noreferrer">leadmailer.ai</a>, sign-in required</dd></div>
+      <div><dt>Scale</dt><dd>~1.09M lead rows, five sending providers</dd></div>
+      <div><dt>Access</dt><dd>Walkthrough and code review on request</dd></div>
+    </dl>
+
+    <div class="next">
+      <a class="arrow" href="../">Back to all work<span class="arw" aria-hidden="true">→</span></a>
+      <a href="../../#contact">Discuss a similar problem</a>
+    </div>
+  </article>
+</main>
+
+<footer class="wrap">
+  <div>© <span id="yr">2026</span> Darwin Fegarido · Manila, Philippines</div>
+  <div><a href="https://github.com/dfegarido" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://www.linkedin.com/in/darwinfegarido/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="/knightbound/legal.html">Knightbound</a></div>
+</footer>
+<script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+<script src="../../assets/site.js?v=1" defer></script>
+</body>
+</html>

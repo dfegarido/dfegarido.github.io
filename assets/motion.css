@@ -1,0 +1,241 @@
+/* Motion layer.
+   Progressive enhancement: nothing here hides content unless the
+   <html data-motion="on"> flag is set by the inline head script,
+   which also arms a failsafe that reveals everything if this file
+   fails to load. Anyone who asks for reduced motion gets none of it. */
+
+:root{
+  --ease: cubic-bezier(.22,.61,.36,1);
+  --rise: 14px;
+}
+
+/* ---------- hero: staggered entrance on load ---------- */
+@media (prefers-reduced-motion: no-preference){
+  .hero > .kicker,
+  .hero > h1,
+  .hero > .lede,
+  .hero > .facts,
+  .hero > .hero-lede{
+    animation: rise-in .78s var(--ease) both;
+  }
+  .hero > .kicker   { animation-delay: .04s }
+  .hero > h1        { animation-delay: .12s }
+  .hero > .lede,
+  .hero > .hero-lede{ animation-delay: .22s }
+  .hero > .facts    { animation-delay: .32s }
+}
+
+/* article pages: title block gets the same restrained entrance */
+@media (prefers-reduced-motion: no-preference){
+  .post > .crumb,
+  .post > h1,
+  .post > .meta-row{
+    animation: rise-in .78s var(--ease) both;
+  }
+  .post > .crumb   { animation-delay: .04s }
+  .post > h1       { animation-delay: .12s }
+  .post > .meta-row{ animation-delay: .22s }
+}
+
+@keyframes rise-in{
+  from{ opacity:0; transform:translateY(16px) }
+  to  { opacity:1; transform:none }
+}
+
+/* ---------- scroll reveals ---------- */
+/* :where() keeps these at low specificity so a component's own
+   :hover transform is not outranked by the reveal settling to none */
+html[data-motion="on"] :where(.reveal){
+  opacity:0;
+  transform:translateY(var(--rise));
+  will-change:opacity, transform;
+}
+html[data-motion="on"] :where(.reveal.is-in){
+  opacity:1;
+  transform:none;
+  transition:opacity .62s var(--ease), transform .62s var(--ease);
+  will-change:auto;
+}
+
+/* ---------- header: shadow only once the page moves ---------- */
+header.mast{ transition:box-shadow .3s ease, border-color .3s ease }
+header.mast.is-scrolled{ box-shadow:0 10px 28px rgba(20,20,15,.085) }
+
+/* ---------- reading progress on case studies ---------- */
+.progress{
+  position:fixed; top:0; left:0; height:2px; width:0;
+  background:var(--accent); z-index:60; pointer-events:none;
+  transition:width .08s linear;
+}
+
+/* ---------- hover states ---------- */
+.btn-out{ transition:background .26s ease, color .26s ease, border-color .26s ease }
+.btn-out:hover, .btn-out:focus-visible{ background:var(--ink); color:var(--paper) }
+
+.case h3 a{ transition:color .22s ease }
+.case{ transition:background-color .3s ease }
+.case:hover{ background-color:rgba(122,46,31,.028) }
+
+.facts-aside a, .prose a{ transition:color .22s ease, border-color .22s ease }
+.prose table tr{ transition:background-color .22s ease }
+.prose table tbody tr:hover{ background-color:rgba(122,46,31,.03) }
+
+
+
+/* ---------- selected work: the row answers the pointer ---------- */
+.case{ position:relative; overflow:hidden }
+.case::before{
+  content:"";
+  position:absolute; left:0; top:0; bottom:0; width:2px;
+  background:var(--accent);
+  transform:scaleY(0); transform-origin:top center;
+  transition:transform .42s var(--ease);
+}
+.case .sec-num{ transition:color .3s ease, transform .3s var(--ease) }
+.case h3 a{ position:relative }
+.case h3 a::after{
+  content:"";
+  position:absolute; left:0; right:0; bottom:-3px; height:1px;
+  background:currentColor;
+  transform:scaleX(0); transform-origin:left center;
+  transition:transform .36s var(--ease);
+}
+.case dd a{ transition:color .24s ease }
+
+.case:hover::before{ transform:scaleY(1) }
+.case:hover .sec-num{ color:var(--accent); transform:translateX(3px) }
+.case:hover h3 a::after{ transform:scaleX(1) }
+.case:focus-within::before{ transform:scaleY(1) }
+.case:focus-within .sec-num{ color:var(--accent) }
+
+@media (prefers-reduced-motion: reduce){
+  .case::before, .case .sec-num, .case h3 a::after{ transition:none !important }
+  .case:hover .sec-num{ transform:none }
+}
+
+
+/* ---------- arrow links: the arrow takes the step ---------- */
+a.arrow{
+  background:transparent;
+  white-space:nowrap;
+  border-bottom-color:transparent !important;
+  transition:color .24s ease;
+}
+a.arrow .arw{
+  display:inline-block;
+  margin-left:.36em;
+  transition:transform .32s var(--ease);
+  will-change:transform;
+}
+a.arrow:hover, a.arrow:focus-visible{ background:transparent; border-bottom-color:transparent !important; color:var(--accent) }
+a.arrow:hover .arw, a.arrow:focus-visible .arw{ transform:translateX(5px) }
+a.arrow::before{ display:none }
+
+@media (prefers-reduced-motion: reduce){
+  a.arrow .arw{ transition:none !important }
+  a.arrow:hover .arw{ transform:none }
+}
+
+
+/* ---------- contact: the address is the only button that matters ---------- */
+a.big{
+  position:relative;
+  border-bottom:0 !important;
+  background:transparent !important;
+  padding-bottom:9px;
+  transition:color .24s ease, transform .3s var(--ease);
+}
+/* one underline, drawn once and thickened on hover — no double line */
+a.big::after{
+  content:"";
+  position:absolute; left:0; right:0; bottom:0; height:2px;
+  background:var(--accent);
+  transform-origin:left center;
+  transition:height .28s var(--ease), background-color .28s ease;
+}
+a.big:hover::after, a.big:focus-visible::after{
+  height:4px;
+  background:var(--ink);
+}
+a.big:hover, a.big:focus-visible{ transform:translateY(-1px) }
+
+@media (prefers-reduced-motion: reduce){
+  a.big, a.big::after{ transition:none !important }
+  a.big:hover{ transform:none }
+  a.big:hover::after{ height:4px; background:var(--ink) }
+}
+
+.close .alt{
+  margin-top:18px;
+  font-size:15px;
+  color:var(--muted);
+}
+.close .alt a{ font-size:15px }
+
+/* ---------- header hover: a rule that draws itself ---------- */
+header.mast nav.links a{
+  position:relative;
+  border-bottom-color:transparent !important;
+  transition:color .24s ease;
+}
+header.mast nav.links a::after{
+  content:"";
+  position:absolute; left:0; right:0; bottom:11px; height:1px;
+  background:currentColor;
+  transform:scaleX(0); transform-origin:left center;
+  transition:transform .34s var(--ease), background-color .24s ease;
+}
+header.mast nav.links a:hover::after,
+header.mast nav.links a:focus-visible::after{ transform:scaleX(1) }
+header.mast nav.links a[aria-current="page"]::after{
+  transform:scaleX(1); background:var(--accent);
+}
+header.mast nav.links a:hover{ color:var(--ink) }
+/* the legacy global a:hover paints a block; header elements get the rule instead */
+header.mast a:not(.btn-out):hover, header.mast a:not(.btn-out):focus-visible,
+.case h3 a:hover, .case h3 a:focus-visible,
+.next a:hover, .next a:focus-visible,
+footer a:hover, footer a:focus-visible{ background:transparent }
+header.mast nav.links a:hover::after{ background:var(--ink) }
+header.mast nav.links a[aria-current="page"]:hover::after{ background:var(--accent) }
+
+/* the wordmark: the sub-label comes up to full ink, the name gains the same rule */
+header.mast .mark{ position:relative }
+header.mast .mark{ gap:14px }
+header.mast .mark span{
+  color:#6B6659;
+  font-weight:400;
+  letter-spacing:.01em;
+  transition:color .26s ease, opacity .26s ease;
+}
+header.mast .mark:hover span,
+header.mast .mark:focus-visible span{ color:var(--ink) }
+
+/* the outline button lifts a hair and fills */
+header.mast .btn-out{ transition:background .26s ease, color .26s ease, border-color .26s ease, transform .26s ease }
+header.mast .btn-out:hover,
+header.mast .btn-out:focus-visible{ transform:translateY(-1px) }
+
+@media (prefers-reduced-motion: reduce){
+  header.mast nav.links a::after,
+  header.mast nav.links a,
+  header.mast .mark span,
+  header.mast .btn-out{ transition:none !important }
+  header.mast .btn-out:hover{ transform:none }
+  /* keep the states legible without motion */
+  header.mast nav.links a:hover{ border-bottom-color:var(--ink) !important }
+  header.mast nav.links a:hover::after{ transform:scaleX(1) }
+}
+
+/* ---------- respect the user's setting ---------- */
+@media (prefers-reduced-motion: reduce){
+  html[data-motion="on"] .reveal{ opacity:1 !important; transform:none !important }
+  .hero > *, .progress{ animation:none !important; transition:none !important }
+  header.mast, .btn-out, .case, .prose table tr{ transition:none !important }
+  html{ scroll-behavior:auto }
+}
+
+@media (prefers-reduced-motion: no-preference){
+  html{ scroll-behavior:smooth }
+  @media (max-width:820px){ html{ scroll-behavior:auto } }
+}

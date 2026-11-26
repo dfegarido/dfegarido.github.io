@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Case study: a consumer insurance guidance site built as static pages, with articles published through an API, a published research method, and an llms.txt for machine readers." />
+<title>Fast Cheap Insurance, editorial pages on a static build | Darwin Fegarido</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/site.css?v=3" />
+<link rel="stylesheet" href="../../assets/motion.css?v=16" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Fast Cheap Insurance, editorial pages on a static build | Darwin Fegarido" />
+<meta property="og:description" content="Case study: a consumer insurance guidance site built as static pages, with articles published through an API, a published research method, and an llms.txt for machine readers." />
+<meta property="og:image" content="https://dfegarido.github.io/assets/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Fast Cheap Insurance, editorial pages on a static build | Darwin Fegarido" />
+<meta name="twitter:image" content="https://dfegarido.github.io/assets/og.png" />
+<script>
+/* Motion flag. Set before first paint so nothing flashes; the failsafe
+   reveals everything if site.js never arrives. */
+(function () {
+  var d = document.documentElement;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  d.setAttribute('data-motion', 'on');
+  window.__motionFail = setTimeout(function () { d.removeAttribute('data-motion'); }, 2200);
+})();
+</script>
+</head>
+<body>
+  <a href="#main" class="skip">Skip to content</a>
+
+<header class="mast">
+  <div class="wrap">
+    <a class="mark" href="../">Darwin Fegarido<span>Software engineer &middot; CTO</span></a>
+    <nav class="links" aria-label="Primary">
+      <a href="../" aria-current="page">Work</a>
+      <a href="../../#how">How I work</a>
+      <a href="../../#contact">Contact</a>
+    </nav>
+    <a class="btn-out" href="../../#contact">Start a conversation</a>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <article class="post">
+    <p class="crumb"><a href="../">Work</a> / Fast Cheap Insurance</p>
+    <h1>Editorial pages on a static build</h1>
+
+    <div class="meta-row">
+      <div><b>Client</b>Same client as Leadmailer</div>
+      <div><b>Role</b>Build and editorial system</div>
+      <div><b>Since</b>November 2026</div>
+      <div><b>Stack</b>Static HTML, CSS, JS, Node build script</div>
+    </div>
+
+    <div class="prose">
+      <h2>What it is</h2>
+      <p>
+        A plain-language guide site that explains car, home, health, life and pet insurance, and how
+        to pay less for it. Seventy URLs: the home page, seven topic hubs, twenty-five plus articles,
+        a rates page, a renewal checklist, and the trust pages that make the rest checkable.
+      </p>
+
+      <h2>Three decisions that shaped it</h2>
+      <blockquote>
+        The content lives in one place, and the site is generated from it.
+      </blockquote>
+      <h3>1. Static pages, generated from templates</h3>
+      <p>
+        Within a day of starting, the site was rebuilt as static HTML, CSS and JavaScript, assembled
+        by a small Node build script with shared partials and templates. Article pages do not need to
+        be assembled per request, so the whole site is cacheable at the edge.
+      </p>
+      <h3>2. Articles are written once, in Leadmailer</h3>
+      <p>
+        The guides are managed in the sending platform's content API and pulled into the build. One
+        editorial workspace produces content for more than one property, instead of each site growing
+        its own CMS and its own copy of the same article.
+      </p>
+      <h3>3. It publishes an llms.txt next to the sitemap</h3>
+      <p>
+        Alongside <code>sitemap.xml</code> and <code>robots.txt</code>, the site states in
+        <code>llms.txt</code> what it is and how it may be read by machines. The <code>robots.txt</code>
+        goes further and carries explicit content signals, because being read by a crawler is now a
+        decision rather than a default.
+      </p>
+
+      <h2>How it is built</h2>
+      <table>
+        <thead><tr><th>Concern</th><th>Decision</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td data-label="Concern">Delivery</td><td data-label="Decision">Static files behind Cloudflare</td><td data-label="Why">Nothing on a guide page needs a server round trip</td></tr>
+          <tr><td data-label="Concern">Assembly</td><td data-label="Decision">Node build script with partials and templates</td><td data-label="Why">One header, one footer, no copy of either drifting between pages</td></tr>
+          <tr><td data-label="Concern">Content</td><td data-label="Decision">Articles pulled from the Leadmailer content API</td><td data-label="Why">One place to write and update, several places to publish</td></tr>
+          <tr><td data-label="Concern">Trust</td><td data-label="Decision">Research method, disclosure, privacy, terms, do-not-sell</td><td data-label="Why">A reader can check who wrote a page and who paid for it</td></tr>
+          <tr><td data-label="Concern">Machines</td><td data-label="Decision">Sitemap, robots with content signals, llms.txt, Organization schema</td><td data-label="Why">The site says what it is rather than leaving crawl decisions to guesswork</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Outcome, stated honestly</h2>
+      <p>
+        Traffic and conversion are not measured here, so there is no number to quote. What exists is
+        the content system, the seventy pages, and the plumbing that keeps them current from one
+        editorial source. If you want the analytics, they are shown on a call.
+      </p>
+    </div>
+
+    <dl class="facts-aside">
+      <div><dt>Deliverable</dt><dd>Static site, build script, content pipeline</dd></div>
+      <div><dt>Live</dt><dd><a href="https://fastcheapinsurance.com/" target="_blank" rel="noopener noreferrer">fastcheapinsurance.com</a></dd></div>
+      <div><dt>Size</dt><dd>70 URLs, 25+ articles, seven topic hubs</dd></div>
+    </dl>
+
+    <div class="next">
+      <a class="arrow" href="../">Back to all work<span class="arw" aria-hidden="true">&rarr;</span></a>
+      <a href="../../#contact">Discuss a similar problem</a>
+    </div>
+  </article>
+</main>
+
+<footer class="wrap">
+  <div>&copy; <span id="yr">2026</span> Darwin Fegarido &middot; Manila, Philippines</div>
+  <div><a href="https://github.com/dfegarido" target="_blank" rel="noopener noreferrer">GitHub</a> &middot; <a href="https://www.linkedin.com/in/darwinfegarido/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="/knightbound/legal.html">Knightbound</a></div>
+</footer>
+<script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+<script src="../../assets/site.js?v=1" defer></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Case study: a membership and business directory platform for a US nonprofit, where thirty percent of every subscription is returned to the community." />
+<title>Amanah, a directory that funds the community it serves | Darwin Fegarido</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/site.css?v=3" />
+<link rel="stylesheet" href="../../assets/motion.css?v=16" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Amanah, a directory that funds the community it serves | Darwin Fegarido" />
+<meta property="og:description" content="Case study: a membership and business directory platform for a US nonprofit, where thirty percent of every subscription is returned to the community." />
+<meta property="og:image" content="https://dfegarido.github.io/assets/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Amanah, a directory that funds the community it serves | Darwin Fegarido" />
+<meta name="twitter:image" content="https://dfegarido.github.io/assets/og.png" />
+<script>
+/* Motion flag. Set before first paint so nothing flashes; the failsafe
+   reveals everything if site.js never arrives. */
+(function () {
+  var d = document.documentElement;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  d.setAttribute('data-motion', 'on');
+  window.__motionFail = setTimeout(function () { d.removeAttribute('data-motion'); }, 2200);
+})();
+</script>
+</head>
+<body>
+  <a href="#main" class="skip">Skip to content</a>
+
+<header class="mast">
+  <div class="wrap">
+    <a class="mark" href="../">Darwin Fegarido<span>Software engineer &middot; CTO</span></a>
+    <nav class="links" aria-label="Primary">
+      <a href="../" aria-current="page">Work</a>
+      <a href="../../#how">How I work</a>
+      <a href="../../#contact">Contact</a>
+    </nav>
+    <a class="btn-out" href="../../#contact">Start a conversation</a>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <article class="post">
+    <p class="crumb"><a href="../">Work</a> / Amanah</p>
+    <h1>A directory that funds the community it serves</h1>
+
+    <div class="meta-row">
+      <div><b>Client</b>Amanah US, a registered nonprofit</div>
+      <div><b>Stack</b>Next.js, PostgreSQL, member and business onboarding</div>
+      <div><b>Live</b>amanahbiz.com, verified 200</div>
+    </div>
+
+    <div class="prose">
+      <h2>What it is</h2>
+      <p>
+        A directory and community platform for Muslim businesses and masjids in the United States.
+        Members join, businesses apply for a listing and carry a certification seal, and the site
+        connects people to their local masjid. The distinguishing part is the money: thirty percent
+        of every subscription is returned to the community, ten percent to the member's masjid and
+        twenty percent to scholarships and interest-free loans.
+      </p>
+
+      <h2>Why the model matters more than the software</h2>
+      <p>
+        A directory is a solved problem. A directory where the subscription pays for a scholarship
+        fund changes what the product has to prove: every listing fee is also a donation, so the
+        billing, the certification and the reporting all have to be defensible to a nonprofit board,
+        not just to a customer.
+      </p>
+
+      <h2>How it is built</h2>
+      <table>
+        <thead><tr><th>Concern</th><th>Decision</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td data-label="Concern">Framework</td><td data-label="Decision">Next.js with member and business areas</td><td data-label="Why">Public directory and authenticated member pages from one codebase</td></tr>
+          <tr><td data-label="Concern">Onboarding</td><td data-label="Decision">A booking flow for businesses, a registration flow for members</td><td data-label="Why">A business needs a conversation; a member needs a form</td></tr>
+          <tr><td data-label="Concern">Trust</td><td data-label="Decision">Certification seal, and an ownership page naming the nonprofit that holds the mark</td><td data-label="Why">The certification is the product; it has to be attributable</td></tr>
+          <tr><td data-label="Concern">Money</td><td data-label="Decision">Subscription with a stated split to masjid and scholarship funds</td><td data-label="Why">The split is the promise, so it is published, not implied</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Outcome, stated honestly</h2>
+      <p>
+        The platform is live with member registration, business onboarding and the published
+        give-back model. Membership numbers and disbursed amounts belong to the nonprofit, so they
+        are not printed here.
+      </p>
+    </div>
+
+    <dl class="facts-aside">
+      <div><dt>Live</dt><dd><a href="https://www.amanahbiz.com/" target="_blank" rel="noopener noreferrer">amanahbiz.com</a></dd></div>
+      <div><dt>Model</dt><dd>30% of subscriptions returned: 10% masjid, 20% scholarships</dd></div>
+      <div><dt>Access</dt><dd>Walkthrough on request</dd></div>
+    </dl>
+
+    <div class="next">
+      <a class="arrow" href="../">Back to all work<span class="arw" aria-hidden="true">&rarr;</span></a>
+      <a href="../../#contact">Discuss a similar problem</a>
+    </div>
+  </article>
+</main>
+
+<footer class="wrap">
+  <div>&copy; <span id="yr">2026</span> Darwin Fegarido &middot; Manila, Philippines</div>
+  <div><a href="https://github.com/dfegarido" target="_blank" rel="noopener noreferrer">GitHub</a> &middot; <a href="https://www.linkedin.com/in/darwinfegarido/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="/knightbound/legal.html">Knightbound</a></div>
+</footer>
+<script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+<script src="../../assets/site.js?v=1" defer></script>
+</body>
+</html>

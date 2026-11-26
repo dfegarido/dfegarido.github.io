@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VerifyDesk, an email verifier that abstains instead of guessing | Darwin Fegarido</title>
+<meta name="description" content="Case study: building an email verification service with a measured false-negative rate, per-provider policy, and verdicts it refuses to invent." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/site.css?v=3" />
+<link rel="stylesheet" href="../../assets/motion.css?v=16" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="VerifyDesk, an email verifier that abstains instead of guessing | Darwin Fegarido" />
+<meta property="og:description" content="Case study: building an email verification service with a measured false-negative rate, per-provider policy, and verdicts it refuses to invent." />
+<meta property="og:image" content="https://dfegarido.github.io/assets/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="VerifyDesk, an email verifier that abstains instead of guessing | Darwin Fegarido" />
+<meta name="twitter:image" content="https://dfegarido.github.io/assets/og.png" />
+<script>
+/* Motion flag. Set before first paint so nothing flashes; the failsafe
+   reveals everything if site.js never arrives. */
+(function () {
+  var d = document.documentElement;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  d.setAttribute('data-motion', 'on');
+  window.__motionFail = setTimeout(function () { d.removeAttribute('data-motion'); }, 2200);
+})();
+</script>
+</head>
+<body>
+  <a href="#main" class="skip">Skip to content</a>
+
+<header class="mast">
+  <div class="wrap">
+    <a class="mark" href="../">Darwin Fegarido<span>Software engineer &middot; CTO</span></a>
+    <nav class="links" aria-label="Primary">
+      <a href="../" aria-current="page">Work</a>
+      <a href="../../#how">How I work</a>
+      <a href="../../#contact">Contact</a>
+    </nav>
+    <a class="btn-out" href="../../#contact">Start a conversation</a>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <article class="post">
+    <p class="crumb"><a href="../">Work</a> / VerifyDesk</p>
+    <h1>An email verifier that abstains instead of guessing</h1>
+
+    <div class="meta-row">
+      <div><b>Status</b>Built and running, not launched</div>
+      <div><b>Role</b>Design, build, benchmark</div>
+      <div><b>Period</b>2026</div>
+      <div><b>Stack</b>Python services, PostgreSQL, SMTP probing behind a policy gateway</div>
+    </div>
+
+    <div class="prose">
+      <h2>The problem</h2>
+      <p>
+        Every bulk sender pays for the same thing: a percentage of their list is dead, and sending to
+        dead addresses damages the reputation of the domains that carry the good mail. Verification
+        services exist to fix that, and most of them solve it by answering every address with
+        confidence they do not have. A wrong <em>invalid</em> throws away a real customer; a wrong
+        <em>valid</em> keeps the bounce.
+      </p>
+
+      <h2>What I decided, and why</h2>
+      <blockquote>
+        A verifier that cannot answer should say so. Abstaining is a feature, and it must be free,
+        or you have invented an incentive to guess.
+      </blockquote>
+      <ul>
+        <li><strong>Six verdicts, not nine.</strong> <code>valid</code>, <code>invalid</code>,
+            <code>catch_all</code>, <code>unknown</code>, <code>disposable</code>, <code>role</code>.
+            The three industry statuses I cannot derive from a probe (spamtrap, abuse, do-not-mail)
+            are stated as unbuilt rather than faked from a guessed blocklist.</li>
+        <li><strong>Charged only for definitive answers.</strong> <code>unknown</code> and
+            <code>catch_all</code> cost the customer nothing, so there is no commercial reason to
+            manufacture a verdict.</li>
+        <li><strong><code>unknown</code> is never cached.</strong> A stale "can't tell" outlives the
+            condition that caused it. It is recomputed every time, because the alternative is a
+            customer acting on last month's network problem.</li>
+        <li><strong>A per-provider policy gateway.</strong> Microsoft and Yahoo accept every
+            recipient at the edge and then tarpit, so probing them is a waste of an hour. The
+            gateway holds that knowledge per provider instead of scattering timeouts through the
+            engine.</li>
+        <li><strong>Credits are append-only, and the schema enforces it.</strong> Balance comes from
+            a ledger, not an updatable counter, and every query is scoped by organisation, so a job
+            id alone never reads another tenant's row.</li>
+      </ul>
+
+      <h2>The measurement that matters</h2>
+      <p>
+        The dangerous error is calling a good address <em>invalid</em>. So I took 1,676 addresses
+        from Leadmailer's own delivery history that had registered an open event, meaning mail
+        actually arrived and the mailbox exists, and verified them through the production gateway.
+      </p>
+      <table>
+        <thead><tr><th>Bucket</th><th>n</th><th>valid</th><th>invalid</th><th>abstained</th></tr></thead>
+        <tbody>
+          <tr><td data-label="Bucket">Gmail</td><td data-label="n">700</td><td data-label="valid">700</td><td data-label="invalid">0</td><td data-label="abstained">0%</td></tr>
+          <tr><td data-label="Bucket">Corporate / custom</td><td data-label="n">409</td><td data-label="valid">315</td><td data-label="invalid">0</td><td data-label="abstained">23%</td></tr>
+          <tr><td data-label="Bucket">Microsoft</td><td data-label="n">400</td><td data-label="valid">0</td><td data-label="invalid">0</td><td data-label="abstained">100%</td></tr>
+          <tr><td data-label="Bucket">Yahoo</td><td data-label="n">166</td><td data-label="valid">0</td><td data-label="invalid">0</td><td data-label="abstained">100%</td></tr>
+          <tr><td data-label="Bucket"><strong>All</strong></td><td data-label="n"><strong>1,676</strong></td><td data-label="valid">1,015</td><td data-label="invalid"><strong>0</strong></td><td data-label="abstained">34%</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Zero false negatives in 1,676 known-good addresses; the rule of three puts the upper bound
+        at 0.18% at 95% confidence. Gmail, which carries most of a typical list, resolved 700 out of
+        700. Microsoft and Yahoo abstained on every address, and those are reported free.
+      </p>
+      <p>
+        The same benchmark states its own limits: it proves the verifier does not throw away good
+        addresses, and it does not prove the opposite error, because that needs clean negative
+        labels this dataset does not contain. Latency p50 was 559 ms, p90 21 s, max 77 s, driven by
+        the two providers that tarpit.
+      </p>
+
+      <h2>How it is built</h2>
+      <table>
+        <thead><tr><th>Concern</th><th>Decision</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td data-label="Concern">Probing</td><td data-label="Decision">SMTP prober in a container, never exposed to the internet</td><td data-label="Why">The engine should not be a public attack surface</td></tr>
+          <tr><td data-label="Concern">Policy</td><td data-label="Decision">Gateway in front of the engine, per-provider retry and abstain rules</td><td data-label="Why">Provider behaviour is knowledge, and it belongs in one place</td></tr>
+          <tr><td data-label="Concern">Money</td><td data-label="Decision">Append-only credit ledger plus a balance view</td><td data-label="Why">A refund or an audit needs history, not a mutated number</td></tr>
+          <tr><td data-label="Concern">Tenancy</td><td data-label="Decision">Every query scoped by organisation; invitation-only membership</td><td data-label="Why">One account, one organisation, permanently</td></tr>
+          <tr><td data-label="Concern">Export</td><td data-label="Decision"><code>clean.csv</code> with no extra columns</td><td data-label="Why">It imports into an ESP without a mapping step</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Where it actually stands</h2>
+      <p>
+        The service runs end to end on a single box: signup, jobs, worker, results and filtered
+        downloads. It is not launched: there is no product domain yet, and billing, identity checks
+        and the launch email sequence are still open. I am listing it here because the engineering
+        and the honesty of its results are the point, not because it is earning.
+      </p>
+    </div>
+
+    <dl class="facts-aside">
+      <div><dt>Deliverable</dt><dd>Verifier, gateway, worker, billing ledger, API</dd></div>
+      <div><dt>Evidence</dt><dd>1,676-address benchmark, 0 false negatives</dd></div>
+      <div><dt>Access</dt><dd>Walkthrough on request</dd></div>
+    </dl>
+
+    <div class="next">
+      <a class="arrow" href="../">Back to all work<span class="arw" aria-hidden="true">→</span></a>
+      <a href="../../#contact">Discuss a similar problem</a>
+    </div>
+  </article>
+</main>
+
+<footer class="wrap">
+  <div>© <span id="yr">2026</span> Darwin Fegarido · Manila, Philippines</div>
+  <div><a href="https://github.com/dfegarido" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://www.linkedin.com/in/darwinfegarido/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="/knightbound/legal.html">Knightbound</a></div>
+</footer>
+<script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+<script src="../../assets/site.js?v=1" defer></script>
+</body>
+</html>

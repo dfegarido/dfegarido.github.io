@@ -1,19 +1,168 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Knightbound</title>
-<style>
-  body { font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; max-width: 40rem; margin: 0 auto;
-    padding: 48px 16px; background: #f6f7fb; color: #1b2133; }
-  @media (prefers-color-scheme: dark) { body { background: #0f1422; color: #e8ecf6; } a { color: #8fb4ff; } }
-  a { color: #2f5fa8; }
-</style>
-<h1>Knightbound</h1>
-<p>An idle pixel RPG for Android and iOS.</p>
-<ul>
-  <li><a href="knightbound/privacy.html">Privacy policy</a></li>
-  <li><a href="knightbound/privacy.html#delete-account">Delete your account</a></li>
-</ul>
-<p>Contact: darwinfegarido@gmail.com</p>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Darwin Fegarido — software engineer and CTO, Manila</title>
+<meta name="description" content="Independent software practice in Manila. Lead pipelines, payments, reporting and the integrations between them, for companies where a wrong number costs something." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/site.css?v=3" />
+<link rel="stylesheet" href="assets/motion.css?v=16" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Darwin Fegarido — software engineer and CTO, Manila" />
+<meta property="og:description" content="Independent software practice in Manila. Lead pipelines, payments, reporting and the integrations between them, for companies where a wrong number costs something." />
+<meta property="og:image" content="https://dfegarido.github.io/assets/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Darwin Fegarido — software engineer and CTO, Manila" />
+<meta name="twitter:image" content="https://dfegarido.github.io/assets/og.png" />
+<script>
+/* Motion flag. Set before first paint so nothing flashes; the failsafe
+   reveals everything if site.js never arrives. */
+(function () {
+  var d = document.documentElement;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  d.setAttribute('data-motion', 'on');
+  window.__motionFail = setTimeout(function () { d.removeAttribute('data-motion'); }, 2200);
+})();
+</script>
+</head>
+<body>
+  <a href="#main" class="skip">Skip to content</a>
+
+<header class="mast">
+  <div class="wrap">
+    <a class="mark" href="./">Darwin Fegarido<span>Software engineer &middot; CTO</span></a>
+    <nav class="links" aria-label="Primary">
+      <a href="work/">Work</a>
+      <a href="./#how">How I work</a>
+      <a href="./#contact">Contact</a>
+    </nav>
+    <a class="btn-out" href="#contact">Start a conversation</a>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap hero">
+    <p class="kicker">Software engineer &middot; CTO &middot; Manila</p>
+    <h1>Software for businesses where a wrong number <em>costs something</em>.</h1>
+    <p class="lede hero-lede">
+      I build and repair the systems a company actually runs on: lead pipelines, payments,
+      reporting, and the integrations that keep them agreeing with each other. Mostly for teams
+      where downtime, or a figure that is quietly wrong, has a price attached.
+    </p>
+
+    <dl class="facts">
+      <div><dt>Engagements</dt><dd>Project or retainer</dd></div>
+      <div><dt>Timezone</dt><dd>Manila, UTC+8</dd></div>
+      <div><dt>Reply time</dt><dd>One working day</dd></div>
+    </dl>
+  </div>
+
+  <hr class="rule" />
+
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-num">01</div>
+        <div>
+          <h2>Selected work</h2>
+          <p class="sec-sub">
+            Three of the five, chosen because each one carries a fact you can check. Where an outcome was
+            never measured, the entry says so instead of inventing a figure.
+          </p>
+        </div>
+      </div>
+
+      <article class="case">
+        <div class="sec-num">A</div>
+        <div>
+          <h3><a href="work/leadmailer/">Leadmailer: a sending platform for a million leads</a></h3>
+          <p>Sending platform for about a million leads across five providers, with conversion attribution back to the exact send.</p>
+        </div>
+        <dl>
+          <dt>Client</dt><dd>Performance marketing client, live</dd>
+          <dt>Scope</dt><dd>Architecture · sending infrastructure · dashboard</dd>
+          <dt>Measured</dt><dd>~1.09M lead rows · pages load in 0.3–0.5 s</dd>
+        </dl>
+      </article>
+
+      <article class="case">
+        <div class="sec-num">B</div>
+        <div>
+          <h3><a href="work/verifydesk/">VerifyDesk: a verifier that abstains instead of guessing</a></h3>
+          <p>Email verification service that returns a verdict only when it can defend one, and charges nothing when it cannot.</p>
+        </div>
+        <dl>
+          <dt>Owner</dt><dd>My own product, in development</dd>
+          <dt>Scope</dt><dd>Design · verifier · policy gateway · billing ledger</dd>
+          <dt>Measured</dt><dd>1,676 known-good addresses, 0 false negatives</dd>
+        </dl>
+      </article>
+
+      <article class="case">
+        <div class="sec-num">C</div>
+        <div>
+          <h3><a href="work/fastcheapinsurance/">Fast Cheap Insurance: insurance guides on a static build</a></h3>
+          <p>Consumer insurance guides: seventy static pages, a published research method, articles published through an API.</p>
+        </div>
+        <dl>
+          <dt>Client</dt><dd>Same client as Leadmailer</dd>
+          <dt>Scope</dt><dd>Static build · editorial system · content API</dd>
+          <dt>Verified</dt><dd>70 pages from one content source</dd>
+        </dl>
+      </article>
+
+
+      <p style="margin-top:26px">Two more, Homezies and Amanah, are on <a class="arrow" href="work/">the full work page<span class="arw" aria-hidden="true">→</span></a></p>
+    </div>
+  </section>
+
+  <section id="how" class="panel">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-num">02</div>
+        <div>
+          <h2>How an engagement runs</h2>
+          <p class="sec-sub">Three commitments, written down because they are the ones that get skipped.</p>
+        </div>
+      </div>
+      <div class="cols">
+        <div>
+          <h3>Before: a written scope</h3>
+          <p>One page. What exists, what changes, what deliberately does not, and the acceptance test for done. Agreed before any code is written.</p>
+        </div>
+        <div>
+          <h3>During: weekly increments</h3>
+          <p>Something you can open and use on a real environment every week, rather than a report describing progress towards one.</p>
+        </div>
+        <div>
+          <h3>After: a handover that survives me</h3>
+          <p>Documentation, credentials, and a runbook the next developer can follow without having to call.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap close" id="contact">
+    <p class="kicker">03 · Contact</p>
+    <h2>Tell me what is not working. I will tell you whether I am the right person.</h2>
+    <p>A short description of the problem is enough to start. Email is the fastest route; LinkedIn works too if you would rather connect first. If it sits outside what I do, I will say so and point you somewhere better.</p>
+    <p style="font-size:15px; color:var(--muted)">Useful in the first message: what the system does today, the stack it runs on, your rough budget range, and the date it has to be done by. With those four I can usually answer in one reply instead of three.</p>
+    <a class="big" href="mailto:darwinfegarido@gmail.com">darwinfegarido@gmail.com</a>
+    <p class="alt">Prefer to connect before writing a brief? <a class="arrow" href="https://www.linkedin.com/in/darwinfegarido/" target="_blank" rel="noopener noreferrer">Find me on LinkedIn<span class="arw" aria-hidden="true">&rarr;</span></a></p>
+  </div>
+
+  <footer class="wrap">
+    <div>© <span id="yr">2026</span> Darwin Fegarido · Manila, Philippines</div>
+    <div><a href="https://github.com/dfegarido" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://www.linkedin.com/in/darwinfegarido/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="/knightbound/legal.html">Knightbound</a></div>
+  </footer>
+</main>
+
+<script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+<script src="assets/site.js?v=1" defer></script>
+</body>
 </html>
